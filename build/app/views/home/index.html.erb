@@ -74,36 +74,11 @@
       
         <div class="swiper mySwiper2">
             <div class="swiper-wrapper">
-                <div class="swiper-slide">
-                    <a href="/movies/1">
-                        <%=image_tag 'posters/poster1.jpg', class: "poster-card"%>
-                    </a>
-                </div>
-                <div class="swiper-slide">
-                    <a href="/movies/2">
-                        <%=image_tag 'posters/poster2.jpg', class: "poster-card"%>
-                    </a>
-                </div>
-                <div class="swiper-slide">
-                    <a href="/movies/3">
-                        <%=image_tag 'posters/poster3.jpg', class: "poster-card"%>
-                    </a>
-                </div>
-                <div class="swiper-slide">
-                    <a href="/movies/3">
-                        <%=image_tag 'posters/poster4.jpg', class: "poster-card"%>
-                    </a>
-                </div>
-                <div class="swiper-slide">
-                    <a href="/movies/3">
-                        <%=image_tag 'posters/poster5.jpg', class: "poster-card"%>
-                    </a>
-                </div>
-                <div class="swiper-slide">
-                    <a href="/movies/3">
-                        <%=image_tag 'posters/poster6.jpg', class: "poster-card"%>
-                    </a>
-                </div>
+                <% @trending_movies.each do |movie| %>
+                    <div class="swiper-slide">
+                        <a><img src="https://image.tmdb.org/t/p/w500<%= movie['poster_path'] %>" alt="<%= movie['title'] %>"></a>
+                    </div>
+                <%end%>
             </div>
         </div>
       
@@ -111,7 +86,7 @@
           <button class="popup-button yellow-button">Guarda ora</button>
         </div>
       </div>
-      
+
     <!-- 5th section-->
     <div class="container d-flex justify-content-center align-items-center auth-section">
         <div class="register-title">
