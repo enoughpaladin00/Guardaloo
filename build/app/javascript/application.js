@@ -34,47 +34,64 @@ document.addEventListener("DOMContentLoaded", function () {
             },
         }
     });
+});
 
     // Popup Auth Toggle
-    const authPopupOverlay = document.getElementById("auth-popup-overlay");
-    const popupButtons = document.querySelectorAll(".auth-button");
-    const closePopupButtons = document.querySelectorAll(".close-popup");
+const authPopupOverlay = document.getElementById("auth-popup-overlay");
+const popupButtons = document.querySelectorAll(".popup-button.auth-button");
+const closePopupButtons = document.querySelectorAll(".close-popup");
 
-    // Tab switch login/register
-    const tabLogin = document.querySelectorAll("#tab-login-popup");
-    const tabRegister = document.querySelectorAll("#tab-register-popup");
+// Tab switch login/register
+const tabLoginElems = document.querySelectorAll(".login-button");
+const tabRegisterElems = document.querySelectorAll(".register-button");
 
-    popupButtons.forEach(button => {
-        button.addEventListener("click", () => {
-            authPopupOverlay.style.display = "flex";
-        });
-    });
+function showLoginTab() {
+  document.querySelectorAll("#login-form-popup").forEach(f => f.style.display = "block");
+  document.querySelectorAll("#register-form-popup").forEach(f => f.style.display = "none");
+  tabLoginElems.forEach(t => {
+    t.classList.add("active-tab");
+    t.classList.remove("inactive-tab");
+  });
+  tabRegisterElems.forEach(t => {
+    t.classList.remove("active-tab");
+    t.classList.add("inactive-tab");
+  });
+}
 
-    closePopupButtons.forEach(button => {
-        button.addEventListener("click", () => {
-            authPopupOverlay.style.display = "none";
-        });
-    });
+function showRegisterTab() {
+  document.querySelectorAll("#login-form-popup").forEach(f => f.style.display = "none");
+  document.querySelectorAll("#register-form-popup").forEach(f => f.style.display = "block");
+  tabRegisterElems.forEach(t => {
+    t.classList.add("active-tab");
+    t.classList.remove("inactive-tab");
+  });
+  tabLoginElems.forEach(t => {
+    t.classList.remove("active-tab");
+    t.classList.add("inactive-tab");
+  });
+}
 
-    tabLogin.forEach(tab => {
-        tab.addEventListener("click", () => {
-            document.querySelectorAll("#login-form-popup").forEach(form => form.style.display = "block");
-            document.querySelectorAll("#register-form-popup").forEach(form => form.style.display = "none");
-            tabLogin.forEach(t => t.classList.add("active-tab"));
-            tabLogin.forEach(t => t.classList.remove("inactive-tab"));
-            tabRegister.forEach(t => t.classList.remove("active-tab"));
-            tabRegister.forEach(t => t.classList.add("inactive-tab"));
-        });
-    });
-
-    tabRegister.forEach(tab => {          
-        tab.addEventListener("click", () => {
-            document.querySelectorAll("#login-form-popup").forEach(form => form.style.display = "none");
-            document.querySelectorAll("#register-form-popup").forEach(form => form.style.display = "block");
-            tabRegister.forEach(t => t.classList.add("active-tab"));
-            tabRegister.forEach(t => t.classList.remove("inactive-tab"));
-            tabLogin.forEach(t => t.classList.remove("active-tab"));
-            tabLogin.forEach( t=> t.classList.add("inactive-tab"));
-        });
-    });
+popupButtons.forEach(button => {
+  button.addEventListener("click", () => {
+    if (button.classList.contains("sign-up")) {
+      showRegisterTab();
+    } else {
+      showLoginTab();
+    }
+    authPopupOverlay.style.display = "flex";
+  });
 });
+
+closePopupButtons.forEach(button => {
+  button.addEventListener("click", () => {
+    authPopupOverlay.style.display = "none";
+  });
+});
+
+
+tabLoginElems.forEach(tab =>
+  tab.addEventListener("click", showLoginTab)
+);
+tabRegisterElems.forEach(tab =>
+  tab.addEventListener("click", showRegisterTab)
+);

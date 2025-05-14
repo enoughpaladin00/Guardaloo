@@ -15,8 +15,8 @@
         <div class="container-fluid d-flex justify-content-between align-items-center">
             <%= image_tag 'logos/Logo.svg', alt: 'Logo Guardaloo' %>
             <div class="d-flex align-items-center">
-                <button  id="tab-register-popup" class="sign-up popup-button auth-button">Registrati</button>
-                <button  id="tab-login-popup" class="yellow-button popup-button auth-button">Accedi</button>
+                <button  class="sign-up popup-button auth-button ">Registrati</button>
+                <button  class="yellow-button popup-button auth-button">Accedi</button>
             </div>
         </div>
     </nav>
@@ -121,9 +121,9 @@
         <div class="col-md-6">
             <div class="auth-box">
                 <div class="auth-tabs mb-3 text-center">
-                    <span class="auth-tab active-tab">Accedi</span>
+                    <span class="auth-tab active-tab login-button">Accedi</span>
                     <span class="inactive-tab">|</span>
-                    <span id="tab-register-popup" class="auth-tab inactive-tab">Registrati</span>
+                    <span class="auth-tab auth-button inactive-tab register-button">Registrati</span>
                 </div>
   
                 <form id="login-form">
@@ -178,9 +178,9 @@
         <div class="popup-content">
             <div class="auth-box">
                 <div class="auth-tabs mb-3 text-center">
-                    <span id="tab-login-popup" class="auth-tab active-tab">Accedi</span>
+                    <span id="tab-login-popup" class="auth-tab active-tab login-button">Accedi</span>
                     <span class="inactive-tab">|</span>
-                    <span id="tab-register-popup" class="auth-tab inactive-tab">Registrati</span>
+                    <span class="auth-tab inactive-tab register-button">Registrati</span>
                 </div>
   
                 <form id="login-form-popup">
