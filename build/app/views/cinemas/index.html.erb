@@ -1,0 +1,39 @@
+<h1>Cinema e Programmazione</h1>
+
+<% @cinemas.each do |cinema| %>
+  <div class="cinema-card">
+    <h2><%= cinema[:name] %></h2>
+
+    <% safe_address = cinema[:address].presence || "Roma, Italia" %>
+    <p><strong>Indirizzo:</strong> <%= cinema[:address].presence || "Indirizzo non disponibile" %></p>
+
+    <div class="cinema-content">
+      <div class="map">
+        <iframe
+        src="https://maps.google.com/maps?q=<%= CGI.escape(cinema[:address]) %>&output=embed"
+        width="300"
+        height="200"
+        frameborder="0"
+        allowfullscreen>
+        </iframe>
+
+      </div>
+
+      <div class="programmazione">
+        <h3>Programmazione</h3>
+        <% if cinema[:programming].present? %>
+          <% cinema[:programming].each do |film| %>
+            <div class="film-row">
+              <strong><%= film[:title] %></strong><br/>
+              <% film[:showtimes].each do |ora| %>
+                <button><%= ora %></button>
+              <% end %>
+            </div>
+          <% end %>
+        <% else %>
+          <p>Nessuna programmazione disponibile.</p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>
