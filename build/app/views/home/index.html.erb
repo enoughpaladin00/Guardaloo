@@ -86,7 +86,7 @@
             <div class="swiper-wrapper">
                 <% @trending_movies.each do |movie| %>
                     <div class="trend-slide">
-                        <div class="trend-card dark:bg-zinc-800">
+                        <div class="trend-card dark:bg-zinc-800" data-movie-id="<%= movie['id'] %>">
                             <% if movie["poster_path"] %>
                                 <img src="https://image.tmdb.org/t/p/w500<%= movie['poster_path'] %>" alt="<%= movie['title'] %>">
                             <% else %>
@@ -199,6 +199,9 @@
     </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+        window.isUserSignedIn = <%= user_signed_in? ? 'true' : 'false' %>;
+    </script>
 </body>
 
 </html>

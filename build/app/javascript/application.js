@@ -120,3 +120,17 @@ document.querySelector("#register-form-popup").addEventListener("submit", functi
       alert("Errore imprevisto.");
     });
 });
+
+// Redirezione a Movies/:id
+document.querySelectorAll('.trend-card').forEach(card => {
+  card.addEventListener('click', function(e) {
+    const movieId = this.dataset.movieId;
+
+    if (window.userSignedIn) {
+      window.location.href = `/movies/${movieId}`;
+    } else {
+      e.preventDefault();
+      alert('Non hai fatto l\'accesso');
+    }
+  });
+});
