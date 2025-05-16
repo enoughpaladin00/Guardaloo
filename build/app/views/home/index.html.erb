@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Guardaloo</title>
 
+    #Swiper
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 </head>
 
 <body>
@@ -32,11 +34,15 @@
     <div class="container content-section d-flex align-items-center" align="center">
 
         <div class="carousel-column">
-            <div class="swiper-container mySwiper">
-                <div class="swiper-wrapper">
-                    <div class="swiper-slide"><%= image_tag 'posters/poster1.jpg', alt: "Film 1" %></div>
-                    <div class="swiper-slide"><%= image_tag 'posters/poster2.jpg', alt: "Film 2" %></div>
-                    <div class="swiper-slide"><%= image_tag 'posters/poster3.jpg', alt: "Film 3" %></div>
+            <div class="posters-carousel">
+                <div class="movie-card left">
+                    <%= image_tag 'posters/poster1.jpg', alt: "Film 1" %>
+                </div>
+                <div class="movie-card center">
+                    <%= image_tag 'posters/poster2.jpg', alt: "Film 2" %>
+                </div>
+                <div class="movie-card right">
+                    <%= image_tag 'posters/poster3.jpg', alt: "Film 3" %>
                 </div>
             </div>
         </div>
@@ -55,13 +61,17 @@
         </div>
 
         <div class="search-carousel-column search-carousel-wrapper">
-            <input type="text" class="search-bar" placeholder="Film" />
+            <input type="text" class="search-bar" placeholder="Cerca un film..." />
 
-            <div class="swiper-container mySwiper">
-                <div class="swiper-wrapper">
-                    <div class="swiper-slide"><%= image_tag 'posters/poster4.jpg', alt: "Film 4" %></div>
-                    <div class="swiper-slide"><%= image_tag 'posters/poster5.jpg', alt: "Film 5" %></div>
-                    <div class="swiper-slide"><%= image_tag 'posters/poster6.jpg', alt: "Film 6" %></div>
+            <div class="posters2-carousel">
+                <div class="movie2-card left">
+                    <%= image_tag 'posters/poster4.jpg', alt: "Film 4" %>
+                </div>
+                <div class="movie2-card center">
+                    <%= image_tag 'posters/poster5.jpg', alt: "Film 5" %>
+                </div>
+                <div class="movie2-card right">
+                    <%= image_tag 'posters/poster6.jpg', alt: "Film 6" %>
                 </div>
             </div>
         </div>
@@ -72,11 +82,17 @@
     <div class="container trend-section text-center">
         <h2 class="inter-h1 mb-5">I titoli del momento</h2>
       
-        <div class="swiper mySwiper2">
+        <div class="swiper trend-swiper">
             <div class="swiper-wrapper">
                 <% @trending_movies.each do |movie| %>
-                    <div class="swiper-slide">
-                        <a><img src="https://image.tmdb.org/t/p/w500<%= movie['poster_path'] %>" alt="<%= movie['title'] %>"></a>
+                    <div class="trend-slide">
+                        <div class="trend-card dark:bg-zinc-800">
+                            <% if movie["poster_path"] %>
+                                <img src="https://image.tmdb.org/t/p/w500<%= movie['poster_path'] %>" alt="<%= movie['title'] %>">
+                            <% else %>
+                                <div class="w-full h-80 bg-gray-200 flex items-center justify-center text-center px-2">Nessuna immagine</div>
+                            <% end %>
+                        </div>
                     </div>
                 <%end%>
             </div>
@@ -200,6 +216,7 @@
         </div>
     </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 </body>
 
 </html>

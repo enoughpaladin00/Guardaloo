@@ -2,39 +2,29 @@
 import "@hotwired/turbo-rails"
 import "controllers"
 import * as bootstrap from "bootstrap"
-import Swiper from 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.mjs'
-
 
 // home
 document.addEventListener("DOMContentLoaded", function () {
-    new Swiper(".mySwiper", {
-        slidesPerView: 1,
-        spaceBetween: 20,
-        loop: true,
-        breakpoints: {
-            768: {
-                slidesPerView: 2,
-            },
-            1024: {
-                slidesPerView: 3,
-            },
-        }
-    });
-
-    new Swiper(".mySwiper2", {
-        slidesPerView: 2,
-        spaceBetween: 20,
-        loop: true,
-        initialSlide: 2,
-        breakpoints: {
-            768: {
-                slidesPerView: 3,
-            },
-            1024: {
-                slidesPerView: 5,
-            },
-        }
-    });
+  new Swiper(".trend-swiper", {
+    slidesPerView: 1,
+    spaceBetween: 20,
+    loop: false,
+    autoplay: {
+      delay: 3000,
+      disableOnInteraction: false
+    },
+    breakpoints: {
+      640: {
+        slidesPerView: 2
+      },
+      1024: {
+        slidesPerView: 3
+      },
+      1280: {
+        slidesPerView: 4
+      }
+    }
+  });
 });
 
     // Popup Auth Toggle

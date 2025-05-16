@@ -97,6 +97,46 @@ html, body{
     max-width: 830px;
 }
 
+.posters-carousel{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+    position: relative;
+    margin: 3rem auto;
+    width: 100%;
+    max-width: 900px;
+}
+
+.movie-card{
+    position: relative;
+    width: 200px;
+    height: 300px;
+    border-radius: 1rem;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    z-index: 1;
+}
+
+.movie-card img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.movie-card.center{
+    transform: scale(1.2);
+    z-index: 2;
+}
+
+.movie-card.left{
+    transform: translateX(20px);
+}
+
+.movie-card.right{
+    transform: translateX(-20px);
+}
+
 .text-column {
     flex: 1;
     min-width: 450px;
@@ -104,24 +144,75 @@ html, body{
     font-size:35px;
 }
 
-.swiper-container {
-    width: 100%;
-    padding: 20px 0;
+.posters2-carousel{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+    position: relative;
 }
 
-.swiper-slide {
-    background-position: center;
-    background-size: cover;
-    width: auto;
-    height: 420px;
+.movie2-card{
+    position: relative;
+    width: 200px;
+    height: 300px;
+    border-radius: 1rem;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    z-index: 1;
+}
+
+.movie2-card img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 1rem;
+}
+
+.movie2-card.center{
+    transform: scale(1.2);
+    z-index: 2;
+}
+
+.movie2-card.left{
+    transform: translateX(20px);
+}
+
+.movie2-card.right{
+    transform: translateX(-20px);
+}
+
+.trend-slide {
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 1rem;
+    box-sizing: border-box;
 }
   
-.swiper-slide img {
-    width: auto;
+.trend-slide > div {
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.trend-slide img {
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
     height: 100%;
+    object-fit: cover;
+}
+
+.trend-card {
+    width: auto;
+    height: 420px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.swiper-slide img {
+
     border-radius: 16px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
     object-fit: contain;
@@ -150,19 +241,25 @@ html, body{
     top: 80%;
     width: 500px;
     transform: translateY(-50%);
+    display: flex;
     z-index: 10;
-    padding: 10px 40px;
+    padding: 0.4rem 1rem;
     border-radius: 20px;
     border: 1px solid #ccc;
-    background-color: #FFFAEF;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    background: url('Vector.svg') no-repeat 10px center;
-    background-size: 20px 20px;
-    color: #FFFAEF;
+    background-color: #fffaefe6;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    color: #272727;
+}
 
+.search-bar input{
     font-family: 'Inter', sans-serif;
-    font-size: 16px;
+    font-size: 1rem;
     font-weight: 600;
+    background: transparent;
+}
+
+.search-bar::placeholder{
+    color:#272727;
 }
 
 .inter-h1{
@@ -178,7 +275,8 @@ html, body{
 .trend-section{
     min-height: 100vh;
     min-width:100vw;
-    padding: 80px;
+    padding-top: 80px;
+    padding-bottom: 80px;
 }
 
 .auth-section {
@@ -251,4 +349,19 @@ html, body{
 
 .poster-card:hover {
     transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+  .movie-card.center {
+    transform: scale(1.1);
+  }
+
+  .movie-card.left,
+  .movie-card.right {
+    transform: scale(0.9);
+  }
+
+  .movie-carousel {
+    gap: 10px;
+  }
 }

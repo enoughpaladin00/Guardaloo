@@ -12,4 +12,14 @@ class TmdbService
     Rails.logger.error "Errore TMDB: #{e.message}"
     []
   end
+
+  def self.trending_series
+    url = URI("#{BASE_URL}/trenfing/tv/week?api_key=#{ENV['TMDB_API_KEY']}")
+    response = Net::HTTP.get(url)
+    JSON.parse(response)["results"]
+  rescue => e
+    Rails.logger.error "Errore TMDB: #{e.message}"
+    []
+  end
+  
 end
