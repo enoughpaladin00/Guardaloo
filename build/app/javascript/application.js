@@ -3,7 +3,7 @@ import "@hotwired/turbo-rails"
 import "controllers"
 import * as bootstrap from "bootstrap"
 
-// home
+// home.js
 document.addEventListener("DOMContentLoaded", function () {
   new Swiper(".trend-swiper", {
     slidesPerView: 1,
@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-    // Popup Auth Toggle
+// Popup Auth Toggle
 const authPopupOverlay = document.getElementById("auth-popup-overlay");
 const popupButtons = document.querySelectorAll(".popup-button.auth-button");
 const closePopupButtons = document.querySelectorAll(".close-popup");
@@ -86,3 +86,37 @@ tabLoginElems.forEach(tab =>
 tabRegisterElems.forEach(tab =>
   tab.addEventListener("click", showRegisterTab)
 );
+
+// Register
+document.querySelector("#register-form-popup").addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  const form = e.target;
+  const formData = new FormData(form);
+  const data = Object.fromEntries(formData.entries());
+
+  fetch("/register", {
+    method: "POST",
+    headers: {
+      "X-CSRF-Token": document.querySelector("[name='csrf-token']").content,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ user: data })
+  })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        // Mostra messaggio di successo
+        alert("Registrazione avvenuta con successo.");
+
+        document.querySelector("#tab-login-popup").click();
+
+      } else {
+        alert("Errore: " + data.errors.join(", "));
+      }
+    })
+    .catch(error => {
+      console.error("Errore durante la registrazione:", error);
+      alert("Errore imprevisto.");
+    });
+});
