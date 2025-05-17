@@ -19,4 +19,7 @@ Rails.application.routes.draw do
   get "movies/show"
   resources :movies, only: [:show]
 
+  #homepage
+  get "home", to: "homepage#homepage"
+
 end

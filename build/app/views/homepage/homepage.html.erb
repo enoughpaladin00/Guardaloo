@@ -1,0 +1,57 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guardaloo</title>
+</head>
+
+<div class="container-fluid d-flex align-items-center">
+    <h1 class="px-2 py-2 mb-0" style="font-size: 30px;"><b>Prossimamente al Cinema</b></h1>
+    <%= image_tag "homepage/cinema.svg", width: "25", height: "25" %>
+</div>
+
+<div class="container-fluid d-flex flex-row">
+
+    <% @trending_movies.first(8).each do |movie| %>
+    <div class="contenitore" style="width: 430px">
+  
+        <div class="me-3 locandina" data-movie-id="<%= movie['id'] %>">
+            <% if movie["poster_path"] %>
+                <a href="#"><img src="https://image.tmdb.org/t/p/w500<%= movie['poster_path'] %>" alt="<%= movie['title'] %>" width="auto" height="220"></a>
+            <% else %>
+                <a href="#"><div class="w-full h-80 bg-gray-200 flex items-center justify-center text-center px-2">Nessuna immagine</div></a>
+            <% end %>
+        </div>
+  
+        <div class="d-flex flex-column py-3 me-2">
+          <h4 class="mb-1"><%= movie['title'] %></h4>
+          <% details = @movie_details[movie['id']] %>
+          <p class="mb-1 text-muted"><%= movie['release_date'].to_date.year %> – <%= details['runtime'] %> min</p>
+          <p class="mb-1 small"><%= truncate(movie["overview"], length: 100) %></p>
+        </div>
+  
+    </div> 
+    <%end%>        
+</div>
+<div style="margin-top: 2%">
+    
+    <%= image_tag "homepage/virgolette.svg", style: "margin-left: 30%; position: absolute ", width: "55px" %>
+    <%= image_tag "homepage/virgolette.svg", style: "margin-left: 70%; position: absolute; transform: rotate(180deg) ", width: "55px" %>
+    <div align="center">
+        <p class="citazione" >Il cinema è un’opportunità per entrare in un altro<br>mondo, un’altra vita, un’altra mente</p>
+        <p class="citazione" style="font-size: 2em">- Martin Scorsese</p>
+    </div>
+    
+</div>
+<div class="container-fluid d-flex align-items-center">
+    <h1 class="px-2 py-2 mb-0" style="font-size: 30px;"><b>Top 10</b></h1>
+    <%= image_tag "homepage/trend.svg", width: "25", height: "25" %>
+</div>
+<div class="container-fluid d-flex py-3 ms-4">
+<% @top_movies.each do |movie| %>
+
+    <div class="me-4 contenitore">
+        <a href="#"><img src="https://image.tmdb.org/t/p/w500<%= movie['poster_path'] %>" alt="<%= movie['title'] %>" width="auto" height="336" ></a>
+        
+    </div>
+    <%end%>
+</div>

@@ -6,7 +6,7 @@ class TmdbService
   API_KEY = ENV["TMDB_API_KEY"]
 
   def fetch_movie_details(tmdb_id)
-    url = URI("#{BASE_URL}/#{tmdb_id}?api_key=#{API_KEY}&language=it-IT")
+    url = URI("#{BASE_URL}/movie/#{tmdb_id}?api_key=#{API_KEY}&language=it-IT")
     response = Net::HTTP.get(url)
     JSON.parse(response)
   rescue StandardError => e
@@ -29,6 +29,16 @@ class TmdbService
     JSON.parse(response)["results"]
   rescue => e
     Rails.logger.error "Errore TMDB: #{e.message}"
+    []
+  end
+
+  def self.top_10_movies
+    url = URI("#{BASE_URL}/movie/popular?api_key=#{API_KEY}&language=it-IT&page=1")
+    response = Net::HTTP.get(url)
+    parsed = JSON.parse(response)
+    parsed["results"].first(10)
+  rescue => e
+    Rails.logger.error "Errore TMDB (top_10_movies): #{e.message}"
     []
   end
   
