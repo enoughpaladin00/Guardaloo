@@ -1,20 +1,27 @@
 
 .contenitore{
-    border: 2px solid #FD7474;
-    border-radius: 15px;
+    border: 0.2em solid #FD7474;
+    border-radius: 1.5em;
     display: flex;
     overflow: hidden;
-    margin-left: 10px;
+    margin: 1em;
 }
 
 .locandina{
     border-right: 2px solid #FD7474;
 }
 
-
+.number{
+    position: absolute; 
+    transform: translateY(0.69em) translateX(-0.3em); 
+    font-size: 12em; 
+    color:#FD7474
+}
 
 .citazione {
     font-weight: bold;
     font-size: 250%;
     font-family: 'Bodoni Moda',serif;
+    color: #004466;
 }
+
