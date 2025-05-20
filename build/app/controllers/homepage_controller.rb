@@ -5,5 +5,6 @@ class HomepageController < ApplicationController
         [movie["id"], TmdbService.new.fetch_movie_details(movie["id"])]
         end.to_h
         @top_movies = TmdbService.top_10_movies
+        @trending_series = TmdbService.trending_series
     end
 end
