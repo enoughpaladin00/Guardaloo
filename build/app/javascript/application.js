@@ -106,11 +106,7 @@ document.querySelector("#register-form-popup").addEventListener("submit", functi
     .then(response => response.json())
     .then(data => {
       if (data.success) {
-        // Mostra messaggio di successo
-        alert("Registrazione avvenuta con successo.");
-
-        document.querySelector("#tab-login-popup").click();
-
+        window.location.href = data.redirect_url;
       } else {
         alert("Errore: " + data.errors.join(", "));
       }
@@ -126,11 +122,11 @@ document.querySelectorAll('.trend-card').forEach(card => {
   card.addEventListener('click', function(e) {
     const movieId = this.dataset.movieId;
 
-    if (window.userSignedIn) {
+/*    if (window.userSignedIn) {*/
       window.location.href = `/movies/${movieId}`;
-    } else {
+/*    } else {
       e.preventDefault();
       alert('Non hai fatto l\'accesso');
-    }
+    }*/
   });
 });
