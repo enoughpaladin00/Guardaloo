@@ -1,4 +1,5 @@
 // Configure your import map in config/importmap.rb. Read more: https://github.com/rails/importmap-rails
+
 import "@hotwired/turbo-rails"
 import "controllers"
 import * as bootstrap from "bootstrap"
@@ -26,6 +27,21 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
+
+//slider
+const slider = document.querySelector('.slider-track');
+const leftBtn = document.querySelector('.nav.left');
+const rightBtn = document.querySelector('.nav.right');
+
+if (slider && leftBtn && rightBtn) {
+  const scrollPerClick = 200;
+  rightBtn.addEventListener('click', () => {
+    slider.scrollBy({ left: scrollPerClick, behavior: 'smooth' });
+  });
+  leftBtn.addEventListener('click', () => {
+    slider.scrollBy({ left: -scrollPerClick, behavior: 'smooth' });
+  });
+}
 
 // Popup Auth Toggle
 const authPopupOverlay = document.getElementById("auth-popup-overlay");
@@ -106,11 +122,7 @@ document.querySelector("#register-form-popup").addEventListener("submit", functi
     .then(response => response.json())
     .then(data => {
       if (data.success) {
-        // Mostra messaggio di successo
-        alert("Registrazione avvenuta con successo.");
-
-        document.querySelector("#tab-login-popup").click();
-
+        window.location.href = data.redirect_url;
       } else {
         alert("Errore: " + data.errors.join(", "));
       }
@@ -126,11 +138,11 @@ document.querySelectorAll('.trend-card').forEach(card => {
   card.addEventListener('click', function(e) {
     const movieId = this.dataset.movieId;
 
-    if (window.userSignedIn) {
+/*    if (window.userSignedIn) {*/
       window.location.href = `/movies/${movieId}`;
-    } else {
+/*    } else {
       e.preventDefault();
       alert('Non hai fatto l\'accesso');
-    }
+    }*/
   });
 });

@@ -10,39 +10,45 @@
     <%= image_tag "homepage/cinema.svg", width: "35em", height: "35em" %>
 </div>
 
-<div class="container-fluid d-flex flex-row">
 
-    <% @trending_movies.first(4).each do |movie| %>
-    <div class="contenitore" style="background-color:rgb(253,116,116, 0.1); width: 30em;">
-  
-        <div class="me-3 locandina" data-movie-id="<%= movie['id'] %>">
-            <% if movie["poster_path"] %>
-                <a href="#"><img src="https://image.tmdb.org/t/p/w500<%= movie['poster_path'] %>" alt="<%= movie['title'] %>" width="auto" height="180em"></a>
-            <% else %>
-                <a href="#"><div class="w-full h-80 bg-gray-200 flex items-center justify-center text-center px-2">Nessuna immagine</div></a>
-            <% end %>
-        </div>
-  
-        <div class="d-flex flex-column py-3 me-2" >
-          <h5 style="color: #004466;"><%= movie['title'] %></h5>
-          <% details = @movie_details[movie['id']] %>
-          <p class="mb-1 text-muted"><%= movie['release_date'].to_date.year %> – <%= details['runtime'] %> min</p>
-          
-        </div>
-  
-    </div> 
-    <%end%>        
+<div class="container-fluid d-flex flex-row netflix-slider">
+    <button class="nav left">❮</button>
+    <div class="slider-track">
+        <% @trending_movies.first(10).each do |movie| %>
+        <div class="contenitore" style="background-color:rgb(253,116,116, 0.1); width: 30em;">
+        
+            <div class="me-3 locandina" data-movie-id="<%= movie['id'] %>">
+                <% if movie["poster_path"] %>
+                    <a href="#"><img src="https://image.tmdb.org/t/p/w500<%= movie['poster_path'] %>" alt="<%= movie['title'] %>" width="auto" height="180em"></a>
+                <% else %>
+                    <a href="#"><div class="w-full h-80 bg-gray-200 flex items-center justify-center text-center px-2">Nessuna immagine</div></a>
+                <% end %>
+            </div>
+        
+            <a href="#" class="link-underline link-underline-opacity-0"><div class="d-flex flex-column py-3 me-2" >
+              <h5 style="color: #004466;"><%= movie['title'] %></h5>
+              <% details = @movie_details[movie['id']] %>
+              <p class="mb-1 text-muted"><%= movie['release_date'].to_date.year %> – <%= details['runtime'] %> min</p>
+
+            </div></a>
+        
+        </div> 
+        <%end%>
+    </div>
+    <button data-slider-target="right" class="nav right">❯</button>        
 </div>
 
 <!--2 section "Citazione"-->
 
-<div style="margin-top: 2%">
+<div class="d-flex py-5" align="center" style="justify-content: center;">
     
-    <%= image_tag "homepage/virgolette.svg", style: "margin-left: 25em; position: absolute ", width: "50em" %>
-    <%= image_tag "homepage/virgolette.svg", style: "margin-left: 85em; position: absolute; transform: rotate(180deg) ", width: "50em" %>
-    <div align="center">
-        <p class="citazione" >Il cinema è un’opportunità per entrare in un altro<br>mondo, un’altra vita, un’altra mente</p>
-        <p class="citazione" style="font-size: 2em">- Martin Scorsese</p>
+    <div class="d-flex">
+        <%= image_tag "homepage/virgolette.svg", style: " position: absolute; transform: translateX(-5em) ", width: "50em" %>
+        <%= image_tag "homepage/virgolette.svg", style: " position: absolute; transform: rotate(180deg) translateX(-50em) ", width: "50em" %>
+        <div>
+            <p class="citazione" >Il cinema è un’opportunità per entrare in un altro<br>mondo, un’altra vita, un’altra mente</p>
+            <p class="citazione" style="font-size: 2em">- Martin Scorsese</p>
+        </div>
     </div>
     
 </div>
@@ -74,7 +80,7 @@
 </div>
 
 <div class="container-fluid d-flex">
-<% @trending_series.first(7).each_with_index do |movie, index| %>
+<% @trending_series.first(7).each do |movie| %>
 
     <div class="contenitore">
         <a href="#"><img src="https://image.tmdb.org/t/p/w500<%= movie['poster_path'] %>" alt="<%= movie['title'] %>" width="auto" height="339em" ></a>
@@ -91,7 +97,7 @@
 </div>
 
 <div class="container-fluid d-flex">
-<% @top_movies.first(7).each_with_index do |movie, index| %>
+<% @top_movies.first(7).each do |movie| %>
 
     <div class="contenitore">
         <a href="#"><img src="https://image.tmdb.org/t/p/w500<%= movie['poster_path'] %>" alt="<%= movie['title'] %>" width="auto" height="339em" ></a>

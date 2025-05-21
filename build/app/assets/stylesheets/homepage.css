@@ -25,3 +25,51 @@
     color: #004466;
 }
 
+.netflix-slider{
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    padding-left: 1.3em;
+}
+
+.netflix-slider .nav {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.netflix-slider:hover .nav {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.slider-track {
+  display: flex;
+  transition: transform 0.5s ease;
+  scroll-behavior: smooth;
+}
+
+.nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.6);
+  color: #FFFAEF;
+  border: none;
+  padding: 1em 0.3em;
+  cursor: pointer;
+  font-size: 1.4rem;
+}
+
+.left {
+  left: 0;
+  border-top-right-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+}
+
+.right {
+  right: 0;
+  border-top-left-radius: 0.5em;
+  border-bottom-left-radius: 0.5em;
+}
+

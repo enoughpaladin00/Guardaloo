@@ -1,0 +1,21 @@
+.footer_link{
+    justify-content: center; 
+    flex-wrap: wrap;
+}
+
+.footer_single_link{
+    font-size:large; 
+    margin-right: 1em; 
+    margin-left: 1em
+}
+
+.vert_line{
+    font-weight: bold; 
+    font-size: large; 
+    color: #F9BD24
+}
+
+.social{
+    margin-right: 0.5em; 
+    margin-left: 0.5em
+}
