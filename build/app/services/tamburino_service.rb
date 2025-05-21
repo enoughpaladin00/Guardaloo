@@ -43,6 +43,9 @@ class TamburinoService
     nil
   end
 
+
+  
+
   def self.parse_xml(xml_body)
     doc = Nokogiri::XML(xml_body)
     cinemas = []
