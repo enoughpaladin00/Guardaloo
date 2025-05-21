@@ -11,7 +11,13 @@
             <div class="d-flex align-items-center">
                 <% if user_signed_in? %>
                     Benvenuto, <%= current_user.first_name %>!
-                    <%= link_to "Logout", logout_path, method: :delete %>
+                    <%= link_to "logout", logout_path, method: :delete %>
+                    <% if notice %>
+                        <div class="alert alert-success"><%= notice %></div>
+                    <% end %>
+                    <% if alert %>
+                        <div class="alert alert-danger"><%= alert %></div>
+                    <% end %>
                 <% else %>
                     <button  class="sign-up popup-button auth-button ">Registrati</button>
                     <button  class="yellow-button popup-button auth-button">Accedi</button>
