@@ -4,11 +4,11 @@ import "controllers"
 import * as bootstrap from "bootstrap"
 
 // home.js
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("turbo:load", function () {
   new Swiper(".trend-swiper", {
     slidesPerView: 1,
     spaceBetween: 20,
-    loop: false,
+    loop: true,
     autoplay: {
       delay: 3000,
       disableOnInteraction: false
