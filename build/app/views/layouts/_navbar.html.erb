@@ -1,0 +1,36 @@
+
+<nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+            <a href="#"><%= image_tag "navbar/Logo.svg", alt: "logo", width: "200em", height: "auto" %></a>
+        </a>
+        <form class="container-fluid" role="search">
+            <div class="input-group rounded-3 search_container px-2 align-items-center">
+                <span>
+                    <%= image_tag "navbar/Lente.svg", alt: "lente", width: "20em", height: "20em" %>
+                </span>                        
+                <input class="form-control border-0 shadow-none search_bar" type="search" placeholder="Cerca film, serie TV, cinema, discussioni...">
+            </div>
+        </form>
+        <ul class="navbar-nav ms-auto align-items-center">
+            <li class="nav-items">
+                <%= link_to "Home", root_path, class: "nav-link fw-bold navbar_text", style: "font-size:large" %>
+            </li>
+            <li class="nav-items">
+                <%= link_to "Cinema", root_path, class: "nav-link fw-bold navbar_text", style: "font-size:large" %>
+            </li>
+            <li class="nav-items">
+                <%= link_to "Film", root_path, class: "nav-link fw-bold navbar_text", style: "font-size:large" %>
+            </li>
+            <li class="nav-items">
+                <%= link_to "Forum", root_path, class: "nav-link fw-bold navbar_text", style: "font-size:large" %>
+            </li>
+            <li class="nav-items">
+                <%= link_to "La Mia Lista", root_path, class: "nav-link fw-bold navbar_text", style: "font-size:large; border-right: 3px solid #F9BD24" %>
+            </li>
+        </ul>
+        <a class="px-2" href="#">
+            <%= image_tag "navbar/user.svg", alt: "user", width:"35", height: "35" %>
+        </a>
+    </div>
+</nav>

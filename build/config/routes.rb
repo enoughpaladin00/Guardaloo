@@ -1,14 +1,5 @@
 Rails.application.routes.draw do
 
-  resources :forum, only: [:index, :show] do
-    #
-  end
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
-  get "up" => "rails/health#show", as: :rails_health_check
-
   # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
   # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
@@ -16,4 +7,34 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   get 'home/index'
   root "home#index"
+
+  # Registrazione
+  get "signup", to: "registrations#new"
+  post "/register", to: "registrations#create"
+
+  # Login / Logout
+  get "login", to: "sessions#new"
+  post "/login", to: "sessions#create"
+  delete "/logout", to: "sessions#destroy"
+
+  #movie
+  get "movies/show"
+  resources :movies, only: [:show]
+
+  #homepage
+  get "home", to: "homepage#homepage"
+
+  #Google Auth
+  get '/auth/:provider/callback', to: 'sessions#omniauth'
+  get '/auth/failure', to: redirect('/')
+
+  match '/auth/:provider', to: 'sessions#passthru', via: [:get, :post]
+
+  #forum
+  get "forum", to: "forum#index"
+
+  #health check?
+  get "up" => "rails/health#show", as: :rails_health_check
+
+
 end
