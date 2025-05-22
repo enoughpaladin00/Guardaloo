@@ -11,7 +11,7 @@
             <div class="d-flex align-items-center">
                 <% if user_signed_in? %>
                     Benvenuto, <%= current_user.first_name %>!
-                    <%= link_to "Logout", logout_path, method: :delete %>
+                    <button id="logout-button">Logout</button>
                 <% else %>
                     <button  class="sign-up popup-button auth-button ">Registrati</button>
                     <button  class="yellow-button popup-button auth-button">Accedi</button>
@@ -96,7 +96,7 @@
         </div>
       
         <div class="mt-4">
-          <button class="popup-button yellow-button">Guarda ora</button>
+            <%= button_to "Guarda ora", home_path, method: :get, class: "popup-button yellow-button" %>
         </div>
       </div>
 
@@ -128,7 +128,31 @@
                         <%= image_tag 'logos/facebook-logo.svg', width: "20", class: "mr-2" %>
                         Registrati con Facebook
                     </button>
-                <% end %>  
+                <% end %> 
+                
+                <%= form_with url: register_path, method: :post, data: {turbo: false}, html: { id: "register-form-page", style: "display: none;" } do |f| %>
+                    <div class="d-flex gap-2 mb-3">
+                        <%= f.text_field :first_name, class: "form-control", placeholder: "Nome", required: true %>
+                        <%= f.text_field :last_name, class: "form-control", placeholder: "Cognome", required: true %>
+                    </div>
+                    <%= f.date_field :birth_date, class: "form-control mb-3", placeholder: "Data di nascita", required: true %>
+                    <%= f.text_field :username, class: "form-control mb-3", placeholder: "Username", required: true %>
+                    <%= f.email_field :email, class: "form-control mb-3", placeholder: "Email", required: true %>
+                    <%= f.password_field :password, class: "form-control mb-3", placeholder: "Password", required: true %>
+                    <%= f.password_field :password_confirmation, class: "form-control mb-3", placeholder: "Conferma Password", required: true %>
+                    <%= f.submit "Registrati", class: "btn btn-light w-100 mb-1 font-weight-bold", style: "color: #272727" %>
+
+                    <div class="text-center my-2" style="color: #FFFAEF !important">OPPURE</div>
+                    <%= link_to '/auth/google_oauth2', class: 'btn btn-outline-secondary w-100 mb-2 d-flex align-items-center justify-content-center' do %>
+                        <%= image_tag 'logos/google-logo.svg', class: 'mr-2', width: '20' %>
+                            Registrati con Google
+                    <% end %>
+
+                    <button class="btn btn-outline-secondary w-100">
+                        <%= image_tag 'logos/facebook-logo.svg', width: "20", class: "mr-2" %>
+                        Registrati con Facebook
+                        </button>
+                <% end %>
             </div>
         </div>
     </div>
@@ -149,7 +173,7 @@
                     <span class="auth-tab inactive-tab register-button">Registrati</span>
                 </div>
   
-                <%= form_with url: login_path, method: :post, local: true, html: { id: "login-form-popup" } do %>
+                <%= form_with url: login_path, method: :post, data: {turbo: false}, html: { id: "login-form-popup" } do %>
                     <%= email_field_tag :email, nil, class: "form-control mb-3", placeholder: "Email", required: true %>
                     <%= password_field_tag :password, nil, class: "form-control mb-3", placeholder: "Password", required: true %>
                     <%= submit_tag "Accedi", class: "btn btn-light w-100 mb-1 font-weight-bold", style: "color: #272727" %>
@@ -162,7 +186,7 @@
 
                     <button class="btn btn-outline-secondary w-100">
                         <%= image_tag 'logos/facebook-logo.svg', width: "20", class: "mr-2" %>
-                        Registrati con Facebook
+                        Accedi con Facebook
                     </button>
                 <% end %>
 

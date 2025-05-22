@@ -1,11 +1,33 @@
-<%# <h1>Forum#index</h1>
-<p>Find me in app/views/forum/index.html.erb</p> %>
+<!DOCTYPE html>
+<html lang="it">
 
-<h1>Forum</h1>
-<% @posts.each do |post| %>
-  <div class="post">
-    <h3><%= link_to post.title, forum_post_path(post) %></h3>
-    <p>Di <%= post.author %></p>
-  </div>
-<% end %>
-<%= link_to "Nuovo post", new_forum_post_path, class: "button" %>
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+</head>
+
+<body>
+    <div class="body-background">
+    <!-- Navbar -->
+    <nav id="hp-navbar" class="navbar fixed-top homepage-navbar">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+            <%= image_tag 'logos/Logo.svg', alt: 'Logo Guardaloo' %>
+            <div class="d-flex align-items-center">
+                <% if user_signed_in? %>
+                    Benvenuto, <%= current_user.first_name %>!
+                    <%= link_to "Logout", logout_path, method: :delete %>
+                <% else %>
+                    <button  class="sign-up popup-button auth-button ">Registrati</button>
+                    <button  class="yellow-button popup-button auth-button">Accedi</button>
+                <% end %>
+            </div>
+        </div>
+    </nav>
+
+    <div style="height: 80px;"></div>
+</body>
+
+
+
+
+</html>
+

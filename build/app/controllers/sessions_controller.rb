@@ -4,7 +4,7 @@ class SessionsController < ApplicationController
 
     if user&.authenticate(params[:password])
       session[:user_id] = user.id
-      render json: { success: true }
+      render json: { success: true , redirect_url: "#{request.base_url}/home/"}
     else
       render json: { success: false, error: "Email o password non corretti" }, status: :unauthorized
     end
@@ -22,13 +22,11 @@ class SessionsController < ApplicationController
     end
   end
 
-  def passthru
-    render status: 404, plain: "Not found. Authentication passthru."
-  end
-
-
   def destroy
-    session[:user_id] = nil
-    redirect_to root_path, notice: "Sei stato disconnesso"
+      session[:user_id] = nil
+      respond_to do |format|
+      format.html { redirect_to root_path, notice: "Sei stato disconnesso" }
+      format.json { render json: { success: true, redirect_url: root_path } }
+    end
   end
 end
