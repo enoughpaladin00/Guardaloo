@@ -1,6 +1,5 @@
 <head>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-</head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" /></head>
 
 <body>
     <div class="body-background">
@@ -82,7 +81,7 @@
         <div class="swiper trend-swiper">
             <div class="swiper-wrapper">
                 <% @trending_movies.each do |movie| %>
-                    <div class="trend-slide">
+                    <div class="trend-slide swiper-slide">
                         <div class="trend-card dark:bg-zinc-800" data-movie-id="<%= movie['id'] %>">
                             <% if movie["poster_path"] %>
                                 <img src="https://image.tmdb.org/t/p/w500<%= movie['poster_path'] %>" alt="<%= movie['title'] %>">

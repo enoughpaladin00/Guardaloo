@@ -188,6 +188,9 @@ html, body{
     justify-content: center;
     padding: 1rem;
     box-sizing: border-box;
+    max-width: 20 rem;
+    width: 100%;
+    margin: auto;
 }
   
 .trend-slide > div {
@@ -196,28 +199,32 @@ html, body{
 }
 
 .trend-slide img {
-    border-top-left-radius: 16px;
-    border-top-right-radius: 16px;
-    height: 100%;
+    width: 100%;
+    height: auto;
     object-fit: cover;
+    display: block;
 }
 
 .trend-card {
-    width: auto;
-    height: 420px;
+    max-width: 250px;
+    width: 100%;
+    height: auto;
     background-color: white;
     display: flex;
     flex-direction: column;
     overflow: hidden;
 }
 
-.swiper-slide img {
-
-    border-radius: 16px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-    object-fit: contain;
+.swiper-slide {
+  width: auto !important;
+  flex-shrink: 0 !important;
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  box-sizing: border-box;
 }
-  
+
 .search-carousel-column {
     flex: 2;
     min-width: 300px;
