@@ -1,4 +1,5 @@
 // Configure your import map in config/importmap.rb. Read more: https://github.com/rails/importmap-rails
+
 import "@hotwired/turbo-rails"
 import "controllers"
 import * as bootstrap from "bootstrap"
@@ -204,12 +205,12 @@ document.querySelectorAll('.trend-card').forEach(card => {
   card.addEventListener('click', function(e) {
     const movieId = this.dataset.movieId;
 
-    if (window.userSignedIn) {
+/*    if (window.userSignedIn) {*/
       window.location.href = `/movies/${movieId}`;
-    } else {
+/*    } else {
       e.preventDefault();
       alert('Non hai fatto l\'accesso');
-    }
+    }*/
   });
 });
 
