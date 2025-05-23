@@ -23,11 +23,10 @@ Rails.application.routes.draw do
   #homepage
   get "home", to: "homepage#homepage"
 
-  #Google Auth
+  #Google and Facebook Auth
   get '/auth/:provider/callback', to: 'sessions#omniauth'
   get '/auth/failure', to: redirect('/')
 
   match '/auth/:provider', to: 'sessions#passthru', via: [:get, :post]
-
 
 end

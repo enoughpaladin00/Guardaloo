@@ -213,4 +213,3 @@ document.querySelectorAll('.trend-card').forEach(card => {
     }*/
   });
 });
-
