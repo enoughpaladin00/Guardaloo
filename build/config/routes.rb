@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
-  # Defines the root path route ("/")
+  # Defines the root path route ("/")S
   root "home#index"
 
   # Registrazione
@@ -28,6 +28,9 @@ Rails.application.routes.draw do
   get '/auth/failure', to: redirect('/')
 
   match '/auth/:provider', to: 'sessions#passthru', via: [:get, :post]
+
+  # User Profile
+  get "profile_page/profile_index"
 
 
 end

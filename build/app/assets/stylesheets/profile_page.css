@@ -1,0 +1,117 @@
+/*layout impaginazione*/
+.User_Page{
+    display:flex;
+    border: 2px solid var(--color-5);
+    margin-left: 8%;
+    margin-right: 8%;
+}
+
+/*layout sezioni*/
+.Sezione_1{
+    width: 50%;
+    border-right: 1px solid var(--color-4);
+    margin-top: 3%;
+    margin-left: 2%;
+}
+.Sezione_2{
+    width: 50%;
+    margin-top: 3%;
+    margin-left: 2%;
+}
+
+/*Sezione 1*/
+.user_info{
+    display:flex;
+    align-items: center;
+    gap: 30%;
+}
+
+
+
+
+
+
+
+/*variabili della pagina*/
+:root {
+    /*color palette*/
+    --color-1: #FFFAEF;
+    --color-2: #F9BD24;
+    --color-3: #FD7474;
+    --color-4: #004466;
+    --color-5: #272727;
+
+    /* sizes */
+    --size-xxs: 0.5rem;
+    --size-xs: 0.75rem;
+    --size-sm: 0.875rem;
+    --size-base: 1rem;
+    --size-lg: 1.125rem;
+    --size-xl: 1.25rem;
+    --size-2xl: 1.5rem;
+    --size-3xl: 1.875rem;
+    --size-4xl: 2.25rem;
+    --size-5xl: 3rem;
+    --size-6xl: 3.75rem;
+    --size-7xl: 4.5rem;
+    --size-8xl: 6rem;
+    --size-9xl: 8rem;
+    --size-10xl: 10rem;  
+}
+
+/*reset di base*/
+* { 
+    margin: 0; /*Rimuove il margine predefinito per tutti gli elementi, creando una base più pulita per il layout.*/
+    line-height: calc(1em + 0.5rem); /*Imposta l'altezza della linea in base alla dimensione del testo (1em) aggiungendo 0,5 rem per creare uno spazio più arioso tra le righe, utile per migliorare la leggibilità.*/
+}
+
+/*stile del html*/
+html {
+    scroll-behavior: smooth; /*Attiva uno scrolling fluido per i link interni (quelli che usano href="#id") quando si naviga all'interno della pagina.*/
+    box-sizing: border-box;/*Cambia il calcolo delle dimensioni degli elementi in modo che il padding e il bordo siano inclusi nella larghezza e altezza dichiarata, semplificando la gestione del layout.*/
+}
+
+/*stile elementi multimediali*/
+img,
+picture,
+video,
+canvas,
+svg {
+    display: block; /*Fa sì che questi elementi si comportino come blocchi, evitando spazi indesiderati sotto di essi.*/
+    max-width: 100%; /*Assicura che le immagini, video e altri elementi multimediali non escano mai dal loro contenitore, mantenendo il design responsive.*/
+    user-select: none; /*Previene la selezione del contenuto dell'elemento, spesso usato per icone, loghi e grafici SVG per evitare copie accidentali.*/
+}
+
+/*
+(Letter Spacing -10%) [Font bastoni per utilizzo generale]
+@font-face { 
+    font-family: Inter Semibold;
+    src: url();
+}
+(Letter Spacing -10%) [Font bastoni per logo]
+@font-face {
+    font-family: Montserrat Semibold;
+    src: url();
+}
+(Letter Spacing -10%) [Font graziato per titoli e testi importanti]
+@font-face {
+    font-family: Bodoni Moda SC Semibold;
+    src: url();
+}
+*/
+
+/*responsive dimension*/
+/*da telefono a computer*/
+/*io uso un metodo da pc a telefono, cambio max-width*/
+/* xs */
+/* @media (min-width: 475px) {} */
+/* sm */
+/* @media (min-width: 640px) {} */
+/* md */
+/* @media (min-width: 768px) {} */
+/* lg */
+/* @media (min-width: 1024px) {} */
+/* xl */
+/* @media (min-width: 1280px) {} */
+/* 2xl */
+/* @media (min-width: 1536px) {} */

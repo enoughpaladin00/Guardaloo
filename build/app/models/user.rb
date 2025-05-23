@@ -1,5 +1,7 @@
 class User < ApplicationRecord
     has_secure_password
+    
+    has_one_attached :avatar #riga per aggiungere il supporto immagine
 
     validates :email, presence:true, uniqueness:true
     validates :username, presence: true, uniqueness: true

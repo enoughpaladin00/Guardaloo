@@ -1,0 +1,58 @@
+<head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" /></head>
+
+<body>
+    <div class="body-background">
+
+    <!-- Navbar -->
+    <nav id="hp-navbar" class="navbar fixed-top homepage-navbar">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+            <%= image_tag 'logos/Logo.svg', alt: 'Logo Guardaloo' %>
+            <div class="d-flex align-items-center">
+                <% if user_signed_in? %>
+                    Benvenuto, <%= current_user.first_name %>!
+                    <button id="logout-button">Logout</button>
+                <% else %>
+                    <button  class="sign-up popup-button auth-button ">Registrati</button>
+                    <button  class="yellow-button popup-button auth-button">Accedi</button>
+                <% end %>
+            </div>
+        </div>
+    </nav>
+
+    <div style="height: 80px;"></div>
+
+    <!-- User_page -->
+    <div class="User_Page">
+
+        <!-- information about user -->
+        <div class="Sezione_1">
+            <!-- user bio -->
+            <div class="user_info">
+
+                <!-- profile img -->
+                <div class="user_img">
+                    <% if @user.avatar.attached? %>
+                        <%= image_tag @user.avatar, alt: "Immagine profilo", width: 200, class: "rounded" %>
+                    <% else %>
+                        <%= image_tag "Profile_page/default_avatar.svg", alt: "Immagine di default", width: 200, class: "rounded" %>
+                    <%end%>
+                    </div>
+                <div class="user_name"></div>
+                <button class"edit popup-button"> Edit profile </button>
+            </div>
+            <!-- user stats -->
+            <div class="user_stat">
+            </div>
+        </div>
+
+        <!-- top 3 film  -->
+        <div class="Sezione_2">
+            <h2>TOP 3 FILM</h2>
+            <div>locandina 1</div>
+            <div>locandina 2</div>
+            <div>locandina 3</div>
+        </div>
+    </div>
+
+</body>
