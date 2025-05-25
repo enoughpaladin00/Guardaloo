@@ -2,7 +2,6 @@
 
 <%= render 'layouts/navbar' %>
 
-
 <!--1 Section "Prossimamente al cinema"-->
 
 <div class="container-fluid d-flex align-items-center">
@@ -14,7 +13,7 @@
 <div class="container-fluid d-flex flex-row netflix-slider">
     <button class="nav left">❮</button>
     <div class="slider-track">
-        <% @trending_movies.first(10).each do |movie| %>
+        <% @trending_movies.each do |movie| %>
         <div class="contenitore" style="background-color:rgb(253,116,116, 0.1); width: 30em;">
         
             <div class="me-3 locandina" data-movie-id="<%= movie['id'] %>">

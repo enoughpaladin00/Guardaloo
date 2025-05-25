@@ -1,7 +1,6 @@
 // Configure your import map in config/importmap.rb. Read more: https://github.com/rails/importmap-rails
 
 import "@hotwired/turbo-rails"
-import "controllers"
 import * as bootstrap from "bootstrap"
 
 // home.js
@@ -26,22 +25,26 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
   });
+
+  //slider
+  const slider = document.querySelector('.slider-track');
+  const leftBtn = document.querySelector('.nav.left');
+  const rightBtn = document.querySelector('.nav.right');
+  console.log('Funzione avviata');
+
+  if (slider && leftBtn && rightBtn) {
+    
+    const scrollPerClick = 200;
+    rightBtn.addEventListener('click', () => {
+      slider.scrollBy({ left: scrollPerClick, behavior: 'smooth' });
+    });
+    leftBtn.addEventListener('click', () => {
+      slider.scrollBy({ left: -scrollPerClick, behavior: 'smooth' });
+    });
+  }
 });
 
-//slider
-const slider = document.querySelector('.slider-track');
-const leftBtn = document.querySelector('.nav.left');
-const rightBtn = document.querySelector('.nav.right');
 
-if (slider && leftBtn && rightBtn) {
-  const scrollPerClick = 200;
-  rightBtn.addEventListener('click', () => {
-    slider.scrollBy({ left: scrollPerClick, behavior: 'smooth' });
-  });
-  leftBtn.addEventListener('click', () => {
-    slider.scrollBy({ left: -scrollPerClick, behavior: 'smooth' });
-  });
-}
 
 // Popup Auth Toggle
 const authPopupOverlay = document.getElementById("auth-popup-overlay");
