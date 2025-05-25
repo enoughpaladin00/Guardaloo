@@ -14,12 +14,19 @@ Rails.application.routes.draw do
   # Login / Logout
   get "login", to: "sessions#new"
   post "/login", to: "sessions#create"
-  delete "logout", to: "sessions#destroy"
+  delete "/logout", to: "sessions#destroy"
 
+  #movie
   get "movies/show"
   resources :movies, only: [:show]
 
   #homepage
   get "home", to: "homepage#homepage"
+
+  #Google and Facebook Auth
+  get '/auth/:provider/callback', to: 'sessions#omniauth'
+  get '/auth/failure', to: redirect('/')
+
+  match '/auth/:provider', to: 'sessions#passthru', via: [:get, :post]
 
 end

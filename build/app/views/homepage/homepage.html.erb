@@ -2,6 +2,7 @@
 
 <%= render 'layouts/navbar' %>
 
+
 <!--1 Section "Prossimamente al cinema"-->
 
 <div class="container-fluid d-flex align-items-center">
@@ -9,10 +10,9 @@
     <%= image_tag "homepage/cinema.svg", width: "35em", height: "35em" %>
 </div>
 
-
-<div class="container-fluid d-flex flex-row netflix-slider">
-    <button class="nav left">❮</button>
-    <div class="slider-track">
+<div class="netflix-slider">
+    <button class="slider-btn left">&#10094;</button>
+    <div class="slider-track" id="track">
         <% @trending_movies.each do |movie| %>
         <div class="contenitore" style="background-color:rgb(253,116,116, 0.1); width: 30em;">
         
@@ -23,18 +23,15 @@
                     <a href="#"><div class="w-full h-80 bg-gray-200 flex items-center justify-center text-center px-2">Nessuna immagine</div></a>
                 <% end %>
             </div>
-        
             <a href="#" class="link-underline link-underline-opacity-0"><div class="d-flex flex-column py-3 me-2" >
               <h5 style="color: #004466;"><%= movie['title'] %></h5>
               <% details = @movie_details[movie['id']] %>
               <p class="mb-1 text-muted"><%= movie['release_date'].to_date.year %> – <%= details['runtime'] %> min</p>
-
             </div></a>
-        
         </div> 
-        <%end%>
+        <%end%> 
     </div>
-    <button data-slider-target="right" class="nav right">❯</button>        
+    <button class="slider-btn right">&#10095;</button>
 </div>
 
 <!--2 section "Citazione"-->
