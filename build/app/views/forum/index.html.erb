@@ -1,33 +1,42 @@
-<!DOCTYPE html>
-<html lang="it">
+<!--Navbar-->
+<%= render 'layouts/navbar' %>
 
-<head>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-</head>
+<!--1 Section "Prossimamente al cinema"-->
 
-<body>
-    <div class="body-background">
-    <!-- Navbar -->
-    <nav id="hp-navbar" class="navbar fixed-top homepage-navbar">
-        <div class="container-fluid d-flex justify-content-between align-items-center">
-            <%= image_tag 'logos/Logo.svg', alt: 'Logo Guardaloo' %>
-            <div class="d-flex align-items-center">
-                <% if user_signed_in? %>
-                    Benvenuto, <%= current_user.first_name %>!
-                    <%= link_to "Logout", logout_path, method: :delete %>
+<div class="container-fluid d-flex align-items-center">
+    <h1 class="px-2 py-2 mb-0" style="font-size: 30px;"><b>Prossimamente al Cinema</b></h1>
+    <%= image_tag "homepage/cinema.svg", width: "35em", height: "35em" %>
+</div>
+
+
+<div class="container-fluid d-flex flex-row netflix-slider">
+    <button class="nav left">❮</button>
+    <div class="slider-track">
+        <% @trending_movies.first(10).each do |movie| %>
+        <div class="contenitore" style="background-color:rgb(253,116,116, 0.1); width: 30em;">
+        
+            <div class="me-3 locandina" data-movie-id="<%= movie['id'] %>">
+                <% if movie["poster_path"] %>
+                    <a href="#"><img src="https://image.tmdb.org/t/p/w500<%= movie['poster_path'] %>" alt="<%= movie['title'] %>" width="auto" height="180em"></a>
                 <% else %>
-                    <button  class="sign-up popup-button auth-button ">Registrati</button>
-                    <button  class="yellow-button popup-button auth-button">Accedi</button>
+                    <a href="#"><div class="w-full h-80 bg-gray-200 flex items-center justify-center text-center px-2">Nessuna immagine</div></a>
                 <% end %>
             </div>
-        </div>
-    </nav>
+        
+            <a href="#" class="link-underline link-underline-opacity-0"><div class="d-flex flex-column py-3 me-2" >
+              <h5 style="color: #004466;"><%= movie['title'] %></h5>
+              <% details = @movie_details[movie['id']] %>
+              <p class="mb-1 text-muted"><%= movie['release_date'].to_date.year %> – <%= details['runtime'] %> min</p>
 
-    <div style="height: 80px;"></div>
-</body>
+            </div></a>
+        
+        </div> 
+        <%end%>
+    </div>
+    <button data-slider-target="right" class="nav right">❯</button>        
+</div>
 
 
 
-
-</html>
-
+<!--8 section "Footer"-->
+<%= render 'layouts/footer' %>
