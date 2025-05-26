@@ -1,5 +1,6 @@
 
 .contenitore{
+    position:relative;
     flex: 0 0 auto;
     border: 0.2em solid #FD7474;
     border-radius: 1.5em;
@@ -14,9 +15,11 @@
 
 .number{
     position: absolute; 
-    transform: translateY(0.69em) translateX(-0.3em); 
-    font-size: 12em; 
-    color:#FD7474
+    transform: translateY(0.6em) translateX(-0.3em); 
+    font-size: 12em;
+    margin: 0;
+    color:#FD7474;
+    z-index: 1;
 }
 
 .citazione {
@@ -33,7 +36,6 @@
 
 .slider-track {
   overflow-x: auto;
-  min-width: 100%;
   display: flex;
   scrollbar-width: none;
 }
