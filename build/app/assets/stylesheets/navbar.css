@@ -8,6 +8,7 @@
 
 .search_container{
     border: 2px solid #FD7474;
+    background:#fd747416;
 }
 
 .search_bar, .search_bar:focus{

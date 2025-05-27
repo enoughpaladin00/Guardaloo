@@ -1,2 +1,112 @@
-<%= authenticate_user %>
+<%= content_for :scripts do %>
+  <script>
+    window.cinemas = <%= raw @cinemas.to_json %>;
+  </script>
+<% end %>
+
+<!-- <pre><%= JSON.pretty_generate(@movie_details) %></pre> -->
+
 <%= render 'layouts/navbar' %>
+
+<body>
+    <div class='container movie-wrapper'>
+        <div class="backdrop-container flex-col md:grid md:grid-cols-5 gap-4 p-4">
+            <div class="movie-backdrop md:col-span-5 flex items-center justify-center text-xl rounded-lg w-full max-w-5xl h-96 overflow-hidden shadow-lg">
+                <% if @movie_details["backdrop_path"] %>
+                    <div class="backdrop" style='background-image: url("https://image.tmdb.org/t/p/original<%= @movie_details["backdrop_path"] %>");'></div>
+                <% else %>
+                    <div class="w-full h-80 bg-gray-200 flex items-center justify-center text-center px-2">Nessuna immagine</div>
+                <% end %>
+            </div>
+        
+            <!-- Sidebar sinistra -->
+            <aside class="col-span-1 flex flex-col items-center space-y-4">
+                <div class="w-24 h-36 bg-gray-400 rounded-md flex items-center justify-center">
+                    <% if @movie_details["poster_path"] %>
+                        <img src="https://image.tmdb.org/t/p/w500<%= @movie_details['poster_path'] %>" alt="<%= @movie_details['title'] %>">
+                    <% else %>
+                        <div class="w-full h-80 flex items-center justify-center text-center px-2">Nessuna immagine</div>
+                    <% end %>
+                </div>
+
+                <div class="flex space-x-2">
+                    <button><%= image_tag 'moviePage/Vector-3.svg', class: 'mr-2', width: '20' %></button>
+                    <button><%= image_tag 'moviePage/Vector-2.svg', class: 'mr-2', width: '20' %></button>
+                    <button><%= image_tag 'moviePage/Vector.svg', class: 'mr-2', width: '20' %></button>
+                    <button><%= image_tag 'moviePage/Vector-1.svg', class: 'mr-2', width: '20' %></button>
+                    </div>
+
+                <div class="text-center">
+                    <p class="font-bold">1k</p>
+                    <p class="text-gray-500">13k</p>
+                </div>
+
+                <div class="font-semibold">Valutazione</div>
+            </aside>
+
+            <!-- Contenuto principale -->
+            <main class="col-span-4 space-y-6">
+
+                <section>
+                    <h1 class="movie-title"><%= @movie_details["title"] %> <span class="director-title">(diretto da <%= @director %>)</span></h1>
+                    <p class="text-sm text-gray-600"><%= @movie_details["release_date"]&.slice(0,4)%> • <%= @movie_details["runtime"] %>min • <%= @movie_details["genres"].map { |g| g["name"] }.join(", ") if @movie_details["genres"].present? %>
+                </section>
+
+                <!-- Dove guardare -->
+                <section class="section-box shadow">
+                    <h3 class="font-semibold mb-2">Guarda ora</h3>
+                    <div class="flex items-center space-x-4">
+                        <button class="bg-black text-white px-4 py-2 rounded">NETFLIX</button>
+                        <button class="border px-4 py-2 rounded">Guarda ora</button>
+                    </div>
+                </section>
+
+                <!-- Mappa e Cinema -->
+                <section class="flex flex-col md:flex-row gap-4">
+                    <div id="map" class="cinema-map h-32 flex-1 rounded-lg">
+                    </div>
+                    <div class="section-box shadow flex-1">
+                        <p class="font-semibold mb-2">Cinema 1</p>
+                        <div class="flex flex-wrap gap-2">
+                            <% ["15:00", "18:00", "20:00"].each do |ora| %>
+                                <span class="bg-gray-300 px-3 py-1 rounded-full"><%= ora %></span>
+                            <% end %>
+                        </div>
+                    </div>
+                </section>
+                        
+                <!-- Descrizione -->
+                <section class="section-box shadow">
+                  <h3 class="font-semibold mb-2">Descrizione</h3>
+                  <p style="text-align: justify"><%= @movie_details["overview"] %></p>
+                </section>
+                        
+                <!-- Trailer -->
+                <section class="section-box shadow">
+                    <h3 class="font-semibold mb-2">Trailer</h3>
+                    <% if @trailer %>
+                        <div class="aspect-w-16 aspect-h-9 w-full my-4">
+                            <iframe 
+                                class="w-full h-64 md:h-96 rounded-lg" 
+                                src="https://www.youtube.com/embed/<%= @trailer["key"] %>" 
+                                title="Trailer"
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                    <% else %>
+                        <p>Nessun trailer disponibile.</p>
+                    <% end %>
+                </section>
+            </main>
+        </div>
+
+    </div>
+    <div class='community-wrapper'>
+    </div>
+    <div class='similar-wrapper'>
+    </div>
+</body>
+
+<%= render 'layouts/footer' %>

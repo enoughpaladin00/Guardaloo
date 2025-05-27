@@ -70,7 +70,8 @@ html, body{
 .pickup-line{
     font-family: 'Bodoni Moda', serif;
     font-weight: 700;
-    width: 100;
+    min-width: 450px;
+    font-size: 35px;
 }
 
 .fullscreen-section{
@@ -182,23 +183,24 @@ html, body{
     transform: translateX(-20px);
 }
 
-.trend-slide {
+.swiper-slide {
+    flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 1rem;
     box-sizing: border-box;
-    max-width: 20 rem;
+    max-width: 20rem;
     width: 100%;
     margin: auto;
 }
-  
-.trend-slide > div {
+
+.swiper-slide > div {
     border-radius: 16px;
     overflow: hidden;
 }
 
-.trend-slide img {
+.swiper-slide img {
     width: 100%;
     height: auto;
     object-fit: cover;
@@ -213,16 +215,6 @@ html, body{
     display: flex;
     flex-direction: column;
     overflow: hidden;
-}
-
-.swiper-slide {
-  width: auto !important;
-  flex-shrink: 0 !important;
-  display: flex !important;
-  justify-content: center;
-  align-items: center;
-  padding: 1rem;
-  box-sizing: border-box;
 }
 
 .search-carousel-column {

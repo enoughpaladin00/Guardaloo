@@ -14,6 +14,18 @@ class TmdbService
     nil
   end
 
+  def fetch_movie_credits(tmdb_id)
+    url = URI("https://api.themoviedb.org/3/movie/#{tmdb_id}/credits?api_key=#{ENV['TMDB_API_KEY']}&language=it-IT")
+    response = Net::HTTP.get(url)
+    JSON.parse(response)
+  end
+
+  def fetch_movie_videos(tmdb_id)
+    url = URI("https://api.themoviedb.org/3/movie/#{tmdb_id}/videos?api_key=#{ENV['TMDB_API_KEY']}&language=it-IT")
+    response = Net::HTTP.get(url)
+    JSON.parse(response)
+  end
+
   def self.trending_movies
     url = URI("#{BASE_URL}/trending/movie/week?api_key=#{ENV['TMDB_API_KEY']}&language=it-IT")
     response = Net::HTTP.get(url)
