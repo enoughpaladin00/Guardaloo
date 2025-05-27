@@ -1,43 +1,35 @@
 // Configure your import map in config/importmap.rb. Read more: https://github.com/rails/importmap-rails
+
 import "@hotwired/turbo-rails"
 import "controllers"
+import "slider"
 import * as bootstrap from "bootstrap"
-import Swiper from 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.mjs'
 
-
-// home
-document.addEventListener("DOMContentLoaded", function () {
-    new Swiper(".mySwiper", {
-        slidesPerView: 1,
-        spaceBetween: 20,
-        loop: true,
-        breakpoints: {
-            768: {
-                slidesPerView: 2,
-            },
-            1024: {
-                slidesPerView: 3,
-            },
-        }
-    });
-
-    new Swiper(".mySwiper2", {
-        slidesPerView: 2,
-        spaceBetween: 20,
-        loop: true,
-        initialSlide: 2,
-        breakpoints: {
-            768: {
-                slidesPerView: 3,
-            },
-            1024: {
-                slidesPerView: 5,
-            },
-        }
-    });
+// home.js
+document.addEventListener("turbo:load", function () {
+  new Swiper(".trend-swiper", {
+    slidesPerView: 1,
+    spaceBetween: 20,
+    loop: true,
+    autoplay: {
+      delay: 3000,
+      disableOnInteraction: false
+    },
+    breakpoints: {
+      640: {
+        slidesPerView: 2
+      },
+      1024: {
+        slidesPerView: 3
+      },
+      1280: {
+        slidesPerView: 4
+      }
+    }
+  });
 });
 
-    // Popup Auth Toggle
+// Popup Auth Toggle
 const authPopupOverlay = document.getElementById("auth-popup-overlay");
 const popupButtons = document.querySelectorAll(".popup-button.auth-button");
 const closePopupButtons = document.querySelectorAll(".close-popup");
@@ -48,7 +40,9 @@ const tabRegisterElems = document.querySelectorAll(".register-button");
 
 function showLoginTab() {
   document.querySelectorAll("#login-form-popup").forEach(f => f.style.display = "block");
+  document.querySelectorAll("#login-form-page").forEach(f => f.style.display = "block");
   document.querySelectorAll("#register-form-popup").forEach(f => f.style.display = "none");
+  document.querySelectorAll("#register-form-page").forEach(f => f.style.display = "none");
   tabLoginElems.forEach(t => {
     t.classList.add("active-tab");
     t.classList.remove("inactive-tab");
@@ -61,7 +55,9 @@ function showLoginTab() {
 
 function showRegisterTab() {
   document.querySelectorAll("#login-form-popup").forEach(f => f.style.display = "none");
+  document.querySelectorAll("#login-form-page").forEach(f => f.style.display = "none");
   document.querySelectorAll("#register-form-popup").forEach(f => f.style.display = "block");
+  document.querySelectorAll("#register-form-page").forEach(f => f.style.display = "block");
   tabRegisterElems.forEach(t => {
     t.classList.add("active-tab");
     t.classList.remove("inactive-tab");
@@ -96,3 +92,110 @@ tabLoginElems.forEach(tab =>
 tabRegisterElems.forEach(tab =>
   tab.addEventListener("click", showRegisterTab)
 );
+
+// Register
+document.querySelectorAll("#register-form-popup, #register-form-page").forEach(form => {
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const form = e.target;
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+
+    fetch("/register", {
+      method: "POST",
+      headers: {
+        "X-CSRF-Token": document.querySelector("[name='csrf-token']").content,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ user: data })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        window.location.href = data.redirect_url;
+      } else {
+        alert("Errore: " + data.errors.join(", "));
+      }
+    })
+    .catch(error => {
+      console.error("Errore durante la registrazione:", error);
+      alert("Errore imprevisto.");
+    });
+  });
+});
+
+
+// Login
+document.querySelectorAll('#login-form-popup', '#login-form-page').forEach(form => {
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+    const data = {
+      email: formData.get("email"),
+      password: formData.get("password")
+    }
+    fetch("/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "X-CSRF-Token": document.querySelector("[name='csrf-token']").content
+      },
+      body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        window.location.href = data.redirect_url;
+      } else {
+        alert(data.error || "Email o password errati.");
+      }
+    })
+    .catch(error => {
+      console.error("Errore durante il login:", error);
+      alert("Errore di rete.");
+    });
+  });
+});
+
+//Logout
+document.querySelector("#logout-button").addEventListener("click", function (e) {
+  e.preventDefault();
+
+  fetch("/logout", {
+    method: "DELETE",
+    headers: {
+      "X-CSRF-Token": document.querySelector("[name='csrf-token']").content,
+      "Accept": "application/json"
+    }
+  })
+  .then(response => {
+    if (response.ok) {
+      window.location.href = "/";
+    } else {
+      return response.json().then(data => {
+        alert("Errore durante il logout: " + (data.error || "Errore generico"));
+      });
+    }
+  })
+  .catch(error => {
+    console.error("Errore di rete durante il logout:", error);
+    alert("Errore di rete.");
+  });
+});
+
+// Redirezione a Movies/:id
+document.querySelectorAll('.trend-card').forEach(card => {
+  card.addEventListener('click', function(e) {
+    const movieId = this.dataset.movieId;
+
+/*    if (window.userSignedIn) {*/
+      window.location.href = `/movies/${movieId}`;
+/*    } else {
+      e.preventDefault();
+      alert('Non hai fatto l\'accesso');
+    }*/
+  });
+});

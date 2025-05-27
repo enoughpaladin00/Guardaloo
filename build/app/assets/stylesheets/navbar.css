@@ -1,0 +1,23 @@
+.body_page{
+    background-color: #FFFAEF;
+}
+
+.logo_img{
+    size: 20%;
+}
+
+.search_container{
+    border: 2px solid #FD7474;
+}
+
+.search_bar, .search_bar:focus{
+    font-size: large;
+    background: transparent;
+}
+
+
+.navbar_text{
+    color: #004466;
+    font-size: 15px;
+    white-space: nowrap;
+}

@@ -1,12 +1,5 @@
-<!DOCTYPE html>
-<html lang="it">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guardaloo</title>
-
-</head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" /></head>
 
 <body>
     <div class="body-background">
@@ -15,8 +8,13 @@
         <div class="container-fluid d-flex justify-content-between align-items-center">
             <%= image_tag 'logos/Logo.svg', alt: 'Logo Guardaloo' %>
             <div class="d-flex align-items-center">
-                <button  class="sign-up popup-button auth-button ">Registrati</button>
-                <button  class="yellow-button popup-button auth-button">Accedi</button>
+                <% if user_signed_in? %>
+                    Benvenuto, <%= current_user.first_name %>!
+                    <button id="logout-button">Logout</button>
+                <% else %>
+                    <button  class="sign-up popup-button auth-button ">Registrati</button>
+                    <button  class="yellow-button popup-button auth-button">Accedi</button>
+                <% end %>
             </div>
         </div>
     </nav>
@@ -32,11 +30,15 @@
     <div class="container content-section d-flex align-items-center" align="center">
 
         <div class="carousel-column">
-            <div class="swiper-container mySwiper">
-                <div class="swiper-wrapper">
-                    <div class="swiper-slide"><%= image_tag 'posters/poster1.jpg', alt: "Film 1" %></div>
-                    <div class="swiper-slide"><%= image_tag 'posters/poster2.jpg', alt: "Film 2" %></div>
-                    <div class="swiper-slide"><%= image_tag 'posters/poster3.jpg', alt: "Film 3" %></div>
+            <div class="posters-carousel">
+                <div class="movie-card left">
+                    <%= image_tag 'posters/poster1.jpg', alt: "Film 1" %>
+                </div>
+                <div class="movie-card center">
+                    <%= image_tag 'posters/poster2.jpg', alt: "Film 2" %>
+                </div>
+                <div class="movie-card right">
+                    <%= image_tag 'posters/poster3.jpg', alt: "Film 3" %>
                 </div>
             </div>
         </div>
@@ -51,17 +53,21 @@
     <div class="container content-section d-flex align-items-center" align="center">
 
         <div class="text-column">
-            <h3 class="carousel-text">Tutto ciò che vuoi in ununica<br>ricerca.</h3>
+            <h3 class="carousel-text">Tutto ciò che vuoi in un' unica<br>ricerca.</h3>
         </div>
 
         <div class="search-carousel-column search-carousel-wrapper">
-            <input type="text" class="search-bar" placeholder="Film" />
+            <input type="text" class="search-bar" placeholder="Cerca un film..." />
 
-            <div class="swiper-container mySwiper">
-                <div class="swiper-wrapper">
-                    <div class="swiper-slide"><%= image_tag 'posters/poster4.jpg', alt: "Film 4" %></div>
-                    <div class="swiper-slide"><%= image_tag 'posters/poster5.jpg', alt: "Film 5" %></div>
-                    <div class="swiper-slide"><%= image_tag 'posters/poster6.jpg', alt: "Film 6" %></div>
+            <div class="posters2-carousel">
+                <div class="movie2-card left">
+                    <%= image_tag 'posters/poster4.jpg', alt: "Film 4" %>
+                </div>
+                <div class="movie2-card center">
+                    <%= image_tag 'posters/poster5.jpg', alt: "Film 5" %>
+                </div>
+                <div class="movie2-card right">
+                    <%= image_tag 'posters/poster6.jpg', alt: "Film 6" %>
                 </div>
             </div>
         </div>
@@ -72,18 +78,24 @@
     <div class="container trend-section text-center">
         <h2 class="inter-h1 mb-5">I titoli del momento</h2>
       
-        <div class="swiper mySwiper2">
+        <div class="swiper trend-swiper">
             <div class="swiper-wrapper">
                 <% @trending_movies.each do |movie| %>
-                    <div class="swiper-slide">
-                        <a><img src="https://image.tmdb.org/t/p/w500<%= movie['poster_path'] %>" alt="<%= movie['title'] %>"></a>
+                    <div class="trend-slide swiper-slide">
+                        <div class="trend-card dark:bg-zinc-800" data-movie-id="<%= movie['id'] %>">
+                            <% if movie["poster_path"] %>
+                                <img src="https://image.tmdb.org/t/p/w500<%= movie['poster_path'] %>" alt="<%= movie['title'] %>">
+                            <% else %>
+                                <div class="w-full h-80 bg-gray-200 flex items-center justify-center text-center px-2">Nessuna immagine</div>
+                            <% end %>
+                        </div>
                     </div>
                 <%end%>
             </div>
         </div>
       
         <div class="mt-4">
-          <button class="popup-button yellow-button">Guarda ora</button>
+            <%= button_to "Guarda ora", home_path, method: :get, class: "popup-button yellow-button" %>
         </div>
       </div>
 
@@ -101,43 +113,45 @@
                     <span class="auth-tab auth-button inactive-tab register-button">Registrati</span>
                 </div>
   
-                <form id="login-form">
-                    <input type="text" class="form-control mb-3" placeholder="Username">
-                    <input type="password" class="form-control mb-3" placeholder="Password">
-                    <input type="button" value="Accedi" class="btn btn-light w-100 mb-3 font-weight-bold" style="color: #272727">
-                    <div class="text-center text-muted my-2">OPPURE</div>
+                <%= form_with url: login_path, method: :post, local: true, html: { id: "login-form-page" } do %>
+                    <%= email_field_tag :email, nil, class: "form-control mb-3", placeholder: "Email", required: true %>
+                    <%= password_field_tag :password, nil, class: "form-control mb-3", placeholder: "Password", required: true %>
+                    <%= submit_tag "Accedi", class: "btn btn-light w-100 mb-1 font-weight-bold", style: "color: #272727" %>
+
+                    <div class="text-center my-2" style="color: #FFFAEF !important">OPPURE</div>
                     <button class="btn btn-outline-secondary w-100 mb-2">
-                        <%= image_tag 'logos/google-logo.svg', class: 'mr-2', width: '20'%>
+                        <%= image_tag 'logos/google-logo.svg', class: 'mr-2', width: '20' %>
                         Accedi con Google
                     </button>
                     <button class="btn btn-outline-secondary w-100">
-                        <%= image_tag 'logos/facebook-logo.svg', width: "20", class: "mr-2"%>
-                        Accedi con Facebook
-                    </button>
-                </form>
-  
-                <form id="register-form" style="display: none;">
-                    <div class="d-flex gap-2 mb-3">
-                        <input type="text" class="form-control" placeholder="Nome">
-                        <input type="text" class="form-control" placeholder="Cognome">
-                    </div>
-                    <input type="date" class="form-control mb-3" placeholder="Data di nascita">
-                    <input type="text" class="form-control mb-3" placeholder="Username">
-                    <input type="email" class="form-control mb-3" placeholder="Email">
-                    <input type="password" class="form-control mb-3" placeholder="Password">
-                    <input type="password" class="form-control mb-3" placeholder="Conferma Password">
-                    <input type="button" value="Registrati" class="btn btn-light w-100 mb-3 font-weight-bold" style="color: #272727">
-                    <div class="text-center text-muted my-2">OPPURE</div>
-                    <button class="btn btn-outline-secondary w-100 mb-2">
-                        <%= image_tag 'logos/google-logo.svg', class: 'mr-2', width: '20'%>
-                        Registrati con Google
-                    </button>
-                    <button class="btn btn-outline-secondary w-100">
-                        <%= image_tag 'logos/facebook-logo.svg', width: "20", class: "mr-2"%>
+                        <%= image_tag 'logos/facebook-logo.svg', width: "20", class: "mr-2" %>
                         Registrati con Facebook
                     </button>
-                </form>
-  
+                <% end %> 
+                
+                <%= form_with url: register_path, method: :post, data: {turbo: false}, html: { id: "register-form-page", style: "display: none;" } do |f| %>
+                    <div class="d-flex gap-2 mb-3">
+                        <%= f.text_field :first_name, class: "form-control", placeholder: "Nome", required: true %>
+                        <%= f.text_field :last_name, class: "form-control", placeholder: "Cognome", required: true %>
+                    </div>
+                    <%= f.date_field :birth_date, class: "form-control mb-3", placeholder: "Data di nascita", required: true %>
+                    <%= f.text_field :username, class: "form-control mb-3", placeholder: "Username", required: true %>
+                    <%= f.email_field :email, class: "form-control mb-3", placeholder: "Email", required: true %>
+                    <%= f.password_field :password, class: "form-control mb-3", placeholder: "Password", required: true %>
+                    <%= f.password_field :password_confirmation, class: "form-control mb-3", placeholder: "Conferma Password", required: true %>
+                    <%= f.submit "Registrati", class: "btn btn-light w-100 mb-1 font-weight-bold", style: "color: #272727" %>
+
+                    <div class="text-center my-2" style="color: #FFFAEF !important">OPPURE</div>
+                    <%= link_to '/auth/google_oauth2', class: 'btn btn-outline-secondary w-100 mb-2 d-flex align-items-center justify-content-center' do %>
+                        <%= image_tag 'logos/google-logo.svg', class: 'mr-2', width: '20' %>
+                            Registrati con Google
+                    <% end %>
+
+                    <button class="btn btn-outline-secondary w-100">
+                        <%= image_tag 'logos/facebook-logo.svg', width: "20", class: "mr-2" %>
+                        Registrati con Facebook
+                        </button>
+                <% end %>
             </div>
         </div>
     </div>
@@ -158,48 +172,58 @@
                     <span class="auth-tab inactive-tab register-button">Registrati</span>
                 </div>
   
-                <form id="login-form-popup">
-                    <input type="text" class="form-control mb-3" placeholder="Username">
-                    <input type="password" class="form-control mb-3" placeholder="Password">
-                    <input type="button" value="Accedi" class="btn btn-light w-100 mb-3 font-weight-bold" style="color: #272727">
-                    <div class="text-center text-muted my-2">OPPURE</div>
-                    <button class="btn btn-outline-secondary w-100 mb-2">
-                        <%= image_tag 'logos/google-logo.svg', class: 'mr-2', width: '20'%>
+                <%= form_with url: login_path, method: :post, data: {turbo: false}, html: { id: "login-form-popup" } do %>
+                    <%= email_field_tag :email, nil, class: "form-control mb-3", placeholder: "Email", required: true %>
+                    <%= password_field_tag :password, nil, class: "form-control mb-3", placeholder: "Password", required: true %>
+                    <%= submit_tag "Accedi", class: "btn btn-light w-100 mb-1 font-weight-bold", style: "color: #272727" %>
+
+                    <div class="text-center my-2" style="color: #FFFAEF !important">OPPURE</div>
+                    <%= link_to '/auth/google_oauth2', class: 'btn btn-outline-secondary w-100 mb-2' do %>
+                        <%= image_tag 'logos/google-logo.svg', class: 'mr-2', width: '20' %>
                         Accedi con Google
-                    </button>
+                    <% end %>
+
                     <button class="btn btn-outline-secondary w-100">
-                        <%= image_tag 'logos/facebook-logo.svg', width: "20", class: "mr-2"%>
-                        Registrati con Facebook
+                        <%= image_tag 'logos/facebook-logo.svg', width: "20", class: "mr-2" %>
+                        Accedi con Facebook
                     </button>
-                </form>
+                <% end %>
+
   
-                <form id="register-form-popup" style="display: none;">
+                <%= form_with url: register_path, method: :post, data: {turbo: false}, html: { id: "register-form-popup", style: "display: none;" } do |f| %>
                     <div class="d-flex gap-2 mb-3">
-                        <input type="text" class="form-control" placeholder="Nome">
-                        <input type="text" class="form-control" placeholder="Cognome">
+                        <%= f.text_field :first_name, class: "form-control", placeholder: "Nome", required: true %>
+                        <%= f.text_field :last_name, class: "form-control", placeholder: "Cognome", required: true %>
                     </div>
-                    <input type="date" class="form-control mb-3" placeholder="Data di nascita">
-                    <input type="text" class="form-control mb-3" placeholder="Username">
-                    <input type="email" class="form-control mb-3" placeholder="Email">
-                    <input type="password" class="form-control mb-3" placeholder="Password">
-                    <input type="password" class="form-control mb-3" placeholder="Conferma Password">
-                    <input type="button" value="Registrati" class="btn btn-light w-100 mb-3 font-weight-bold" style="color: #272727">
-                    <div class="text-center text-muted my-2">OPPURE</div>
-                    <button class="btn btn-outline-secondary w-100 mb-2">
-                        <%= image_tag 'logos/google-logo.svg', class: 'mr-2', width: '20'%>
-                        Accedi con Google
-                    </button>
-                    <button class="btn btn-outline-secondary w-100">
-                        <%= image_tag 'logos/facebook-logo.svg', width: "20", class: "mr-2"%>
-                        Registrati con Facebook
-                    </button>
-                </form>
+                    <%= f.date_field :birth_date, class: "form-control mb-3", placeholder: "Data di nascita", required: true %>
+                    <%= f.text_field :username, class: "form-control mb-3", placeholder: "Username", required: true %>
+                    <%= f.email_field :email, class: "form-control mb-3", placeholder: "Email", required: true %>
+                    <%= f.password_field :password, class: "form-control mb-3", placeholder: "Password", required: true %>
+                    <%= f.password_field :password_confirmation, class: "form-control mb-3", placeholder: "Conferma Password", required: true %>
+                    <%= f.submit "Registrati", class: "btn btn-light w-100 mb-1 font-weight-bold", style: "color: #272727" %>
+
+                    <div class="text-center my-2" style="color: #FFFAEF !important">OPPURE</div>
+                    <%= link_to '/auth/google_oauth2', class: 'btn btn-outline-secondary w-100 mb-2 d-flex align-items-center justify-content-center' do %>
+                        <%= image_tag 'logos/google-logo.svg', class: 'mr-2', width: '20' %>
+                            Registrati con Google
+                    <% end %>
+
+                    <%= link_to '/auth/facebook', class: 'btn btn-outline-secondary w-100 mb-2 d-flex align-items-center justify-content-center' do %>
+                        <%= image_tag 'logos/facebook-logo.svg', width: "20", class: "mr-2" %>
+                            Registrati con Facebook
+                    <% end %>
+                <% end %>
+
   
                 <button class="close-popup mt-4 btn btn-link text-light w-100">Chiudi</button>
             </div>
         </div>
     </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+        window.isUserSignedIn = <%= user_signed_in? ? 'true' : 'false' %>;
+    </script>
 </body>
 
 </html>
