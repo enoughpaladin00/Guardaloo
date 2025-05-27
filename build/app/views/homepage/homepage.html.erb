@@ -11,7 +11,7 @@
 </div>
 
 <div class="netflix-slider">
-    <button class="slider-btn left">&#10094;</button>
+    <button class="slider-btn left" style="padding: 2.9em 0.1em;"><%= image_tag "homepage/freccia.svg", width: "30em", style: "transform: rotate(180deg)" %></button>
     <div class="slider-track">
         <% @trending_movies.each do |movie| %>
         <div class="contenitore" style="background-color:rgb(253,116,116, 0.1); width: 30em;">
@@ -31,7 +31,7 @@
         </div> 
         <%end%> 
     </div>
-    <button class="slider-btn right">&#10095;</button>
+    <button class="slider-btn right" style="padding: 2.9em 0.1em;"><%= image_tag "homepage/freccia.svg", width: "30em" %></button>
 </div>
 
 <!--2 section "Citazione"-->
@@ -57,7 +57,7 @@
 </div>
 
 <div class="netflix-slider">
-    <button class="slider-btn left">&#10094;</button>
+    <button class="slider-btn left"><%= image_tag "homepage/freccia.svg", width: "35em", style: "transform: rotate(180deg)" %></button>
     <div class="slider-track">
         <% @top_movies.each_with_index do |movie, index| %>
         
@@ -68,7 +68,7 @@
 
         <%end%>
     </div>
-    <button class="slider-btn right">&#10095;</button>
+    <button class="slider-btn right"><%= image_tag "homepage/freccia.svg", width: "35em" %></button>
 </div>
 
 <!--4 section "Map"-->
@@ -81,7 +81,7 @@
 </div>
 
 <div class="netflix-slider">
-    <button class="slider-btn left">&#10094;</button>
+    <button class="slider-btn left"><%= image_tag "homepage/freccia.svg", width: "35em", style: "transform: rotate(180deg)" %></button>
     <div class="slider-track">
         <% @trending_series.each do |movie| %>
         
@@ -91,7 +91,7 @@
 
         <%end%>
     </div>
-    <button class="slider-btn right">&#10095;</button>
+    <button class="slider-btn right"><%= image_tag "homepage/freccia.svg", width: "35em" %></button>
 </div>
 
 <!--6 section "Guarda di nuovo"-->
@@ -102,7 +102,7 @@
 </div>
 
 <div class="netflix-slider">
-    <button class="slider-btn left">&#10094;</button>
+    <button class="slider-btn left">&<%= image_tag "homepage/freccia.svg", width: "35em", style: "transform: rotate(180deg)" %></button>
     <div class="slider-track">
         <% @top_movies.each do |movie| %>
         
@@ -112,7 +112,7 @@
 
         <%end%>
     </div>
-    <button class="slider-btn right">&#10095;</button>
+    <button class="slider-btn right"><%= image_tag "homepage/freccia.svg", width: "35em" %></button>
 </div>
 
 <!--7 section "Forum"-->
