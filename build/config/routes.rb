@@ -30,7 +30,9 @@ Rails.application.routes.draw do
   match '/auth/:provider', to: 'sessions#passthru', via: [:get, :post]
 
   # User Profile
-  get "profile_page/profile_index"
+  get "/profile", to: "profile_page#profile_index", as: "profile"
+  get "/profile/edit", to: "profile_page#edit", as: "edit_profile"
+  patch "/profile", to: "profile_page#update"
 
 
 end
