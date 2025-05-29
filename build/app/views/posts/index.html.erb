@@ -1,0 +1,28 @@
+<!--Navbar-->
+<%= render 'layouts/navbar' %>
+
+
+<% if user_signed_in? %>
+    Benvenuto, <%= current_user.first_name %>!
+<% else %>
+    <button  class="sign-up popup-button auth-button ">Registrati</button>
+    <button  class="yellow-button popup-button auth-button">Accedi</button>
+<% end %>   
+
+<h1>Forum</h1>
+
+<button class="btn sign-up popup-button auth-button " ><%= link_to "New Post", new_post_path %></button>
+
+<% if @posts.any? %>
+  <% @posts.each do |post| %>
+    <div class="post">
+      <h2><%= link_to post.title, post %></h2>
+      Creato da <%= post.user.username %>
+
+      <p><%= truncate(post.content, length: 100) %></p>
+      <p><%= pluralize(post.comments.count, 'comment') %></p>
+    </div>
+  <% end %>
+<% else %>
+  <p>No posts yet.</p>
+<% end %>

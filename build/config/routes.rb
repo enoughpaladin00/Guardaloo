@@ -30,8 +30,11 @@ Rails.application.routes.draw do
 
   match '/auth/:provider', to: 'sessions#passthru', via: [:get, :post]
 
-  #forum
-  get "forum", to: "forum#index"
+  Rails.application.routes.draw do
+    resources :posts do
+      resources :comments, only: [:create, :destroy]
+    end
+  end
 
   #health check?
   get "up" => "rails/health#show", as: :rails_health_check
