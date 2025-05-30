@@ -1,0 +1,43 @@
+.cinema-map{
+    aspect-ratio: 1;
+    min-height: 20rem;
+}
+
+.movie-backdrop {
+    aspect-ratio: 16/9;
+    position: relative;
+    width: 32rem;
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.backdrop {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.movie-container{
+    justify-content: center;
+    justify-items: center;
+    display: flex;
+}
+
+.movie-title{
+    color: #004466;
+    font-family: 'Inter', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.director-title{
+    opacity: 65%;
+}
+
+.section-box{
+    padding: 1rem;
+    border-radius: 0.5rem;
+    background-color: white;
+}

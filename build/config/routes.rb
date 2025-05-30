@@ -18,7 +18,8 @@ Rails.application.routes.draw do
 
   #movie
   get "movies/show"
-  resources :movies, only: [:show]
+  resources :movies, param: :tmdb_id, only: [:show]
+
 
   #homepage
   get "home", to: "homepage#homepage"
