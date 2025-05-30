@@ -50,8 +50,6 @@ class CinemasController < ApplicationController
 
     r_km * c
   end
-
-
   
 end
 

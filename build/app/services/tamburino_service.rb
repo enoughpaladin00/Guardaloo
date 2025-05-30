@@ -23,11 +23,13 @@ require 'nokogiri'
 
 class TamburinoService
   BASE_URL = 'https://rest.tamburino.it/api/v1/movietheaters/programming'
+  API_KEY = ENV["TAMBURINO_API_KEY"]
+  SERVICE_ID = '347'
 
-  def self.get_programmazione(id_servizio, apikey:, date: nil, days: 1, format: 'xml')
+  def self.get_programmazione(date: nil, days: 1, format: 'xml')
     date ||= Date.today.strftime('%d-%m-%Y')
-    uri = URI("#{BASE_URL}/#{id_servizio}")
-    params = { apikey: apikey, date: date, days: days, format: format }
+    uri = URI("#{BASE_URL}/#{SERVICE_ID}")
+    params = { apikey: API_KEY, date: date, days: days, format: format }
     uri.query = URI.encode_www_form(params)
 
     res = Net::HTTP.get_response(uri)
@@ -36,14 +38,31 @@ class TamburinoService
     if format == 'xml'
       parse_xml(res.body)
     else
-      
+      JSON.parse(res.body)
     end
   rescue => e
     Rails.logger.error "Errore chiamando Tamburino API: #{e.message}"
     nil
   end
 
-
+  def self.sync_programmazione
+    cinemas = get_programmazione(format: 'xml')
+    return unless cinemas
+    
+    cinemas.each do |data|
+      Cinema.find_or_initialize_by(tamburino_id: data[:id]).tap do |cinema|
+        cinema.name = data[:name]
+        cinema.address = data[:address]
+        cinema.town = data[:town]
+        cinema.province = data[:province]
+        cinema.phone = data[:phone]
+        cinema.lat = data[:lat]
+        cinema.lon = data[:lon]
+        cinema.save!
+      end
+    end
+  end
+  
   
 
   def self.parse_xml(xml_body)
