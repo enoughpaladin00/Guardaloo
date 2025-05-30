@@ -139,6 +139,41 @@
 
 <!--7 section "Forum"-->
 
+<h1>🎬 Programmazione Cinema</h1>
+
+<% if @showtimes.empty? %>
+  <p>Nessuna programmazione trovata.</p>
+<% else %>
+  <% @showtimes.each do |giorno| %>
+    <h2>🗓️ <%= giorno["day"] %></h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Film</th>
+          <th>Tipo</th>
+          <th>Orari</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% giorno["movies"].each do |film| %>
+          <% film["showing"].each do |proiezione| %>
+            <tr>
+              <td>
+                <a href="<%= film["link"] %>" target="_blank">
+                  <%= film["name"] %>
+                </a>
+              </td>
+              <td><%= proiezione["type"] %></td>
+              <td><%= proiezione["time"].join(", ") %></td>
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
+<% end %>
+
+
 <!--8 section "Footer"-->
 
 <%= render 'layouts/footer' %>

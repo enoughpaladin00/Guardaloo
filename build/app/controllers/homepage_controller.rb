@@ -8,5 +8,6 @@ class HomepageController < ApplicationController
         @trending_series = TmdbService.trending_series
         @top_series = TmdbService.top_10_series
         @stream_movie = TmdbService.streaming_movies
+        @showtimes = SerpApiClient.search_cinema_programs
     end
 end
