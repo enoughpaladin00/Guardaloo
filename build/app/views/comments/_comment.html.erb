@@ -1,5 +1,15 @@
 <div class="comment">
-  <p><%= comment.content %></p>
-  <p><small>Posted <%= time_ago_in_words(comment.created_at) %> ago</small></p>
-  <%= button_to 'Delete', [comment.post, comment], method: :delete, data: { confirm: 'Are you sure?' } %>
+  <p><%= comment.content %></p> <!-- contenuto commento-->
+  <% if comment.created_at %>
+    <p><small>Creato <%= time_ago_in_words(comment.created_at) %> ago</small> da <%= @post.user.username %> </p> <!-- indicazione temporale e autore commento-->
+  <% else %>
+    <p><small>Pubblicato recentemente</small></p>
+  <% end %>
+  
+  <% if comment.user == current_user %>
+    <%= button_to 'Cancella', [comment.post, comment], method: :delete, data: { confirm: 'Sei sicuro?' }, class: "btn btn-sm btn-danger" %> <!-- cancella il commento -->
+    <%# <%= link_to 'Modifica', edit_post_comment_path(comment.post, comment), class: "btn btn-sm btn-primary" %> <!-- modifica ?-->    
+  <% end %>
 </div>
+
+<!-- modifica estetica -->

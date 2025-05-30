@@ -1,13 +1,28 @@
-<h1><%= @post.title %></h1>
-<p><%= @post.content %></p>
+<!-- Navbar -->
+<%= render 'layouts/navbar' %>
 
-<h2>Comments</h2>
+<h1><%= @post.title %></h1> <!-- titolo autore e contenuto post-->
+<p>Creato da <%= @post.user.username%></p>
+<h4><%= @post.content %></h4>
+
+
+<h3>Commenti</h3>     
 <div id="comments">
-  <%= render @post.comments %>
+  <%= render @post.comments %>  <!-- carica i commenti del post ->_comment.html.erb -->
 </div>
 
-<h2>Add a comment</h2>
-<%= render 'comments/form', post: @post %>
 
-<%= link_to 'Edit', edit_post_path(@post) %> |
-<%= link_to 'Back', posts_path %>
+<h2>Dai la tua opinione!</h2>
+<%= render 'comments/form', post: @post %>  <!-- carica form per aggiungere commento -> _form.html.erb-->
+
+
+<!-- utilità opinabile -->
+<%= link_to 'Edit', edit_post_path(@post) %>  <!-- non funziona-->
+<%= link_to 'Ritorna al Forum', posts_path %>
+
+
+
+
+
+<!-- Footer -->
+<%= render 'layouts/footer' %>
