@@ -9,6 +9,8 @@
 .search_container{
     border: 2px solid #FD7474;
     background:#fd747416;
+    border-radius: 2rem;
+    max-width: 40rem;
 }
 
 .search_bar, .search_bar:focus{

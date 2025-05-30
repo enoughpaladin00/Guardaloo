@@ -9,9 +9,9 @@
 <%= render 'layouts/navbar' %>
 
 <body>
-    <div class='container movie-wrapper'>
-        <div class="backdrop-container flex-col md:grid md:grid-cols-5 gap-4 p-4">
-            <div class="movie-backdrop md:col-span-5 flex items-center justify-center text-xl rounded-lg w-full max-w-5xl h-96 overflow-hidden shadow-lg">
+    <div class='container'>
+        <div class="movie-container flex-col md:grid md:grid-cols-5 gap-4 p-4">
+            <div class="movie-backdrop md:col-span-5 flex items-center justify-center rounded-lg shadow-lg">
                 <% if @movie_details["backdrop_path"] %>
                     <div class="backdrop" style='background-image: url("https://image.tmdb.org/t/p/original<%= @movie_details["backdrop_path"] %>");'></div>
                 <% else %>
