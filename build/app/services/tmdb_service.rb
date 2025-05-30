@@ -58,7 +58,7 @@ class TmdbService
   end
 
   def self.top_10_movies
-    url = URI("#{BASE_URL}/movie/popular?api_key=#{API_KEY}&language=it-IT&page=1")
+    url = URI("#{BASE_URL}/movie/popular?api_key=#{API_KEY}&language=it-IT&watch_region=IT&page=1")
     response = Net::HTTP.get(url)
     parsed = JSON.parse(response)
     parsed["results"].first(10)
@@ -66,5 +66,36 @@ class TmdbService
     Rails.logger.error "Errore TMDB (top_10_movies): #{e.message}"
     []
   end
+
+  def self.top_10_series
+    url = URI("#{BASE_URL}/tv/popular?api_key=#{API_KEY}&language=it-IT&watch_region=IT&page=1")
+    response = Net::HTTP.get(url)
+    parsed = JSON.parse(response)
+    parsed["results"].first(10)
+  rescue => e
+    Rails.logger.error "Errore TMDB (top_10_series): #{e.message}"
+    []
+  end
+
+  def self.streaming_movies
+    url = URI("#{BASE_URL}/discover/movie?api_key=#{API_KEY}&language=it-IT&watch_region=IT&with_watch_monetization_types=flatrate&sort_by=popularity.desc")
+    response = Net::HTTP.get(url)
+    parsed = JSON.parse(response)
+    parsed["results"]
+  rescue => e
+    Rails.logger.error "Errore TMDB (streaming_movies): #{e.message}"
+    []
+  end
+
+  def self.top_10_streaming_movies
+    url = URI("#{BASE_URL}/discover/movie?api_key=#{API_KEY}&language=it-IT&watch_region=IT&with_watch_monetization_types=flatrate&sort_by=popularity.desc&page=1")
+    response = Net::HTTP.get(url)
+    parsed = JSON.parse(response)
+    parsed["results"].first(10)
+  rescue => e
+    Rails.logger.error "Errore TMDB (top_10_streaming_movies): #{e.message}"
+    []
+  end
+
   
 end
