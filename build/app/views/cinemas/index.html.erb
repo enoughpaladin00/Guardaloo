@@ -29,7 +29,7 @@
 
         cinemas.forEach(cinema => {
           const div = document.createElement("div");
-          div.classList.add("cinema");
+          div.classList.add("cinema-card");
 
           const map = cinema.address
             ? `<iframe width="300" height="200" frameborder="0" style="border:0"
@@ -52,3 +52,73 @@
     }
   });
 </script>
+
+
+<!--
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(async (position) => {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+
+        const response = await fetch(`/cinemas.json?lat=${lat}&lon=${lon}`);
+        const cinemas = await response.json();
+
+        const listContainer = document.getElementById("cinema-list");
+        listContainer.innerHTML = "";
+
+        if (cinemas.length === 0) {
+          listContainer.innerHTML = "<p>Nessun cinema trovato nelle vicinanze.</p>";
+          return;
+        }
+
+        cinemas.forEach(cinema => {
+          const cinemaCard = document.createElement("div");
+          cinemaCard.classList.add("cinema-card");
+
+          // Container interno per mappa + testo
+          const content = document.createElement("div");
+          content.classList.add("cinema-content");
+
+          // Colonna 1: Info + film
+          const programmazione = document.createElement("div");
+          programmazione.classList.add("programmazione");
+
+          programmazione.innerHTML = `
+            <h2>${cinema.name} (${cinema.distance ?? "?"} km)</h2>
+            <p>${cinema.address || 'Indirizzo non disponibile'}, ${cinema.town || '-'} (${cinema.province || '-'})</p>
+            <p>Telefono: ${cinema.phone || 'N/A'}</p>
+            <div class="film-row">
+              <h4>Orari disponibili</h4>
+              <button>15:00</button>
+              <button>17:45</button>
+              <button>20:30</button>
+            </div>
+          `;
+
+          // Colonna 2: Mappa
+          const mapDiv = document.createElement("div");
+          mapDiv.classList.add("map");
+
+          if (cinema.address) {
+            mapDiv.innerHTML = `
+              <iframe width="300" height="200" frameborder="0" style="border:0"
+                src="https://maps.google.com/maps?q=${encodeURIComponent(cinema.address)}&output=embed"
+                allowfullscreen></iframe>
+            `;
+          }
+
+          // Composizione finale
+          content.appendChild(programmazione);
+          content.appendChild(mapDiv);
+          cinemaCard.appendChild(content);
+          listContainer.appendChild(cinemaCard);
+        });
+      });
+    } else {
+      document.getElementById("cinema-list").innerHTML = "<p>Geolocalizzazione non supportata dal browser.</p>";
+    }
+  });
+</script>
+-->
