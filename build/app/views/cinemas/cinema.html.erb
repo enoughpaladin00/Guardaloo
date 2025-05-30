@@ -1,0 +1,18 @@
+<div class="cinema">
+  <h2><%= cinema[:name] %></h2>
+  <p>
+    <%= cinema[:address] || 'Indirizzo non disponibile' %>,
+    <%= cinema[:town] || '-' %> (<%= cinema[:province] || '-' %>)
+  </p>
+  <p>Telefono: <%= cinema[:phone] || 'N/A' %></p>
+
+  <% if cinema[:address].present? %>
+    <iframe
+      width="300"
+      height="200"
+      frameborder="0" style="border:0"
+      src="https://maps.google.com/maps?q=<%= CGI.escape(cinema[:address].to_s) %>&output=embed"
+      allowfullscreen>
+    </iframe>
+  <% end %>
+</div>

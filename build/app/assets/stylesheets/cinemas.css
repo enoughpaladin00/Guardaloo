@@ -1,0 +1,34 @@
+.cinema-card {
+    margin: 2rem 0;
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+  }
+  
+  .cinema-content {
+    display: flex;
+    gap: 2rem;
+    margin-top: 1rem;
+  }
+  
+  .map iframe {
+    border-radius: 6px;
+  }
+  
+  .programmazione {
+    flex: 1;
+  }
+  
+  .film-row {
+    margin-bottom: 1rem;
+  }
+  
+  .film-row button {
+    margin: 0.2rem;
+    padding: 0.4rem 0.8rem;
+    background-color: #f2f2f2;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
