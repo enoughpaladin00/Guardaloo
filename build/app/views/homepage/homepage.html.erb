@@ -1,3 +1,5 @@
+
+
 <!--Navbar-->
 
 <%= render 'layouts/navbar' %>
@@ -92,9 +94,17 @@
     <button class="slider-btn right"><%= image_tag "homepage/freccia.svg", width: "35em" %></button>
 </div>
 
-<!--4 section "Map"-->
+<!--5 section "Map"-->
 
-<!--3 section "Top 10 Series"-->
+<div id="map_new" style="height: 600px; width: 60%;"></div>
+
+<script src="../javascript/google_map.js"></script>
+
+<script async defer
+  src="https://maps.googleapis.com/maps/api/js?key=<%= ENV["GOOGLE_MAPS_API_KEY"] %>&callback=initMap">
+</script>
+
+<!--6 section "Top 10 Series"-->
 
 <div class="container-fluid d-flex align-items-center">
     <h1 class="px-2 py-2 mb-0" style="font-size: 30px;"><b>Top 10 Serie TV</b></h1>
@@ -138,41 +148,6 @@
 </div>
 
 <!--7 section "Forum"-->
-
-<h1>🎬 Programmazione Cinema</h1>
-
-<% if @showtimes.empty? %>
-  <p>Nessuna programmazione trovata.</p>
-<% else %>
-  <% @showtimes.each do |giorno| %>
-    <h2>🗓️ <%= giorno["day"] %></h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Film</th>
-          <th>Tipo</th>
-          <th>Orari</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% giorno["movies"].each do |film| %>
-          <% film["showing"].each do |proiezione| %>
-            <tr>
-              <td>
-                <a href="<%= film["link"] %>" target="_blank">
-                  <%= film["name"] %>
-                </a>
-              </td>
-              <td><%= proiezione["type"] %></td>
-              <td><%= proiezione["time"].join(", ") %></td>
-            </tr>
-          <% end %>
-        <% end %>
-      </tbody>
-    </table>
-  <% end %>
-<% end %>
-
 
 <!--8 section "Footer"-->
 

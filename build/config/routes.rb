@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   get "cinemas/index"
-  get 'home/index'
-  get '/cinemas', to: 'cinemas#index'
+  get "home/index"
+  get "/cinemas", to: "cinemas#index"
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
@@ -25,18 +25,17 @@ Rails.application.routes.draw do
   post "/login", to: "sessions#create"
   delete "/logout", to: "sessions#destroy"
 
-  #movie
+  # movie
   get "movies/show"
-  resources :movies, param: :tmdb_id, only: [:show]
+  resources :movies, param: :tmdb_id, only: [ :show ]
 
 
-  #homepage
+  # homepage
   get "home", to: "homepage#homepage"
 
-  #Google and Facebook Auth
-  get '/auth/:provider/callback', to: 'sessions#omniauth'
-  get '/auth/failure', to: redirect('/')
+  # Google and Facebook Auth
+  get "/auth/:provider/callback", to: "sessions#omniauth"
+  get "/auth/failure", to: redirect("/")
 
-  match '/auth/:provider', to: 'sessions#passthru', via: [:get, :post]
-
+  match "/auth/:provider", to: "sessions#passthru", via: [ :get, :post ]
 end
