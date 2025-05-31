@@ -3,11 +3,11 @@ require "google_search_results"
 class SerpApiClient
   API_KEY = ENV["SERP_API_KEY"]
 
-  def self.search_cinema_programs(query: "Mission: Impossible showtime")
+  def self.search_cinema_programs(query: "Mission: Impossible showtime", location: "Colleferro, Italy")
     params = {
       engine: "google",
       q: query,
-      location: "Colleferro, Italy",
+      location: location,
       hl: "it",
       gl: "it",
       serp_api_key: API_KEY

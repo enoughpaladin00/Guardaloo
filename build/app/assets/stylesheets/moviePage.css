@@ -6,7 +6,7 @@
 .movie-backdrop {
     aspect-ratio: 16/9;
     position: relative;
-    width: 32rem;
+    width: 64rem;
     border-radius: 0.5rem;
     overflow: hidden;
 }
@@ -40,4 +40,9 @@
     padding: 1rem;
     border-radius: 0.5rem;
     background-color: white;
+}
+
+.info-text{
+    color: #004466;
+    opacity: 65%;
 }

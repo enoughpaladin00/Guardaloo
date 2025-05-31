@@ -4,6 +4,8 @@
   </script>
 <% end %>
 
+<!-- <pre><%= JSON.pretty_generate(@providers) %></pre> -->
+
 <head>
     <!-- TailwindCSS via CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -55,7 +57,7 @@
                 <!-- Informazioni -->
                 <section>
                     <h1 class="movie-title"><%= @movie_details["title"] %> <span class="director-title">(diretto da <%= @director %>)</span></h1>
-                    <p class="text-sm text-gray-600"><%= @movie_details["release_date"]&.slice(0,4)%> • <%= @movie_details["runtime"] %>min • <%= @movie_details["genres"].map { |g| g["name"] }.join(", ") if @movie_details["genres"].present? %>
+                    <p class="text-sm info-text"><%= @movie_details["release_date"]&.slice(0,4)%> • <%= @movie_details["runtime"] %>min • <%= @movie_details["genres"].map { |g| g["name"] }.join(", ") if @movie_details["genres"].present? %>
                 </section>
 
                 <!-- Streaming -->
