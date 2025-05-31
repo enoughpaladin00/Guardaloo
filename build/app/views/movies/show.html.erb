@@ -1,10 +1,10 @@
 <%= content_for :scripts do %>
-  <script>
-    window.cinemas = <%= raw @cinemas.to_json %>;
-  </script>
+    <script>
+        window.cinemas = <%= raw @cinemas_for_map.to_json %>;
+    </script>
 <% end %>
 
-<!-- <pre><%= JSON.pretty_generate(@providers) %></pre> -->
+<pre><%= @showtimes_array.inspect %></pre>
 
 <head>
     <!-- TailwindCSS via CDN -->
@@ -41,11 +41,6 @@
                         <button><%= image_tag 'moviePage/Vector.svg', class: 'w-5' %></button>
                         <button><%= image_tag 'moviePage/Vector-1.svg', class: 'w-5' %></button>
                     </div>
-
-                    <div class="flex space-x-2 text-center ml-auto mt-1">
-                        <p class="font-bold">1k</p>
-                        <p class="text-gray-500">13k</p>
-                    </div>
                 </div>
 
                 <div class="font-semibold">Valutazione</div>
@@ -79,17 +74,36 @@
 
                 <!-- Mappa e Cinema -->
                 <section class="flex flex-col md:flex-row gap-4">
-                    <div id="map" class="cinema-map h-32 flex-1 rounded-lg">
-                    </div>
-                    <div class="section-box shadow flex-1">
-                        <p class="font-semibold mb-2">Cinema 1</p>
-                        <div class="flex flex-wrap gap-2">
-                            <% ["15:00", "18:00", "20:00"].each do |ora| %>
-                                <span class="bg-gray-300 px-3 py-1 rounded-full"><%= ora %></span>
+                  <div id="map" class="cinema-map h-96 flex-1 rounded-lg"></div>
+                                            
+                  <div class="cinema-list section-box flex-1 overflow-y-auto" style="max-height: 24rem;">
+                    <h3 class="font-semibold mb-4">Cinema disponibili</h3>
+                                            
+                    <% if @cinemas.any? %>
+                      <% @cinemas.each do |cinema| %>
+                        <% cinema_record = Cinema.find_by(name: cinema[:name]) %>
+                        <% cinema_for_map = @cinemas_for_map.find { |c| c[:id] == cinema_record&.id } %>
+                        
+                        <div class="cinema-item mb-4 pb-4 border-b cursor-pointer hover:bg-gray-50 p-2 rounded"
+                             data-id="<%= cinema_record&.id %>">
+                          <p class="font-semibold"><%= cinema[:name] %></p>
+                          <p class="text-sm text-gray-600 mb-2"><%= cinema[:address] %></p>
+                          <p class="text-xs text-gray-500"><%= cinema[:distance] %></p>
+                          
+                          <div class="mt-2 flex flex-wrap gap-2">
+                            <% cinema[:showing].first[:time].each do |time| %>
+                              <span class="showtime px-3 py-1 rounded-full text-sm"><%= time %></span>
                             <% end %>
+                          </div>
                         </div>
-                    </div>
+                      <% end %>
+                    <% else %>
+                      <p class="text-center py-4">Nessun cinema trovato per oggi.</p>
+                    <% end %>
+                  </div>
                 </section>
+
+                
                         
                 <!-- Descrizione -->
                 <section class="section-box shadow">
@@ -123,6 +137,10 @@
     </div>
     <div class='similar-wrapper'>
     </div>
+<script src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_MAPS_API_KEY'] %>&callback=initMap" async defer>
+  console.log("Cinemas data:", <%= raw @cinemas_for_map.to_json %>);
+  window.cinemas = <%= raw @cinemas_for_map.to_json %>;
+</script>
 </body>
 
 <%= render 'layouts/footer' %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_30_180538) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_31_140903) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -61,16 +61,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_30_180538) do
   end
 
   create_table "cinemas", force: :cascade do |t|
-    t.string "tamburino_id"
-    t.string "name"
-    t.string "address"
-    t.string "town"
-    t.string "province"
-    t.string "phone"
-    t.string "lat"
-    t.string "lon"
+    t.string "name", null: false
+    t.string "address", null: false
+    t.float "latitude"
+    t.float "longitude"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_cinemas_on_name", unique: true
   end
 
   create_table "comments", force: :cascade do |t|
@@ -81,15 +78,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_30_180538) do
     t.datetime "updated_at", null: false
     t.index ["post_id"], name: "index_comments_on_post_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
-  end
-
-  create_table "movies", force: :cascade do |t|
-    t.integer "tmdb_id"
-    t.string "title"
-    t.date "release_date"
-    t.text "overview"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "posts", force: :cascade do |t|

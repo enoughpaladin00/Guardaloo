@@ -1,22 +1,3 @@
-=begin require 'httparty'
-require 'nokogiri'
-
-class TamburinoService
-  BASE_URL = 'https://rest.tamburino.it/api/v1/movietheaters/programming'
-  API_KEY = 'VdMXyp8oqcXNPwfA' # Tua API key
-  SERVICE_ID = '347'           # ID del servizio attivo
-
-  def self.fetch_programmazione
-    url = "#{BASE_URL}/#{SERVICE_ID}?apikey=#{API_KEY}&format=json"
-    response = HTTParty.get(url)
-    if response.success?
-      JSON.parse(response.body)
-    else
-      nil
-    end
-  end
-end
-=end
 require 'net/http'
 require 'uri'
 require 'nokogiri'
@@ -50,14 +31,11 @@ class TamburinoService
     return unless cinemas
     
     cinemas.each do |data|
-      Cinema.find_or_initialize_by(tamburino_id: data[:id]).tap do |cinema|
+      Cinema.find_or_initialize_by(name: data[:name]).tap do |cinema|
         cinema.name = data[:name]
-        cinema.address = data[:address]
-        cinema.town = data[:town]
-        cinema.province = data[:province]
-        cinema.phone = data[:phone]
-        cinema.lat = data[:lat]
-        cinema.lon = data[:lon]
+        cinema.address = data[:address] + " " + data[:town] 
+        cinema.latitude = data[:lat]
+        cinema.longitude = data[:lon]
         cinema.save!
       end
     end
