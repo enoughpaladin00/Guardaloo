@@ -4,7 +4,7 @@
     </script>
 <% end %>
 
-<pre><%= @showtimes_array.inspect %></pre>
+<!-- <pre><%= @showtimes_array.inspect %></pre> -->
 
 <head>
     <!-- TailwindCSS via CDN -->
@@ -96,7 +96,7 @@
                             <% end %>
                           </div>
                         </div>
-                      <% end %>
+                      <% end %> 
                     <% else %>
                       <p class="text-center py-4">Nessun cinema trovato per oggi.</p>
                     <% end %>
@@ -137,8 +137,7 @@
     </div>
     <div class='similar-wrapper'>
     </div>
-<script src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_MAPS_API_KEY'] %>&callback=initMap" async defer>
-  console.log("Cinemas data:", <%= raw @cinemas_for_map.to_json %>);
+<script>
   window.cinemas = <%= raw @cinemas_for_map.to_json %>;
 </script>
 </body>
