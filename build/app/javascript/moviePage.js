@@ -1,6 +1,8 @@
 //Google Maps
 if(document.getElementById("map")){
   function initMap() {
+
+    console.log("initMap chiamata correttamente");
     const defaultPosition = {lat: 41.903870,lng: 12.513220}
 
     function createMap(center) {
