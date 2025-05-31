@@ -15,7 +15,6 @@ class MoviesController < ApplicationController
 
     service = TmdbService.new
     @movie_details = service.fetch_movie_details(tmdb_id)
-    @cinemas = nil # o quelli che vuoi
 
     @providers = service.fetch_movie_watch_providers(tmdb_id)
     @italian_providers = @providers["results"]["IT"] || {}
@@ -28,6 +27,30 @@ class MoviesController < ApplicationController
     @all_italian_providers = service.fetch_italian_movie_providers["results"]
     @cleaned_providers = @all_italian_providers.map do |provider|
       provider.reject { |key, _| key == "display_priorities" }
+    end
+
+    @showtimes_array = SerpApiClient.search_cinema_programs(@movie_details["title"] + " showtimes", "Rome, Italy").map(&:deep_symbolize_keys)
+    @today_showtimes = @showtimes_array[0] || {}
+    @cinemas = @today_showtimes[:theaters] || []
+
+    @cinemas_for_map = []
+    
+    @cinemas.each do |cinema_data|
+      cinema = Cinema.find_or_geocode({
+        name: cinema_data[:name],
+        address: cinema_data[:address]
+      })
+      
+      if cinema&.geocoded?
+        @cinemas_for_map << {
+          id: cinema.id,
+          name: cinema.name,
+          address: cinema.address,
+          lat: cinema.latitude,
+          lng: cinema.longitude,
+          showing: cinema_data[:showing].first[:time].join(', ')
+        }
+      end
     end
 
     @credits = service.fetch_movie_credits(tmdb_id)

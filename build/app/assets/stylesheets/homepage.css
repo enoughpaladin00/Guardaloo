@@ -9,8 +9,30 @@
     margin: 1em;
 }
 
-.locandina{
+.bord{
     border-right: 2px solid #FD7474;
+}
+
+.top10{
+  border-radius: 1.3em; 
+  height: 21em
+}
+
+.locandina{
+  height: 21em;
+}
+
+.titolo{
+  font-size: 30px;
+}
+
+.icon{
+  width: 2em; 
+  height: 2em;
+}
+
+.slider_img{
+  width: 1.2em
 }
 
 .number{

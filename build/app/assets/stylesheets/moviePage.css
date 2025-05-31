@@ -46,3 +46,27 @@
     color: #004466;
     opacity: 65%;
 }
+
+.cinema-map {
+  min-height: 384px; /* 24rem */
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.cinema-item {
+  transition: background-color 0.2s ease;
+}
+
+.cinema-item:hover {
+  background-color: #f9fafb;
+}
+
+.showtime {
+  transition: all 0.2s ease;
+}
+
+.showtime:hover {
+  background-color: #3b82f6 !important;
+  color: white !important;
+  transform: translateY(-1px);
+}
