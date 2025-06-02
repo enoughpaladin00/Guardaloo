@@ -26,7 +26,7 @@ Rails.application.routes.draw do
   delete "/logout", to: "sessions#destroy"
 
   # movie
-  get 'movies/:tmdb_id', to: 'movies#show', as: 'movie_show'
+  get "movies/:tmdb_id", to: "movies#show", as: "movie_show"
 
   # homepage
   get "home", to: "homepage#homepage"

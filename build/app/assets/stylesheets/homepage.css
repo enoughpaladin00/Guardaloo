@@ -9,6 +9,18 @@
     margin: 1em;
 }
 
+.contenitore_top10{
+  overflow: visible;
+  margin-top: 2em;
+  margin-left: 4em;
+  margin-right: 4em;
+  margin-bottom: 3em;
+}
+
+.contenitore_maps{
+  background-color: white;
+}
+
 .bord{
     border-right: 2px solid #FD7474;
 }
@@ -16,6 +28,11 @@
 .top10{
   border-radius: 1.3em; 
   height: 21em
+}
+
+.maps{
+  height: 30em; 
+  width: 50%;
 }
 
 .locandina{
@@ -37,8 +54,8 @@
 
 .number{
     position: absolute; 
-    transform: translateY(0.6em) translateX(-0.35em); 
-    font-size: 12em;
+    transform: translateY(0.70em) translateX(-0.35em); 
+    font-size: 11em;
     margin: 0;
     color:#FD7474;
     z-index: 1;
@@ -76,6 +93,10 @@
   opacity: 0;
   
   transition: opacity 0.3s ease;
+}
+
+.btn-top{
+  transform: translateY(-52%)
 }
 
 .netflix-slider:hover .slider-btn {

@@ -2,18 +2,16 @@
 <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">
-            <a href="../home"><%= image_tag "navbar/Logo.svg", alt: "logo", width: "200em", height: "auto" %></a>
+            <a href="../home"><%= image_tag "navbar/Logo.svg", alt: "logo", style: "width: 12em; height: auto" %></a>
         </a>
-        <div class="align-items-center">
-        <form role="search">
+        <form role="search" class="container-fluid" >
             <div class="input-group search_container px-2 align-items-center">
                 <span>
-                    <%= image_tag "navbar/Lente.svg", alt: "lente", width: "20em", height: "20em" %>
+                    <%= image_tag "navbar/Lente.svg", alt: "lente", style: "width: 1.2em; height: 1.2em" %>
                 </span>                        
                 <input class="form-control border-0 shadow-none search_bar" type="search" placeholder="Cerca film, serie TV, cinema, discussioni...">
             </div>
         </form>
-        </div>
         <ul class="navbar-nav ms-auto align-items-center">
             <li class="nav-items">
                 <%= link_to "Home", root_path, class: "nav-link fw-bold navbar_text", style: "font-size:large" %>
@@ -32,7 +30,7 @@
             </li>
         </ul>
         <a class="px-2" href="#">
-            <%= image_tag "navbar/user.svg", alt: "user", width:"35", height: "35" %>
+            <%= image_tag "navbar/user.svg", alt: "user", style: "width: 2em; height: 2em" %>
         </a>
     </div>
 </nav>
