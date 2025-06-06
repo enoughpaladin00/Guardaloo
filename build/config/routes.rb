@@ -28,6 +28,9 @@ Rails.application.routes.draw do
   # movie
   get "movies/:tmdb_id", to: "movies#show", as: "movie_show"
 
+  ## route per location
+  post "/set_location", to: "sessions#set_location"
+
   # homepage
   get "home", to: "homepage#homepage"
 

@@ -1,8 +1,9 @@
 function initMap() {
-  const defaultPosition = { lat: 41.903870, lng: 12.513220 }; // Roma
+  const defaultPosition = { lat: 41.903870, lng: 12.513220 };
   const map = new google.maps.Map(document.getElementById("map"), {
     zoom: 12,
     center: defaultPosition,
+    mapId:  '<%= @map_id %>',
   });
 
   const cinemas = window.cinemas || [];
@@ -10,29 +11,20 @@ function initMap() {
   const markers = [];
   const infoWindow = new google.maps.InfoWindow();
 
-  // 🔵 Geolocalizzazione dell'utente
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
       (position) => {
-
         const userPos = {
           lat: position.coords.latitude,
           lng: position.coords.longitude
         };
 
-        // Aggiungi marker per l'utente
-        const userMarker = new google.maps.Marker({
+        console.log(userPos);
+        const userMarker = new google.maps.marker.AdvancedMarkerElement({
           position: userPos,
           map: map,
           title: "Sei qui",
-          icon: {
-            path: google.maps.SymbolPath.CIRCLE,
-            scale: 8,
-            fillColor: "#4285F4",
-            fillOpacity: 1,
-            strokeColor: "#ffffff",
-            strokeWeight: 2
-          }
+          content: createCustomIcon("#4285F4")
         });
 
         bounds.extend(userPos);
@@ -46,17 +38,15 @@ function initMap() {
     console.warn("Geolocalizzazione non supportata dal browser.");
   }
 
-  // 🔴 Marker cinema
   cinemas.forEach((cinema) => {
     if (cinema.lat && cinema.lng) {
       const position = new google.maps.LatLng(cinema.lat, cinema.lng);
       bounds.extend(position);
 
-      const marker = new google.maps.Marker({
+      const marker = new google.maps.marker.AdvancedMarkerElement({
         position: position,
         map: map,
-        title: cinema.name,
-        animation: google.maps.Animation.DROP
+        title: cinema.name
       });
 
       markers.push(marker);
@@ -80,14 +70,13 @@ function initMap() {
       marker.addListener("click", () => {
         infoWindow.setContent(contentString);
         infoWindow.open(map, marker);
-        map.panTo(marker.getPosition());
+        map.panTo(marker.position);
       });
     } else {
       console.log("Cinema con lat/lng null:", cinema.name);
     }
   });
 
-  // 🔍 Fit bounds solo se ci sono marker
   if (!bounds.isEmpty()) {
     map.fitBounds(bounds);
     const zoom = map.getZoom();
@@ -96,7 +85,6 @@ function initMap() {
     }
   }
 
-  // 🔄 Click su lista
   document.querySelectorAll('.cinema-item').forEach(item => {
     item.addEventListener('click', function () {
       const cinemaId = Number(this.dataset.id);
@@ -132,7 +120,39 @@ function initMap() {
   });
 }
 
-// Rendi disponibile la funzione solo se #map esiste
+function createCustomIcon(color) {
+  const div = document.createElement('div');
+  div.style.width = '16px';
+  div.style.height = '16px';
+  div.style.borderRadius = '50%';
+  div.style.backgroundColor = color;
+  div.style.border = '2px solid white';
+  return div;
+}
+
 if (document.getElementById("map")) {
   window.initMap = initMap;
 }
+
+
+// Visualizzazione Programmazione by day
+document.addEventListener("DOMContentLoaded", function () {
+  const buttons = document.querySelectorAll(".tab-button");
+  const cinemaLists = document.querySelectorAll(".cinema-list-day");
+  buttons.forEach(button => {
+    button.addEventListener("click", () => {
+      const selectedDay = button.getAttribute("data-day");
+
+      buttons.forEach(btn => btn.classList.remove("active", "bg-blue-500", "text-white"));
+      button.classList.add("active", "bg-blue-500", "text-white");
+
+      cinemaLists.forEach(list => {
+        if (list.getAttribute("data-day") === selectedDay) {
+          list.style.display = "block";
+        } else {
+          list.style.display = "none";
+        }
+      });
+    });
+  });
+});

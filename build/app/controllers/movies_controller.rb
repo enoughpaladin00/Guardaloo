@@ -2,6 +2,7 @@ class MoviesController < ApplicationController
   def show
     tmdb_id = params[:tmdb_id]
     api_key = ENV['TMDB_API_KEY']
+    @map_id = ENV['GOOGLE_MAPS_ID']
 
     url = "https://api.themoviedb.org/3/movie/#{tmdb_id}"
     response = HTTParty.get(url, query: { api_key: api_key, language: 'it-IT' })
@@ -29,27 +30,54 @@ class MoviesController < ApplicationController
       provider.reject { |key, _| key == "display_priorities" }
     end
 
-    @showtimes_array = SerpApiClient.search_cinema_programs(@movie_details["title"] + " showtimes", "Rome, Italy").map(&:deep_symbolize_keys)
-    @today_showtimes = @showtimes_array[0] || {}
-    @cinemas = @today_showtimes[:theaters] || []
+    location_str = ""
+    location = session[:user_location]&.symbolize_keys
+    Rails.logger.info "SESSION LOCATION: #{location.inspect}"
 
+    if location.present? && location[:lat].present? && location[:lng].present?
+      city_data = Geocoder.search([location[:lat], location[:lng]]).first
+      if city_data
+        location_str = city_data.city || city_data.data["address"]["city"] || city_data.data["address"]["town"] || "Rome, Italy"
+        Rails.logger.info "LOCATION SET (city): #{location_str}"
+      else
+        location_str = "Rome, Italy"
+        Rails.logger.warn "FALLBACK: Geocoder non ha trovato città"
+      end
+    else
+      location_str = "Rome, Italy"
+      Rails.logger.warn "LOCATION FALLBACK TO DEFAULT: #{location_str}"
+    end
+
+    @showtimes_array = SerpApiClient.search_cinema_programs("#{@movie_details['title']} showtimes", location_str).map(&:deep_symbolize_keys)
+    @days = []
+    @cinemas_by_day = []
+    @cinemas_by_day_hash = {}
+    @showtimes_array.each do |showtimes|
+      day = showtimes[:day]
+      cinema = showtimes[:theaters]
+      @days << day
+      @cinemas_by_day << cinema
+      @cinemas_by_day_hash[day] = cinema
+    end
     @cinemas_for_map = []
     
-    @cinemas.each do |cinema_data|
-      cinema = Cinema.find_or_geocode({
-        name: cinema_data[:name],
-        address: cinema_data[:address]
-      })
-      
-      if cinema&.geocoded?
-        @cinemas_for_map << {
-          id: cinema.id,
-          name: cinema.name,
-          address: cinema.address,
-          lat: cinema.latitude,
-          lng: cinema.longitude,
-          showing: cinema_data[:showing].first[:time].join(', ')
-        }
+    @cinemas_by_day.each do |cinemas|
+      cinemas.each do |cinema_data|
+        cinema = Cinema.find_or_geocode({
+          name: cinema_data[:name],
+          address: cinema_data[:address]
+        })
+
+        if cinema&.geocoded?
+          @cinemas_for_map << {
+            id: cinema.id,
+            name: cinema.name,
+            address: cinema.address,
+            lat: cinema.latitude,
+            lng: cinema.longitude,
+            showing: cinema_data[:showing].first[:time].join(', ')
+          }
+        end
       end
     end
 

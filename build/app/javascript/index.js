@@ -144,33 +144,55 @@ document.querySelectorAll('#login-form-popup', '#login-form-page').forEach(form 
     e.preventDefault();
 
     const formData = new FormData(e.target);
-    const data = {
+    const baseData = {
       email: formData.get("email"),
       password: formData.get("password")
+    };
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        const data = {
+          ...baseData,
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+
+        sendLogin(data);
+      }, () => {
+        console.warn("Geolocalizzazione negata. Procedo senza.");
+        sendLogin(baseData);
+      });
+    } else {
+      console.warn("Geolocalizzazione non supportata. Procedo senza.");
+      sendLogin(baseData);
     }
-    fetch("/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json",
-        "X-CSRF-Token": document.querySelector("[name='csrf-token']").content
-      },
-      body: JSON.stringify(data)
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.success) {
-        window.location.href = data.redirect_url;
-      } else {
-        alert(data.error || "Email o password errati.");
-      }
-    })
-    .catch(error => {
-      console.error("Errore durante il login:", error);
-      alert("Errore di rete.");
-    });
   });
 });
+
+function sendLogin(data) {
+  fetch("/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "X-CSRF-Token": document.querySelector("[name='csrf-token']").content
+    },
+    body: JSON.stringify(data)
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      window.location.href = data.redirect_url;
+    } else {
+      alert(data.error || "Email o password errati.");
+    }
+  })
+  .catch(error => {
+    console.error("Errore durante il login:", error);
+    alert("Errore di rete.");
+  });
+}
+
 
 //Logout
 if(document.querySelector("#logout-button")){
