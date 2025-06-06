@@ -60,3 +60,4 @@ TMDB, OAuth, Facebook Login, Google API Places, Google Maps, Tamburino Cinema
 
 ## MEMO
 1. Risolvere problemi Google OAuth (Password)
+2. Modificare visualizzazione mappa aggiornandola giorno per giorno[MoviePage]

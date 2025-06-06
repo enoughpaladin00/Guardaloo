@@ -1,25 +1,25 @@
 class SessionsController < ApplicationController
   def create
-  user = User.find_by(email: params[:email])
-
-  if user&.authenticate(params[:password])
-    session[:user_id] = user.id
-
-    if params[:lat].present? && params[:lng].present?
-      session[:user_location] = {
-        lat: params[:lat],
-        lng: params[:lng]
-      }
-      Rails.logger.info "Location salvata in sessione: #{session[:user_location]}"
+    user = User.find_by(email: params[:email])
+    
+    if user&.authenticate(params[:password])
+      session[:user_id] = user.id
+    
+      if params[:lat].present? && params[:lng].present?
+        session[:user_location] = {
+          lat: params[:lat],
+          lng: params[:lng]
+        }
+        Rails.logger.info "Location salvata in sessione: #{session[:user_location]}"
+      else
+        Rails.logger.warn "Nessuna location fornita durante login"
+      end
+    
+      render json: { success: true, redirect_url: "#{request.base_url}/home/" }
     else
-      Rails.logger.warn "Nessuna location fornita durante login"
+      render json: { success: false, error: "Email o password non corretti" }, status: :unauthorized
     end
-
-    render json: { success: true, redirect_url: "#{request.base_url}/home/" }
-  else
-    render json: { success: false, error: "Email o password non corretti" }, status: :unauthorized
   end
-end
 
   def omniauth
     user = User.from_omniauth(request.env['omniauth.auth'])

@@ -1,4 +1,5 @@
 class MoviesController < ApplicationController
+  before_action :authenticate_user!
   def show
     tmdb_id = params[:tmdb_id]
     api_key = ENV['TMDB_API_KEY']
@@ -54,7 +55,7 @@ class MoviesController < ApplicationController
     @cinemas_by_day_hash = {}
     @showtimes_array.each do |showtimes|
       day = showtimes[:day]
-      cinema = showtimes[:theaters]
+      cinema = showtimes[:theaters] || []
       @days << day
       @cinemas_by_day << cinema
       @cinemas_by_day_hash[day] = cinema
@@ -62,6 +63,7 @@ class MoviesController < ApplicationController
     @cinemas_for_map = []
     
     @cinemas_by_day.each do |cinemas|
+      next if cinemas.nil?
       cinemas.each do |cinema_data|
         cinema = Cinema.find_or_geocode({
           name: cinema_data[:name],

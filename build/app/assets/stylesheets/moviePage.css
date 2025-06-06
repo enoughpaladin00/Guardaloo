@@ -47,8 +47,18 @@
     opacity: 65%;
 }
 
+.tab-button:hover {
+  background-color: #004466A6;
+  color: #000;
+}
+
+.tab-button.active {
+  background-color: #004466 !important;
+  color: white !important;
+}
+
 .cinema-map {
-  min-height: 384px; /* 24rem */
+  min-height: 24rem;
   border-radius: 0.5rem;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
@@ -66,7 +76,7 @@
 }
 
 .showtime:hover {
-  background-color: #3b82f6 !important;
+  background-color: #004466 !important;
   color: white !important;
   transform: translateY(-1px);
 }
