@@ -78,10 +78,10 @@
     <div class="container trend-section text-center">
         <h2 class="inter-h1 mb-5">I titoli del momento</h2>
       
-        <div class="swiper trend-swiper">
-            <div class="swiper-wrapper">
+        <div class="glider-contain">
+            <div class="glider">
                 <% @trending_movies.each do |movie| %>
-                    <div class="swiper-slide">
+                    <div class="glider-slide">
                         <div class="trend-card dark:bg-zinc-800" data-movie-id="<%= movie['id'] %>">
                             <% if movie["poster_path"] %>
                                 <img src="https://image.tmdb.org/t/p/w500<%= movie['poster_path'] %>" alt="<%= movie['title'] %>">
@@ -90,14 +90,18 @@
                             <% end %>
                         </div>
                     </div>
-                <%end%>
+                <% end %>
             </div>
+          
+            <button class="glider-prev">«</button>
+            <button class="glider-next">»</button>
+            <div role="tablist" class="dots"></div>
         </div>
       
         <div class="mt-4">
             <%= button_to "Guarda ora", home_path, method: :get, class: "popup-button yellow-button" %>
         </div>
-      </div>
+    </div>
 
     <!-- 5th section-->
     <div class="container d-flex justify-content-center align-items-center auth-section">

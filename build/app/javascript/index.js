@@ -1,45 +1,51 @@
 document.addEventListener("turbo:load", function () {
-  const swiperContainer = document.querySelector(".trend-swiper");
+  const gliderEl = document.querySelector(".glider");
 
-  if (!swiperContainer || swiperContainer.querySelectorAll(".swiper-slide").length === 0) {
-    return;
-  }
+  if (!gliderEl) return;
 
-  if (window.trendSwiper && window.trendSwiper.destroy) {
-    window.trendSwiper.destroy(true, true);
-  }
-
-  window.trendSwiper = new Swiper(".trend-swiper", {
-    loop: true,
-    slidesPerView: 1,
-    spaceBetween: 20,
-    autoplay: {
-      delay: 3000,
-      disableOnInteraction: false
+  const glider = new Glider(gliderEl, {
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    draggable: true,
+    dots: ".dots",
+    arrows: {
+      prev: ".glider-prev",
+      next: ".glider-next"
     },
-    breakpoints: {
-      640: {slidesPerView: 2},
-      1024: {slidesPerView: 3},
-      1280: {slidesPerView: 4}
-    }
+    responsive: [
+      {
+        breakpoint: 640,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 2
+        }
+      },
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 4,
+          slidesToScroll: 1
+        }
+      },
+      {
+        breakpoint: 1280,
+        settings: {
+          slidesToShow: 6,
+          slidesToScroll: 1
+        }
+      }
+    ]
   });
+
+  let slideIndex = 0;
+  const totalSlides = gliderEl.querySelectorAll(".glider-slide").length;
+
+  setInterval(() => {
+    slideIndex = (slideIndex + 1) % totalSlides;
+    glider.scrollItem(slideIndex);
+  }, 3000);
 });
 
-
-//slider
-const slider = document.querySelector('.slider-track');
-const leftBtn = document.querySelector('.nav.left');
-const rightBtn = document.querySelector('.nav.right');
-
-if (slider && leftBtn && rightBtn) {
-  const scrollPerClick = 200;
-  rightBtn.addEventListener('click', () => {
-    slider.scrollBy({ left: scrollPerClick, behavior: 'smooth' });
-  });
-  leftBtn.addEventListener('click', () => {
-    slider.scrollBy({ left: -scrollPerClick, behavior: 'smooth' });
-  });
-}
 
 // Popup Auth Toggle
 const authPopupOverlay = document.getElementById("auth-popup-overlay");
