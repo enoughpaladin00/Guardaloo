@@ -2,6 +2,7 @@
 
 import "@hotwired/turbo-rails"
 import "controllers"
+import "slider"
 import * as bootstrap from "bootstrap"
 
 // home.js

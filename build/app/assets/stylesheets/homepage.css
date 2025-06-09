@@ -1,5 +1,7 @@
 
 .contenitore{
+    position:relative;
+    flex: 0 0 auto;
     border: 0.2em solid #FD7474;
     border-radius: 1.5em;
     display: flex;
@@ -13,9 +15,11 @@
 
 .number{
     position: absolute; 
-    transform: translateY(0.69em) translateX(-0.3em); 
-    font-size: 12em; 
-    color:#FD7474
+    transform: translateY(0.6em) translateX(-0.35em); 
+    font-size: 12em;
+    margin: 0;
+    color:#FD7474;
+    z-index: 1;
 }
 
 .citazione {
@@ -25,50 +29,35 @@
     color: #004466;
 }
 
-.netflix-slider{
-    width: 100%;
-    position: relative;
-    overflow: hidden;
-    padding-left: 1.3em;
-}
-
-.netflix-slider .nav {
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-}
-
-.netflix-slider:hover .nav {
-  opacity: 1;
-  pointer-events: auto;
+.netflix-slider {
+  position: relative;
+  overflow: hidden;
 }
 
 .slider-track {
+  overflow-x: auto;
   display: flex;
-  transition: transform 0.5s ease;
-  scroll-behavior: smooth;
+  scrollbar-width: none;
 }
 
-.nav {
+.slider-btn {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(0,0,0,0.6);
-  color: #FFFAEF;
+  z-index: 10;
+  background-color: rgba(0, 0, 0, 0.6);
   border: none;
-  padding: 1em 0.3em;
+  color: white;
+  font-size: 24px;
   cursor: pointer;
-  font-size: 1.4rem;
+  padding: 10px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
-.left {
-  left: 0;
-  border-top-right-radius: 0.5em;
-  border-bottom-right-radius: 0.5em;
+.netflix-slider:hover .slider-btn {
+  opacity: 1;
 }
 
-.right {
-  right: 0;
-  border-top-left-radius: 0.5em;
-  border-bottom-left-radius: 0.5em;
-}
+.slider-btn.left { left: 0; }
+.slider-btn.right { right: 0; }
