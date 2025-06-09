@@ -1,2 +1,162 @@
-<%= authenticate_user %>
+<%= content_for :scripts do %>
+    <script>
+        window.cinemas = <%= raw @cinemas_for_map.to_json %>;
+    </script>
+<% end %>
+
+<!-- <pre><%= @showtimes_array.inspect%></pre> -->
+
+<head>
+    <!-- TailwindCSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
 <%= render 'layouts/navbar' %>
+
+<body>
+    <div class='container'>
+        <div class="movie-container flex-col md:grid md:grid-cols-5 gap-4 p-4">
+            <div class="movie-backdrop md:col-span-5 flex items-center justify-center rounded-lg shadow-lg">
+                <% if @movie_details["backdrop_path"] %>
+                    <div class="backdrop" style='background-image: url("https://image.tmdb.org/t/p/original<%= @movie_details["backdrop_path"] %>");'></div>
+                <% else %>
+                    <div class="w-full h-80 bg-gray-200 flex items-center justify-center text-center px-2">Nessuna immagine</div>
+                <% end %>
+            </div>
+        
+            <!-- Sidebar sinistra -->
+            <aside class="col-span-1 flex flex-col items-center space-y-4">
+                <div class="w-35 h-35 rounded-md flex items-center justify-center">
+                    <% if @movie_details["poster_path"] %>
+                        <img src="https://image.tmdb.org/t/p/w500<%= @movie_details['poster_path'] %>" alt="<%= @movie_details['title'] %>" class="rounded">
+                    <% else %>
+                        <div class="w-full h-80 flex items-center justify-center text-center px-2">Nessuna immagine</div>
+                    <% end %>
+                </div>
+
+                <div class="flex flex-col">
+                    <div class="flex space-x-2">
+                        <button><%= image_tag 'moviePage/Vector-3.svg', class: 'w-5' %></button>
+                        <button><%= image_tag 'moviePage/Vector-2.svg', class: 'w-5' %></button>
+                        <button><%= image_tag 'moviePage/Vector.svg', class: 'w-5' %></button>
+                        <button><%= image_tag 'moviePage/Vector-1.svg', class: 'w-5' %></button>
+                    </div>
+                </div>
+
+                <div class="font-semibold">Valutazione</div>
+            </aside>
+
+            <!-- Contenuto principale -->
+            <main class="col-span-4 space-y-6">
+
+                <!-- Informazioni -->
+                <section>
+                    <h1 class="movie-title"><%= @movie_details["title"] %> <span class="director-title">(diretto da <%= @director %>)</span></h1>
+                    <p class="text-sm info-text"><%= @movie_details["release_date"]&.slice(0,4)%> • <%= @movie_details["runtime"] %>min • <%= @movie_details["genres"].map { |g| g["name"] }.join(", ") if @movie_details["genres"].present? %>
+                </section>
+
+                <!-- Streaming -->
+                <% shown_providers = (@italian_providers["flatrate"] || []).select { |p| @allowed_providers.include?(p["provider_name"]) } %>
+                <section class="section-box shadow">
+                    <% if shown_providers.any?%>
+                        <h3 class="font-semibold mb-2">Guarda ora</h3>
+                        <ul class="flex gap-4 mt-2">
+                            <% shown_providers.each do |provider| %>
+                                <li class="flex flex-col p-4 items-center">
+                                    <img src="https://image.tmdb.org/t/p/w45<%= provider["logo_path"] %>" alt="<%= provider["provider_name"] %>" class="rounded">
+                                </li>
+                            <% end %>
+                        </ul>
+                    <% else %>
+                        <p>Non disponibile in streaming in Italia.</p>
+                    <% end %>
+                </section>
+
+                <!-- Mappa e Cinema -->
+                <section class="flex flex-col md:flex-row gap-4">
+                  <div id="map" class="cinema-map h-96 flex-1 rounded-lg"></div>
+                                            
+                  <!-- Box con tab laterali e lista cinema -->
+                  <div class="section-box flex-1 flex max-h-96 overflow-hidden rounded-lg border">
+                                            
+                    <!-- Tabs verticali -->
+                    <div class="tabs flex flex-col min-w-[8rem] border-r bg-gray-100">
+                      <% @days.each_with_index do |day, index| %>
+                        <button class="tab-button w-full text-left px-4 py-2 <%= 'active' if index == 0 %>"
+                                data-day="<%= day %>">
+                          <%= day %>
+                        </button>
+                      <% end %>
+                    </div>
+                    
+                    <!-- Contenitore lista cinema -->
+                    <div class="cinema-list flex-1 overflow-y-auto p-4">
+                    
+                      <% @cinemas_by_day_hash.each_with_index do |(day, cinemas), index| %>
+                        <div class="cinema-list-day" data-day="<%= day %>" style="<%= index == 0 ? '' : 'display: none;' %>">
+                          <% if cinemas.any? %>
+                            <% cinemas.each do |cinema| %>
+                              <% cinema_record = Cinema.find_by(name: cinema[:name]) %>
+                              <% cinema_for_map = @cinemas_for_map.find { |c| c[:id] == cinema_record&.id } %>
+                            
+                              <div class="cinema-item mb-4 pb-4 border-b cursor-pointer hover:bg-gray-50 p-2 rounded"
+                                   data-id="<%= cinema_record&.id %>">
+                                <p class="font-semibold"><%= cinema[:name] %></p>
+                                <p class="text-sm text-gray-600 mb-2"><%= cinema[:address] %></p>
+                            
+                                <div class="mt-2 flex flex-wrap gap-2">
+                                  <% cinema[:showing].first[:time].each do |time| %>
+                                    <span class="showtime px-3 py-1 rounded-full text-sm"><%= time %></span>
+                                  <% end %>
+                                </div>
+                              </div>
+                            <% end %>
+                          <% else %>
+                            <p class="text-center py-4">Nessun cinema trovato per questo giorno.</p>
+                          <% end %>
+                        </div>
+                      <% end %>
+                    </div>
+                  </div>
+                </section>
+
+
+                
+                        
+                <!-- Descrizione -->
+                <section class="section-box shadow">
+                  <h3 class="font-semibold mb-2">Descrizione</h3>
+                  <p style="text-align: justify"><%= @movie_details["overview"] %></p>
+                </section>
+                        
+                <!-- Trailer -->
+                <section class="section-box shadow">
+                    <h3 class="font-semibold mb-2">Trailer</h3>
+                    <% if @trailer %>
+                        <div class="aspect-w-16 aspect-h-9 w-full my-4">
+                            <iframe 
+                                class="w-full h-64 md:h-96 rounded-lg" 
+                                src="https://www.youtube.com/embed/<%= @trailer["key"] %>" 
+                                title="Trailer"
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                    <% else %>
+                        <p>Nessun trailer disponibile.</p>
+                    <% end %>
+                </section>
+            </main>
+        </div>
+
+    </div>
+    <div class='community-wrapper'>
+    </div>
+    <div class='similar-wrapper'>
+    </div>
+<script>window.cinemas = <%= raw @cinemas_for_map.to_json %>;</script>
+<script defer src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_MAPS_API_KEY'] %>&libraries=marker&map_ids=<%= ENV['GOOGLE_MAPS_ID'] %>&loading=async&callback=initMap"></script>
+</body>
+
+<%= render 'layouts/footer' %>

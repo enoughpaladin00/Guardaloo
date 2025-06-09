@@ -12,6 +12,6 @@ class ApplicationController < ActionController::Base
   end
 
   def authenticate_user!
-    redirect_to login_path, alert: "Effettua il login" unless user_signed_in?
+    redirect_to root_path, alert: "Effettua il login" unless user_signed_in?
   end
 end

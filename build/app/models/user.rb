@@ -5,15 +5,27 @@ class User < ApplicationRecord
 
     validates :email, presence:true, uniqueness:true
     validates :username, presence: true, uniqueness: true
-    validates :first_name, :last_name, :birth_date, presence: true
-    validates :password, length: {minimum: 6}
+    validates :first_name, :last_name, presence: true
+    validates :birth_date, presence: true, unless: -> { provider.present? }
+    validates :password, presence: true, length: { minimum: 6 }, on: :create
+    validates :password, length: { minimum: 6 }, allow_nil: true, on: :update
 
     def self.from_omniauth(auth)
-        find_or_create_by(email: auth['info']['email']) do |user|
-            user.first_name = auth['info']['first_name']
-            user.last_name = auth['info']['last_name']
-            user.username = auth['info']['email'].split('@').first
-            user.password = SecureRandom.hex(15)
-        end           
+        user = find_by(provider: auth['provider'], uid: auth['uid'])
+        user ||= find_by(email: auth['info']['email'])
+
+        if user.nil?
+            user = User.new(
+                email: auth['info']['email'],
+                first_name: auth['info']['first_name'],
+                last_name: auth['info']['last_name'],
+                username: auth['info']['email'].split('@').first,
+                password: SecureRandom.hex(15)
+            )
+        end
+        user.provider = auth['provider']
+        user.uid = auth['uid']
+        user.save!
+        user
     end
 end

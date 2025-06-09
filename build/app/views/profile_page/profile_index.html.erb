@@ -12,23 +12,36 @@
         <div class="User_half">
             <!-- information about user -->
             <div class="Sezione_1">
+
                 <!-- user bio -->
                 <div class="user_info">
-
-                    <!-- profile img -->
+                    <!--User avatar -->
                     <div class="user_img">
-                            <%= image_tag "Profile_page/default_avatar.svg", alt: "Immagine di default", width: 200, class: "rounded" %>
+                        <% if @user.persisted? && @user.avatar.attached? %>
+                            <%= image_tag url_for(@user.avatar) + "?#{@user.avatar.blob.created_at.to_i}", alt: "Avatar", class: "Avatar", width: 200 %>
+                        <% else %>
+                            <%= image_tag "Profile_page/default_avatar.svg", alt: "Immagine di default", width: 200, class: "Avatar" %>
+                        <% end %>
                     </div>
+
                     <div class="user_name">
-                        <h2>Nome Utente</h2>
+                        <h2> <%= current_user.username%> </h2>
                     </div>
-                    <button class="yellow-button button-1 edit-button"> Edit profile </button>
+                    
+                    <div class="user_edit">
+                        <button class="yellow-button button-1 edit-button"> Edit profile </button>
+                    </div>
                 </div>
+
+                <hr style="margin-right: 2%">
+
                 <!-- user stats -->
                 <div class="user_stat">
-
+                    <a>Film Visti</a>
+                    <a>Recensioni Scritte</a>
+                    <a>Cinema Salvati</a>
                 </div>
-                <hr style="margin-right: 2%">
+
             </div>
             <!-- top 3 film  -->
             <div class="Sezione_2">
@@ -37,10 +50,11 @@
                     <h2>TOP 3 FILM</h2>
                     <button class="yellow-button button-1 top3-button">Change Film</button>
                 </div>
-
-                <div>locandina 1</div>
-                <div>locandina 2</div>
-                <div>locandina 3</div>
+                <div class=Sezione_2-2>
+                    <%= image_tag "Profile_page/film_default.png", class:"Locandina Film1", alt: "Immagine di default", width: 200 %>
+                    <%= image_tag "Profile_page/film_default.png", class:"Locandina Film2", alt: "Immagine di default", width: 200 %>
+                    <%= image_tag "Profile_page/film_default.png", class:"Locandina Film3", alt: "Immagine di default", width: 200 %>
+                </div>
 
             </div>
         </div>
@@ -61,30 +75,37 @@
                 <div>
                     <%= form_with model: @user, url: profile_path, method: :patch, local: true, html: { multipart: true } do |f| %>
                         <div>
-                        <%= f.label :first_name, "Nome", style:"color: var(--color-3)" %><br>
-                        <%= f.text_field :first_name, required: true, class: "form-control mb-3", style:"color: var(--color-3)" %>
+                            <%= f.label :first_name, "Nome", style:"color: var(--color-3)" %><br>
+                            <%= f.text_field :first_name, required: true, class: "form-control mb-3", style:"color: var(--color-3)" %>
                         </div>
                         <div>
-                        <%= f.label :last_name, "Cognome", style:"color: var(--color-3)" %><br>
-                        <%= f.text_field :last_name, required: true, class: "form-control mb-3", style:"color: var(--color-3)"%>
+                            <%= f.label :last_name, "Cognome", style:"color: var(--color-3)" %><br>
+                            <%= f.text_field :last_name, required: true, class: "form-control mb-3", style:"color: var(--color-3)"%>
                         </div>
                         <div>
-                        <%= f.label :birth_date, "Data di nascita", style:"color: var(--color-3)" %><br>
-                        <%= f.date_field :birth_date, required: true, class: "form-control mb-3", style:"color: var(--color-3)" %>
+                            <%= f.label :birth_date, "Data di nascita", style:"color: var(--color-3)" %><br>
+                            <%= f.date_field :birth_date, required: true, class: "form-control mb-3", style:"color: var(--color-3)" %>
                         </div>
                         <div>
-                        <%= f.label :username, "Username", style:"color: var(--color-3)" %><br>
-                        <%= f.text_field :username, required: true, class: "form-control mb-3", style:"color: var(--color-3)" %>
+                            <%= f.label :username, "Username", style:"color: var(--color-3)" %><br>
+                            <%= f.text_field :username, required: true, class: "form-control mb-3", style:"color: var(--color-3)" %>
                         </div>
                         <div>
-                        <%= f.label :email, "Email", style:"color: var(--color-3)" %><br>
-                        <%= f.email_field :email, required: true, class: "form-control mb-3", style:"color: var(--color-3)" %>
+                            <%= f.label :email, "Email", style:"color: var(--color-3)" %><br>
+                            <%= f.email_field :email, required: true, class: "form-control mb-3", style:"color: var(--color-3)" %>
+                        </div>
+                        <div>
+                            <%= f.label :avatar, "Immagine del profilo", style:"color: var(--color-3)" %><br>
+                            <%= f.file_field :avatar, class: "form-control mb-3", style:"color: var(--color-3)" %>
+                        </div>
+                        <div>
+                            <%= label_tag :current_password, "Password attuale", style:"color: var(--color-3)" %><br>
+                            <%= password_field_tag :current_password, nil, required: true, class: "form-control" %>
                         </div>
 
-                        <!-- aggiungere controllo pw -->
-                        <!-- Non modifica il database -->
                         <div>
-                        <%= f.submit "Salva modifiche", class:"close-popup yellow-button button-1 sumbit-button" %>
+                            <br>
+                            <%= f.submit "Salva modifiche", class:"close-popup yellow-button button-1 sumbit-button" %>
                         </div>
                     <% end %>
                 </div>

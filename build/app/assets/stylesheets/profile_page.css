@@ -13,27 +13,55 @@
 .Sezione_1{
     width: 50%;
     border-right: 1px solid var(--color-5);
-    margin-top: 3%;
-    margin-left: 2%;
+    margin-top: 3rem;
+    margin-left: 2rem;
+    padding-right: 1rem;
 }
 .Sezione_2{
     width: 50%;
-    margin-top: 3%;
-    margin-left: 2%;
+    margin-top: 3rem;
+    margin-left: 2rem;
 }
 .Sezione_3{
-    margin-top: 3%;
-    margin-left: 2%;
+    margin-top: 3rem;
+    margin-left: 2rem;
 }
 
 /*Sezione 1*/
+/*primo contenitore*/
 .user_info{
     display:flex;
     align-items: center;
+    width: 100%;
+    max-width: 800px;
+    gap: 1rem;
+    margin: auto;
+}
+.user_img{
+    flex: 0 0 20%;
+    display: flex;
+    justify-content: center;
+}
+.Avatar {
+    width: 100%;
+    max-width: 200px;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    border-radius: 50%;
+    box-shadow: 7px 7px 3px var(--color-4);
 }
 .user_name{
-    margin-left: 2%;
-    margin-right: 25%;
+    flex: 1;
+    text-align: left;
+    font-size: var(--size-lg);
+    font-weight: 600;
+    word-break: break-word;
+    padding-left: 2rem;
+}
+.user_edit{
+    flex: 0 0 20%;
+    display: flex;
+    justify-content: flex-end;
 }
 .button-1{
     font-size: var(--size-sm);
@@ -44,7 +72,7 @@
     font-family: 'Inter', sans-serif;
     font-weight: 600;
 }
-
+/*secondo contenitore*/
 
 /*Sezione 2*/
 .Sezione_2-1{
@@ -52,7 +80,44 @@
     align-items: center;
     gap:50%;
 }
+.Sezione_2-2{
+    top: 5%;
+    left: 10%;
+    width: 70%;
+    height: 600px;
+    position: relative;
+}
 
+.Sezione_2-2 img {
+    position: absolute;
+    width: 230px; /* come nel tuo image_tag */
+    height: auto;
+    border-radius: 30px;
+    border: 1px var(--color-5) solid;
+    box-shadow: 7px 7px 3px var(--color-4);
+  }
+  
+  /* 1ª immagine: in alto a sinistra */
+.Sezione_2-2 img:nth-of-type(1) {
+    top: 0;
+    left: 0;
+    z-index: 3;
+  }
+  
+  /* 2ª immagine: al centro */
+  .Sezione_2-2 img:nth-of-type(2) {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+  }
+  
+  /* 3ª immagine: in basso a destra */
+  .Sezione_2-2 img:nth-of-type(3) {
+    bottom: 0;
+    right: 0;
+    z-index: 1;
+  }
 /*PopUp*/
 .popup-overlay {
     position: fixed;

@@ -1,4 +1,13 @@
 Rails.application.routes.draw do
+  get "cinemas/index"
+  get "home/index"
+  get "/cinemas", to: "cinemas#index"
+
+  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+
+  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
+  # Can be used by load balancers and uptime monitors to verify that the app is live.
+  get "up" => "rails/health#show", as: :rails_health_check
 
   # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
   # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
@@ -16,23 +25,23 @@ Rails.application.routes.draw do
   post "/login", to: "sessions#create"
   delete "/logout", to: "sessions#destroy"
 
-  #movie
-  get "movies/show"
-  resources :movies, only: [:show]
+  # movie
+  get "movies/:tmdb_id", to: "movies#show", as: "movie_show"
 
-  #homepage
+  ## route per location
+  post "/set_location", to: "sessions#set_location"
+
+  # homepage
   get "home", to: "homepage#homepage"
-
-  #Google Auth
-  get '/auth/:provider/callback', to: 'sessions#omniauth'
-  get '/auth/failure', to: redirect('/')
-
-  match '/auth/:provider', to: 'sessions#passthru', via: [:get, :post]
 
   # User Profile
   get "/profile", to: "profile_page#profile_index", as: "profile"
   get "/profile/edit", to: "profile_page#edit", as: "edit_profile"
   patch "/profile", to: "profile_page#update"
 
+  # Google and Facebook Auth
+  get "/auth/:provider/callback", to: "sessions#omniauth"
+  get "/auth/failure", to: redirect("/")
 
+  match "/auth/:provider", to: "sessions#passthru", via: [ :get, :post ]
 end

@@ -57,3 +57,7 @@ TMDB, OAuth, Facebook Login, Google API Places, Google Maps, Tamburino Cinema
 42. Come Utente Verificato, voglio poter segnalare eventuali bug, così che il team di sviluppo possa risolvere gli errori segnalati.
 43. Come Utente Verificato, voglio poter suggerire delle modifiche, così che la mia esperienza possa aiutare il miglioramento del server.
 44. Come Utente Verificato, voglio poter cercare i cinema tramite dei filtri predisposti, così che possa scegliere quello più adatto alle mie esigenze.
+
+## MEMO
+1. Risolvere problemi Google OAuth (Password)
+2. Modificare visualizzazione mappa aggiornandola giorno per giorno[MoviePage]

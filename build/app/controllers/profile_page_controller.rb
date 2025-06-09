@@ -1,14 +1,19 @@
 class ProfilePageController < ApplicationController
+  
+  before_action :require_login
   before_action :set_user
 
   def profile_index
-    unless current_user
-      redirect_to login_path, alert: "Devi accedere prima."
-      return
-    end
+    # @user è già settato
   end
 
   def update
+    if params[:current_password].blank? || !@user.authenticate(params[:current_password])
+      flash.now[:alert] = "Password attuale errata"
+      render :profile_index, status: :unauthorized
+      return
+    end
+  
     if @user.update(user_params)
       redirect_to profile_path, notice: "Profilo aggiornato con successo"
     else
@@ -23,6 +28,12 @@ class ProfilePageController < ApplicationController
     @user = current_user
   end
 
+  def require_login
+    unless current_user
+      redirect_to login_path, alert: "Devi accedere prima."
+    end
+  end
+
   def user_params
     params.require(:user).permit(
       :first_name,
@@ -30,9 +41,7 @@ class ProfilePageController < ApplicationController
       :birth_date,
       :username,
       :email,
-      :avatar,
-      :password,
-      :password_confirmation
+      :avatar
     )
   end
 end

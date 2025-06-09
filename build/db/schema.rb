@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_23_141420) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_31_140903) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -42,13 +42,51 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_23_141420) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
-  create_table "movies", force: :cascade do |t|
-    t.integer "tmdb_id"
-    t.string "title"
-    t.date "release_date"
-    t.text "overview"
+  create_table "cinema_programmings", force: :cascade do |t|
+    t.string "name"
+    t.string "location"
+    t.string "movie_title"
+    t.text "showtimes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "cinema_showtimes", force: :cascade do |t|
+    t.string "day"
+    t.string "movie"
+    t.string "show_type"
+    t.text "show_times"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "cinemas", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "address", null: false
+    t.float "latitude"
+    t.float "longitude"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_cinemas_on_name", unique: true
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.text "content"
+    t.bigint "post_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["post_id"], name: "index_comments_on_post_id"
+    t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
+  create_table "posts", force: :cascade do |t|
+    t.string "title"
+    t.text "content"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -60,8 +98,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_23_141420) do
     t.string "last_name"
     t.date "birth_date"
     t.string "username"
+    t.string "provider"
+    t.string "uid"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "comments", "posts"
+  add_foreign_key "comments", "users"
+  add_foreign_key "posts", "users"
 end

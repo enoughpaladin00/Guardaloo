@@ -68,9 +68,15 @@ html, body{
 }
 
 .pickup-line{
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    min-width: 450px;
+    font-size: 35px;
+}
+
+.keyword-text{
     font-family: 'Bodoni Moda', serif;
-    font-weight: 700;
-    width: 100;
+    font-weight: 900;
 }
 
 .fullscreen-section{
@@ -140,7 +146,8 @@ html, body{
 .text-column {
     flex: 1;
     min-width: 450px;
-    font-family: 'Bodoni Moda', serif;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
     font-size:35px;
 }
 
@@ -182,48 +189,79 @@ html, body{
     transform: translateX(-20px);
 }
 
-.trend-slide {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem;
-    box-sizing: border-box;
-    max-width: 20 rem;
-    width: 100%;
-    margin: auto;
-}
-  
-.trend-slide > div {
-    border-radius: 16px;
-    overflow: hidden;
-}
-
-.trend-slide img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    display: block;
-}
-
-.trend-card {
-    max-width: 250px;
-    width: 100%;
-    height: auto;
-    background-color: white;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-}
-
-.swiper-slide {
-  width: auto !important;
-  flex-shrink: 0 !important;
-  display: flex !important;
-  justify-content: center;
+/* Applica lo stile alle slide di Glider */
+.glider-slide {
+  flex-shrink: 0;
+  display: flex;
   align-items: center;
+  justify-content: center;
   padding: 1rem;
   box-sizing: border-box;
+  max-width: 20rem;
+  width: 100%;
+  margin: auto;
 }
+
+/* Stile interno delle card */
+.glider-slide > div {
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.glider-slide img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
+}
+
+/* Card dei film */
+.trend-card {
+  max-width: 250px;
+  width: 100%;
+  height: auto;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Sezione carosello */
+.trend-section {
+  min-height: 100vh;
+  min-width: 100vw;
+  padding-top: 80px;
+  padding-bottom: 80px;
+}
+
+/* Pulsanti Glider */
+.glider-prev, .glider-next {
+  background-color: #facc15; /* giallo */
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 1.5rem;
+  border-radius: 0.5rem;
+  margin: 1rem;
+  cursor: pointer;
+}
+
+.dots {
+  text-align: center;
+  margin-top: 1rem;
+}
+.dots button {
+  width: 10px;
+  height: 10px;
+  background: #999;
+  border-radius: 50%;
+  border: none;
+  margin: 0 5px;
+}
+.dots .glider-dot.active {
+  background: #facc15;
+}
+
+/* ###################################### */
 
 .search-carousel-column {
     flex: 2;

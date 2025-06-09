@@ -1,52 +1,161 @@
+
+
+<!--Navbar-->
+
 <%= render 'layouts/navbar' %>
+
+
+<!--1 Section "Prossimamente al cinema"-->
+
 <div class="container-fluid d-flex align-items-center">
-    <h1 class="px-2 py-2 mb-0" style="font-size: 30px;"><b>Prossimamente al Cinema</b></h1>
-    <%= image_tag "homepage/cinema.svg", width: "25", height: "25" %>
+    <h1 class="px-2 pt-2 titolo" ><b>Prossimamente al Cinema</b></h1>
+    <%= image_tag "homepage/cinema.svg", class: "icon" %>
 </div>
 
-<div class="container-fluid d-flex flex-row">
-
-    <% @trending_movies.first(8).each do |movie| %>
-    <div class="contenitore" style="width: 430px">
-  
-        <div class="me-3 locandina" data-movie-id="<%= movie['id'] %>">
-            <% if movie["poster_path"] %>
-                <a href="#"><img src="https://image.tmdb.org/t/p/w500<%= movie['poster_path'] %>" alt="<%= movie['title'] %>" width="auto" height="220"></a>
-            <% else %>
-                <a href="#"><div class="w-full h-80 bg-gray-200 flex items-center justify-center text-center px-2">Nessuna immagine</div></a>
-            <% end %>
-        </div>
-  
-        <div class="d-flex flex-column py-3 me-2">
-          <h4 class="mb-1"><%= movie['title'] %></h4>
-          <% details = @movie_details[movie['id']] %>
-          <p class="mb-1 text-muted"><%= movie['release_date'].to_date.year %> – <%= details['runtime'] %> min</p>
-          <p class="mb-1 small"><%= truncate(movie["overview"], length: 100) %></p>
-        </div>
-  
-    </div> 
-    <%end%>        
-</div>
-<div style="margin-top: 2%">
-    
-    <%= image_tag "homepage/virgolette.svg", style: "margin-left: 30%; position: absolute ", width: "55px" %>
-    <%= image_tag "homepage/virgolette.svg", style: "margin-left: 70%; position: absolute; transform: rotate(180deg) ", width: "55px" %>
-    <div align="center">
-        <p class="citazione" >Il cinema è un’opportunità per entrare in un altro<br>mondo, un’altra vita, un’altra mente</p>
-        <p class="citazione" style="font-size: 2em">- Martin Scorsese</p>
-    </div>
-    
-</div>
-<div class="container-fluid d-flex align-items-center">
-    <h1 class="px-2 py-2 mb-0" style="font-size: 30px;"><b>Top 10</b></h1>
-    <%= image_tag "homepage/trend.svg", width: "25", height: "25" %>
-</div>
-<div class="container-fluid d-flex py-3 ms-4">
-<% @top_movies.each do |movie| %>
-
-    <div class="me-4 contenitore">
-        <a href="#"><img src="https://image.tmdb.org/t/p/w500<%= movie['poster_path'] %>" alt="<%= movie['title'] %>" width="auto" height="336" ></a>
+<div class="netflix-slider">
+    <button class="slider-btn left" style="padding: 2.9em 0.1em;"><%= image_tag "homepage/freccia.svg", class: "slider_img", style: "transform: rotate(180deg);" %></button>
+    <div class="slider-track">
+        <% @trending_movies.each do |movie| %>
+        <div class="contenitore" style="background-color:rgb(253,116,116, 0.1); width: 30em;">
         
+            <div class="me-3 bord" data-movie-id="<%= movie['id'] %>">
+                <% if movie["poster_path"] %>
+                    <a href="/movies/<%= movie['id'] %>"><img src="https://image.tmdb.org/t/p/w500<%= movie['poster_path'] %>" alt="<%= movie['title'] %>" style="height: 11.5em; width: auto"></a>
+                <% else %>
+                    <a href="/movies/<%= movie['id'] %>"><div class="w-full h-80 bg-gray-200 flex items-center justify-center text-center px-2">Nessuna immagine</div></a>
+                <% end %>
+            </div>
+            <a href="/movies/<%= movie['id'] %>" class="link-underline link-underline-opacity-0"><div class="d-flex flex-column py-3 me-2" >
+              <h5 style="color: #004466;"><%= movie['title'] %></h5>
+              <% details = @movie_details[movie['id']] %>
+              <p class="mb-1 text-muted"><%= movie['release_date'].to_date.year %> – <%= details['runtime'] %> min</p>
+            </div></a>
+        </div> 
+        <%end%> 
     </div>
-    <%end%>
+    <button class="slider-btn right" style="padding: 2.9em 0.1em;"><%= image_tag "homepage/freccia.svg", class: "slider_img" %></button>
 </div>
+
+<!--2 section "Citazione"-->
+
+<div class="d-flex py-5" align="center" style="justify-content: center;">
+    
+    <div class="d-flex">
+        <%= image_tag "homepage/virgolette.svg", style: " position: absolute; transform: translateX(-5.5em); width: 3em " %>
+        <%= image_tag "homepage/virgolette.svg", style: " position: absolute; transform: rotate(180deg) translateX(-50em); width: 3em " %>
+        <div>
+            <p class="citazione" >Il cinema è un’opportunità per entrare in un altro<br>mondo, un’altra vita, un’altra mente</p>
+            <p class="citazione" style="font-size: 2em">- Martin Scorsese</p>
+        </div>
+    </div>
+    
+</div>
+
+<!--3 section "Top 10 Film"-->
+
+<div class="container-fluid d-flex align-items-center">
+    <h1 class="px-2 pt-2 titolo"><b>Top 10 Film</b></h1>
+    <%= image_tag "homepage/trend.svg", class: "icon" %>
+</div>
+
+<div class="netflix-slider mb-3">
+    <button class="slider-btn btn-top left"><%= image_tag "homepage/freccia.svg", class: "slider_img", style: "transform: rotate(180deg)" %></button>
+    <div class="slider-track">
+        <% @top_movies.each_with_index do |movie, index| %>
+        
+            <div class="contenitore contenitore_top10">
+                <a href="/movies/<%= movie['id'] %>"><img class="top10" src="https://image.tmdb.org/t/p/w500<%= movie['poster_path'] %>" alt="<%= movie['title'] %>" >
+                <span class="number"><b><%= index + 1 %></b></span></a>
+            </div>
+
+        <%end%>
+    </div>
+    <button class="slider-btn btn-top right"><%= image_tag "homepage/freccia.svg", class: "slider_img" %></button>
+</div>
+
+
+<!--4 section "Film"-->
+
+<div class="container-fluid d-flex align-items-center">
+    <h1 class="px-2 pt-2 titolo"><b>Film</b></h1>
+    <%= image_tag "homepage/tv.svg", class: "icon" %>
+</div>
+
+
+<div class="netflix-slider mb-5">
+    <button class="slider-btn left"><%= image_tag "homepage/freccia.svg", class: "slider_img", style: "transform: rotate(180deg)" %></button>
+    <div class="slider-track">
+        <% @trending_movies.each do |movie| %>
+        
+            <div class="contenitore">
+                <a href="/movies/<%= movie['id'] %>"><img class="locandina" src="https://image.tmdb.org/t/p/w500<%= movie['poster_path'] %>" alt="<%= movie['title'] %>" ></a>
+            </div>
+
+        <%end%>
+    </div>
+    <button class="slider-btn right"><%= image_tag "homepage/freccia.svg", class: "slider_img" %></button>
+</div>
+
+<!--5 section "Map"-->
+
+<!-- <%= @cinemas.inspect %> -->
+
+<div class="container-fluid d-flex align-items-center">
+    <h1 class="px-2 py-2 mb-0 titolo"><b>Cinema Vicino a te</b></h1>
+    <%= image_tag "homepage/pin.svg", class: "icon" %>
+</div>
+
+<div class="mb-5" align="center">
+    <div class="contenitore contenitore_maps" style="width: 80%;">
+        <div id="map" class="bord maps"></div>
+    </div>
+</div>
+
+<!--6 section "Top 10 Series"-->
+
+<div class="container-fluid d-flex align-items-center">
+    <h1 class="px-2 titolo"><b>Top 10 Serie TV</b></h1>
+    <%= image_tag "homepage/trend.svg", class: "icon" %>
+</div>
+
+<div class="netflix-slider mb-3">
+    <button class="slider-btn btn-top left"><%= image_tag "homepage/freccia.svg", class: "slider_img", style: "transform: rotate(180deg)" %></button>
+    <div class="slider-track">
+        <% @top_series.each_with_index do |movie, index| %>
+        
+            <div class="contenitore contenitore_top10">
+                <a href="#"><img class="top10" src="https://image.tmdb.org/t/p/w500<%= movie['poster_path'] %>" alt="<%= movie['title'] %>" >
+                <span class="number"><b><%= index + 1 %></b></span></a>
+            </div>
+
+        <%end%>
+    </div>
+    <button class="slider-btn btn-top right"><%= image_tag "homepage/freccia.svg", class: "slider_img" %></button>
+</div>
+
+<!--5 section "Serie TV"-->
+
+<div class="container-fluid d-flex align-items-center">
+    <h1 class="px-2 pt-2 titolo"><b>Serie TV</b></h1>
+    <%= image_tag "homepage/tv.svg", class: "icon" %>
+</div>
+
+<div class="netflix-slider mb-3">
+    <button class="slider-btn left"><%= image_tag "homepage/freccia.svg", class: "slider_img", style: "transform: rotate(180deg)" %></button>
+    <div class="slider-track">
+        <% @trending_series.each do |movie| %>
+        
+            <div class="contenitore">
+                <a href="#"><img class="locandina" src="https://image.tmdb.org/t/p/w500<%= movie['poster_path'] %>" alt="<%= movie['title'] %>"></a>
+            </div>
+
+        <%end%>
+    </div>
+    <button class="slider-btn right"><%= image_tag "homepage/freccia.svg", class: "slider_img" %></button>
+</div>
+
+<!--7 section "Forum"-->
+
+<!--8 section "Footer"-->
+
+<%= render 'layouts/footer' %>
