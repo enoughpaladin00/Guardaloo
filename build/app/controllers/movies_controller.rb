@@ -2,11 +2,11 @@ class MoviesController < ApplicationController
   before_action :authenticate_user!
   def show
     tmdb_id = params[:tmdb_id]
-    api_key = ENV['TMDB_API_KEY']
-    @map_id = ENV['GOOGLE_MAPS_ID']
+    api_key = ENV["TMDB_API_KEY"]
+    @map_id = ENV["GOOGLE_MAPS_ID"]
 
     url = "https://api.themoviedb.org/3/movie/#{tmdb_id}"
-    response = HTTParty.get(url, query: { api_key: api_key, language: 'it-IT' })
+    response = HTTParty.get(url, query: { api_key: api_key, language: "it-IT" })
 
     if response.success?
       @movie = response.parsed_response
@@ -36,7 +36,7 @@ class MoviesController < ApplicationController
     Rails.logger.info "SESSION LOCATION: #{location.inspect}"
 
     if location.present? && location[:lat].present? && location[:lng].present?
-      city_data = Geocoder.search([location[:lat], location[:lng]]).first
+      city_data = Geocoder.search([ location[:lat], location[:lng] ]).first
       if city_data
         location_str = city_data.city || city_data.data["address"]["city"] || city_data.data["address"]["town"] || "Rome, Italy"
         Rails.logger.info "LOCATION SET (city): #{location_str}"
@@ -61,7 +61,7 @@ class MoviesController < ApplicationController
       @cinemas_by_day_hash[day] = cinema
     end
     @cinemas_for_map = []
-    
+
     @cinemas_by_day.each do |cinemas|
       next if cinemas.nil?
       cinemas.each do |cinema_data|
@@ -77,7 +77,7 @@ class MoviesController < ApplicationController
             address: cinema.address,
             lat: cinema.latitude,
             lng: cinema.longitude,
-            showing: cinema_data[:showing].first[:time].join(', ')
+            showing: cinema_data[:showing].first[:time].join(", ")
           }
         end
       end

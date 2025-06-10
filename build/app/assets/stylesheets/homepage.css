@@ -25,6 +25,12 @@
     border-right: 2px solid #FD7474;
 }
 
+.cinema_link{
+  text-align: left;
+  padding-left: 1em;
+  font-size: 1.5em;
+}
+
 .top10{
   border-radius: 1.3em; 
   height: 21em
