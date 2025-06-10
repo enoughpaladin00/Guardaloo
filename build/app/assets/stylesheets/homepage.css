@@ -19,6 +19,8 @@
 
 .contenitore_maps{
   background-color: white;
+  display: flex;
+  height: 40vh; 
 }
 
 .bord{
@@ -37,7 +39,7 @@
 }
 
 .maps{
-  height: 30em; 
+  height: 100%; 
   width: 50%;
 }
 
@@ -115,4 +117,35 @@
 
 .slider-btn.right { 
   right: 0; 
+}
+
+
+.cinema-list-container {
+  flex: 1;
+  display: block;
+  height: 100%;            
+  padding: 1em;
+  overflow-y: auto;
+  text-align: start;
+}
+
+#cinema-list {
+  list-style: none;
+  padding: 0;
+}
+
+.cinema-item-homepage {
+  border-bottom: 1px solid #ccc;
+  padding: 10px 0;
+}
+
+.cinema-item-homepage h3 {
+  margin-left: 1em;
+  font-size: 1.5em;
+}
+
+.cinema-item-homepage p {
+  margin: 5px 0 0;
+  margin-left: 1.5em;
+  color: #666;
 }

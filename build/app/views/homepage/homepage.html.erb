@@ -106,11 +106,19 @@
 <div class="mb-5" align="center">
     <div class="contenitore contenitore_maps" style="width: 80%;">
         <div id="map" class="bord maps"></div>
-        <div class="mt-4 ml-4" style="border-bottom: 2px solid grey">
-            <% @cinemas[:places].each do |cinema| %>
-                <a href="<%= cinema[:links][:website] %>" class="nav-link fw-bold cinema_link"><h5><%= cinema[:title] %></h5></a>
-            <%end%>
-        </div>
+        
+        <!-- <div class="cinema-list-container">
+          <ul id="cinema-list">
+          <% @cinemas[:places].each do |cinema| %>
+            <li class="cinema-item-homepage">
+            <a href="<%= cinema[:links][:website] %>" class="nav-link">
+              <h3><%= cinema[:title] %></h3>
+              <p><%= cinema[:address] %></p>
+            </a>
+            </li>
+          <%end%>
+          </ul>
+        </div>-->
     </div>
 </div>
 
