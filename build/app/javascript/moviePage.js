@@ -38,6 +38,9 @@ function initMap() {
     console.warn("Geolocalizzazione non supportata dal browser.");
   }
 
+  console.log(window.cinemas)
+
+
   cinemas.forEach((cinema) => {
     if (cinema.lat && cinema.lng) {
       const position = new google.maps.LatLng(cinema.lat, cinema.lng);
