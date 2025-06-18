@@ -63,7 +63,7 @@
     <div class="slider-track">
         <% @top_movies.each_with_index do |movie, index| %>
         
-            <div class="contenitore contenitore_top10">
+            <div class="contenitore contenitore_top10 contenitore-film">
                 <a href="/movies/<%= movie['id'] %>"><img class="top10" src="https://image.tmdb.org/t/p/w500<%= movie['poster_path'] %>" alt="<%= movie['title'] %>" >
                 <span class="number"><b><%= index + 1 %></b></span></a>
             </div>
@@ -78,7 +78,7 @@
 
 <div class="container-fluid d-flex align-items-center">
     <h1 class="px-2 pt-2 titolo"><b>Film</b></h1>
-    <%= image_tag "homepage/tv.svg", class: "icon" %>
+    <%= image_tag "homepage/film.svg", class: "icon" %>
 </div>
 
 
@@ -87,7 +87,7 @@
     <div class="slider-track">
         <% @trending_movies.each do |movie| %>
         
-            <div class="contenitore">
+            <div class="contenitore contenitore-film">
                 <a href="/movies/<%= movie['id'] %>"><img class="locandina" src="https://image.tmdb.org/t/p/w500<%= movie['poster_path'] %>" alt="<%= movie['title'] %>" ></a>
             </div>
 
@@ -98,16 +98,36 @@
 
 <!--5 section "Map"-->
 
-<!-- <%= @cinemas.inspect %> -->
-
 <div class="container-fluid d-flex align-items-center">
     <h1 class="px-2 py-2 mb-0 titolo"><b>Cinema Vicino a te</b></h1>
     <%= image_tag "homepage/pin.svg", class: "icon" %>
 </div>
 
+<!--<script>
+    console.log(window.cinemas)
+    window.cinemas = <%= raw @cinemas_for_map.to_json %>;
+</script> -->
+
+
+
 <div class="mb-5" align="center">
     <div class="contenitore contenitore_maps" style="width: 80%;">
         <div id="map" class="bord maps"></div>
+        
+        <!-- <div class="cinema-list-container">
+          <ul id="cinema-list">
+          <%# @cinemas_for_map.each do |cinema| %>
+
+            <li class="cinema-item cinema-item-homepage" data-id="<%#= cinema[:id] %>">
+            
+              <h3><%#= cinema[:name] %></h3>
+              <p><%#= cinema[:address] %></p>
+           
+            </li>
+
+          <%#end%>
+          </ul>
+        </div> -->
     </div>
 </div>
 
@@ -123,8 +143,8 @@
     <div class="slider-track">
         <% @top_series.each_with_index do |movie, index| %>
         
-            <div class="contenitore contenitore_top10">
-                <a href="#"><img class="top10" src="https://image.tmdb.org/t/p/w500<%= movie['poster_path'] %>" alt="<%= movie['title'] %>" >
+            <div class="contenitore contenitore_top10 contenitore-film">
+                <a href="/movies/<%= movie['id'] %>?type=<%= type = "tv" %>"><img class="top10" src="https://image.tmdb.org/t/p/w500<%= movie['poster_path'] %>" alt="<%= movie['title'] %>" >
                 <span class="number"><b><%= index + 1 %></b></span></a>
             </div>
 
@@ -145,8 +165,8 @@
     <div class="slider-track">
         <% @trending_series.each do |movie| %>
         
-            <div class="contenitore">
-                <a href="#"><img class="locandina" src="https://image.tmdb.org/t/p/w500<%= movie['poster_path'] %>" alt="<%= movie['title'] %>"></a>
+            <div class="contenitore contenitore-film">
+                <a href="/movies/<%= movie['id'] %>?type=<%= type = "tv" %>"><img class="locandina" src="https://image.tmdb.org/t/p/w500<%= movie['poster_path'] %>" alt="<%= movie['title'] %>"></a>
             </div>
 
         <%end%>
@@ -156,6 +176,61 @@
 
 <!--7 section "Forum"-->
 
+<div class="container-fluid d-flex align-items-center">
+    <h1 class="px-2 py-2 mb-0 titolo"><b>Forum</b></h1>
+    <%= image_tag "homepage/forum.svg", class: "icon" %>
+</div>
+
+<div align="center">
+<a href="#" class="link-underline link-underline-opacity-0">
+<div class="forum-item">
+    <div class="forum-title" style="color: #004466; text-align: left;">Best Movie 2024</div>
+    <div class="forum-meta mb-1 text-muted">
+        <span>MovieBuff</span>
+        <span>45 replies</span>
+    </div>
+</div>
+</a>
+
+<a href="#" class="link-underline link-underline-opacity-0">
+<div class="forum-item">
+    <div class="forum-title" style="color: #004466; text-align: left;">Upcoming Releases Discussion</div>
+    <div class="forum-meta mb-1 text-muted">
+        <span>CinemaFan</span>
+        <span>32 replies</span>
+    </div>
+</div>
+</a>
+
+<a href="#" class="link-underline link-underline-opacity-0">
+<div class="forum-item">
+    <div class="forum-title" style="color: #004466; text-align: left;">Classic Films Appreciation</div>
+    <div class="forum-meta mb-1 text-muted">
+        <span>Cinephile</span>
+        <span>28 replies</span>
+    </div>
+</div>
+</a>
+
+<a href="#" class="link-underline link-underline-opacity-0">
+<div class="forum-item">
+    <div class="forum-title" style="color: #004466; text-align: left;">Classic Films Appreciation</div>
+    <div class="forum-meta mb-1 text-muted">
+        <span>Cinephile</span>
+        <span>45 replies</span>
+    </div>
+</div>
+</a>
+</div>
+
+<div align="center">
+    <a href="#">
+    <button class="forum-button">Vedi tutti</button>
+    </a>
+</div>
+
 <!--8 section "Footer"-->
 
 <%= render 'layouts/footer' %>
+
+<script defer src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_MAPS_API_KEY'] %>&libraries=marker&map_ids=<%= ENV['GOOGLE_MAPS_ID'] %>&loading=async&callback=initMap"></script>

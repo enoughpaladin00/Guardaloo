@@ -2,23 +2,25 @@ class MoviesController < ApplicationController
   before_action :authenticate_user!
   def show
     tmdb_id = params[:tmdb_id]
-    api_key = ENV['TMDB_API_KEY']
-    @map_id = ENV['GOOGLE_MAPS_ID']
+    tmdb_type = params[:type] || "movie"  # default "movie", oppure "tv"
 
-    url = "https://api.themoviedb.org/3/movie/#{tmdb_id}"
-    response = HTTParty.get(url, query: { api_key: api_key, language: 'it-IT' })
+    api_key = ENV["TMDB_API_KEY"]
+    @map_id = ENV["GOOGLE_MAPS_ID"]
+
+    url = "https://api.themoviedb.org/3/#{tmdb_type}/#{tmdb_id}"
+    response = HTTParty.get(url, query: { api_key: api_key, language: "it-IT" })
 
     if response.success?
       @movie = response.parsed_response
     else
-      render plain: "Film non trovato", status: :not_found
+      render plain: "#{tmdb_type.capitalize} non trovato", status: :not_found
       return
     end
 
     service = TmdbService.new
-    @movie_details = service.fetch_movie_details(tmdb_id)
+    @movie_details = service.fetch_movie_details(tmdb_id, tmdb_type)
 
-    @providers = service.fetch_movie_watch_providers(tmdb_id)
+    @providers = service.fetch_movie_watch_providers(tmdb_id, tmdb_type)
     @italian_providers = @providers["results"]["IT"] || {}
     @allowed_providers = [
       "Netflix", "Disney Plus", "Amazon Prime Video", "Rakuten TV", "Apple TV", "Apple TV+",
@@ -26,7 +28,7 @@ class MoviesController < ApplicationController
       "Timvision", "Infinity+", "Rai Play", "Nexo Plus", "GuideDoc", "YouTube Premium", "Microsoft Store"
     ]
 
-    @all_italian_providers = service.fetch_italian_movie_providers["results"]
+    @all_italian_providers = service.fetch_italian_movie_providers(tmdb_type)["results"]
     @cleaned_providers = @all_italian_providers.map do |provider|
       provider.reject { |key, _| key == "display_priorities" }
     end
@@ -36,7 +38,7 @@ class MoviesController < ApplicationController
     Rails.logger.info "SESSION LOCATION: #{location.inspect}"
 
     if location.present? && location[:lat].present? && location[:lng].present?
-      city_data = Geocoder.search([location[:lat], location[:lng]]).first
+      city_data = Geocoder.search([ location[:lat], location[:lng] ]).first
       if city_data
         location_str = city_data.city || city_data.data["address"]["city"] || city_data.data["address"]["town"] || "Rome, Italy"
         Rails.logger.info "LOCATION SET (city): #{location_str}"
@@ -61,7 +63,7 @@ class MoviesController < ApplicationController
       @cinemas_by_day_hash[day] = cinema
     end
     @cinemas_for_map = []
-    
+
     @cinemas_by_day.each do |cinemas|
       next if cinemas.nil?
       cinemas.each do |cinema_data|
@@ -77,16 +79,18 @@ class MoviesController < ApplicationController
             address: cinema.address,
             lat: cinema.latitude,
             lng: cinema.longitude,
-            showing: cinema_data[:showing].first[:time].join(', ')
+            showing: cinema_data[:showing].first[:time].join(", ")
           }
         end
       end
     end
 
-    @credits = service.fetch_movie_credits(tmdb_id)
-    @director = @credits["crew"].find { |person| person["job"] == "Director" }&.dig("name")
+    @credits = service.fetch_movie_credits(tmdb_id, tmdb_type)
+    @director = @credits["crew"]&.find do |person|
+      [ "Director", "Creator", "Executive Producer", "Series Director" ].include?(person["job"])
+    end&.dig("name")
 
-    @videos = service.fetch_movie_videos(tmdb_id)
+    @videos = service.fetch_movie_videos(tmdb_id, tmdb_type)
     @trailer = @videos["results"].find { |v| v["type"] == "Trailer" && v["site"] == "YouTube" }
   end
 end

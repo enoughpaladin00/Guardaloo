@@ -28,7 +28,7 @@
             <aside class="col-span-1 flex flex-col items-center space-y-4">
                 <div class="w-35 h-35 rounded-md flex items-center justify-center">
                     <% if @movie_details["poster_path"] %>
-                        <img src="https://image.tmdb.org/t/p/w500<%= @movie_details['poster_path'] %>" alt="<%= @movie_details['title'] %>" class="rounded">
+                        <img src="https://image.tmdb.org/t/p/w500<%= @movie_details['poster_path'] %>" alt="<%= @movie_details['title'] || @movie_details['name'] %>" class="rounded">
                     <% else %>
                         <div class="w-full h-80 flex items-center justify-center text-center px-2">Nessuna immagine</div>
                     <% end %>
@@ -47,12 +47,30 @@
             </aside>
 
             <!-- Contenuto principale -->
-            <main class="col-span-4 space-y-6">
+            <main class="col-span-4 space-y-6" style="width: 100%">
 
                 <!-- Informazioni -->
                 <section>
-                    <h1 class="movie-title"><%= @movie_details["title"] %> <span class="director-title">(diretto da <%= @director %>)</span></h1>
-                    <p class="text-sm info-text"><%= @movie_details["release_date"]&.slice(0,4)%> • <%= @movie_details["runtime"] %>min • <%= @movie_details["genres"].map { |g| g["name"] }.join(", ") if @movie_details["genres"].present? %>
+                    <h1 class="movie-title">
+                      <%= @movie_details["title"] || @movie_details["name"] %>
+                      <% if @director.present? %>
+                        <span class="director-title">(diretto da <%= @director %>)</span>
+                      <% end %>
+                    </h1>
+                    <% info_parts = [] %>
+
+                    <% year = @movie_details["release_date"] || @movie_details["first_air_date"] %>
+                    <% info_parts << year.slice(0, 4) if year.present? %>
+                    
+                    <% runtime = @movie_details["runtime"] || (@movie_details["episode_run_time"].is_a?(Array) ? @movie_details["episode_run_time"].first : nil) %>
+                    <% info_parts << "#{runtime}min" if runtime.present? %>
+                  
+                    <% if @movie_details["genres"].present? %>
+                      <% genres = @movie_details["genres"].map { |g| g["name"] }.join(", ") %>
+                      <% info_parts << genres %>
+                    <% end %>
+                    
+                    <p class="text-sm info-text"><%= info_parts.join(" • ") %></p>
                 </section>
 
                 <!-- Streaming -->
@@ -80,14 +98,20 @@
                   <div class="section-box flex-1 flex max-h-96 overflow-hidden rounded-lg border">
                                             
                     <!-- Tabs verticali -->
-                    <div class="tabs flex flex-col min-w-[8rem] border-r bg-gray-100">
-                      <% @days.each_with_index do |day, index| %>
-                        <button class="tab-button w-full text-left px-4 py-2 <%= 'active' if index == 0 %>"
-                                data-day="<%= day %>">
-                          <%= day %>
-                        </button>
-                      <% end %>
-                    </div>
+                    
+                    <% if @days.empty? %>
+                      <p class="text-center py-4 text-gray-500">Nessuna programmazione disponibile nei cinema.</p>
+                    <% else %>
+                      <div class="tabs flex flex-col min-w-[8rem] border-r bg-gray-100">
+                        <% @days.each_with_index do |day, index| %>
+                          <button class="tab-button w-full text-left px-4 py-2 <%= 'active' if index == 0 %>"
+                                  data-day="<%= day %>">
+                            <%= day %>
+                          </button>
+                        <% end %>
+                      </div>
+                    <% end %>
+                    
                     
                     <!-- Contenitore lista cinema -->
                     <div class="cinema-list flex-1 overflow-y-auto p-4">
@@ -126,7 +150,7 @@
                 <!-- Descrizione -->
                 <section class="section-box shadow">
                   <h3 class="font-semibold mb-2">Descrizione</h3>
-                  <p style="text-align: justify"><%= @movie_details["overview"] %></p>
+                  <p style="text-align: justify"><%= @movie_details["overview"].presence || "Descrizione non disponibile." %></p>
                 </section>
                         
                 <!-- Trailer -->
@@ -155,7 +179,6 @@
     </div>
     <div class='similar-wrapper'>
     </div>
-<script>window.cinemas = <%= raw @cinemas_for_map.to_json %>;</script>
 <script defer src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_MAPS_API_KEY'] %>&libraries=marker&map_ids=<%= ENV['GOOGLE_MAPS_ID'] %>&loading=async&callback=initMap"></script>
 </body>
 
