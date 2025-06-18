@@ -1,7 +1,12 @@
-    document.querySelectorAll(".profile-svg").addEventListener("click", function() {
-        document.getElementById("profile-menu").style.display = "flex";
-    });
+document.querySelectorAll(".profile-svg").forEach(function(el) {
+    el.addEventListener("click", function() {
+        const profileMenu = document.getElementById("profile-menu");
+        const currentDisplay = window.getComputedStyle(profileMenu).display;
 
-    document.getElementById("close-popup").addEventListener("click", function() {
-        document.getElementById("profile-menu").style.display = "none";
+        if (currentDisplay === "none") {
+            profileMenu.style.display = "flex";
+        } else {
+            profileMenu.style.display = "none";
+        }
     });
+});
