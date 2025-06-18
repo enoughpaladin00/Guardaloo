@@ -13,6 +13,13 @@
     max-width: 40rem;
 }
 
+.vert_line_navbar{
+    font-weight: bold; 
+    font-size: 2em; 
+    color: #F9BD24;
+}
+
+
 .search_bar, .search_bar:focus{
     font-size: large;
     background: transparent;
@@ -44,7 +51,7 @@
     padding: 20px;
     border: 1px red solid
 }
-/*
+
 .popup-overlay {
     position: fixed;
     top: 0;
@@ -76,4 +83,3 @@
 .inactive-tab {
     color: gray;
 }
-*/

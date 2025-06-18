@@ -12,7 +12,8 @@
 .vert_line{
     font-weight: bold; 
     font-size: large; 
-    color: #F9BD24
+    color: #F9BD24;
+    align-items: center;
 }
 
 .social{

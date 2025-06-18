@@ -65,7 +65,7 @@
         
             <div class="contenitore contenitore_top10 contenitore-film">
                 <a href="/movies/<%= movie['id'] %>"><img class="top10" src="https://image.tmdb.org/t/p/w500<%= movie['poster_path'] %>" alt="<%= movie['title'] %>" >
-                <span class="number"><b><%= index + 1 %></b></span></a>
+                <span class="number"><b style="<%= index == 9 ? 'margin-right: 0.3em;' : '' %>"><%= index + 1 %></b></span></a>
             </div>
 
         <%end%>
@@ -103,10 +103,10 @@
     <%= image_tag "homepage/pin.svg", class: "icon" %>
 </div>
 
-<script>
+<!-- <script>
     console.log(window.cinemas)
-    window.cinemas = <%= raw @cinemas_for_map.to_json %>;
-</script>
+    window.cinemas = <%#= raw @cinemas_for_map.to_json %>;
+</script> -->
 
 
 
@@ -114,20 +114,20 @@
     <div class="contenitore contenitore_maps" style="width: 80%;">
         <div id="map" class="bord maps"></div>
         
-        <div class="cinema-list-container">
+        <!-- <div class="cinema-list-container">
           <ul id="cinema-list">
-          <% @cinemas_for_map.each do |cinema| %>
+          <%# @cinemas_for_map.each do |cinema| %>
 
-            <li class="cinema-item cinema-item-homepage" data-id="<%= cinema[:id] %>">
+            <li class="cinema-item cinema-item-homepage" data-id="<%#= cinema[:id] %>">
             
-              <h3><%= cinema[:name] %></h3>
-              <p><%= cinema[:address] %></p>
+              <h3><%#= cinema[:name] %></h3>
+              <p><%#= cinema[:address] %></p>
            
             </li>
 
-          <%end%>
+          <%#end%>
           </ul>
-        </div>
+        </div> -->
     </div>
 </div>
 
@@ -145,7 +145,7 @@
         
             <div class="contenitore contenitore_top10 contenitore-film">
                 <a href="/movies/<%= movie['id'] %>?type=<%= type = "tv" %>"><img class="top10" src="https://image.tmdb.org/t/p/w500<%= movie['poster_path'] %>" alt="<%= movie['title'] %>" >
-                <span class="number"><b><%= index + 1 %></b></span></a>
+                <span class="number"><b style="<%= index == 9 ? 'margin-right: 0.3em;' : '' %>"><%= index + 1 %></b></span></a>
             </div>
 
         <%end%>
