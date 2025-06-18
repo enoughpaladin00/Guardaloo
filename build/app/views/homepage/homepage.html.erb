@@ -144,7 +144,7 @@
         <% @top_series.each_with_index do |movie, index| %>
         
             <div class="contenitore contenitore_top10 contenitore-film">
-                <a href="/movies/<%= movie['id'] %>" data-movie-id="<%= movie['id'] %>"><img class="top10" src="https://image.tmdb.org/t/p/w500<%= movie['poster_path'] %>" alt="<%= movie['title'] %>" >
+                <a href="/movies/<%= movie['id'] %>?type=<%= type = "tv" %>"><img class="top10" src="https://image.tmdb.org/t/p/w500<%= movie['poster_path'] %>" alt="<%= movie['title'] %>" >
                 <span class="number"><b><%= index + 1 %></b></span></a>
             </div>
 
@@ -166,7 +166,7 @@
         <% @trending_series.each do |movie| %>
         
             <div class="contenitore contenitore-film">
-                <a href="#"><img class="locandina" src="https://image.tmdb.org/t/p/w500<%= movie['poster_path'] %>" alt="<%= movie['title'] %>"></a>
+                <a href="/movies/<%= movie['id'] %>?type=<%= type = "tv" %>"><img class="locandina" src="https://image.tmdb.org/t/p/w500<%= movie['poster_path'] %>" alt="<%= movie['title'] %>"></a>
             </div>
 
         <%end%>

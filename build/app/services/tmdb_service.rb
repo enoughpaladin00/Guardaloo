@@ -1,12 +1,12 @@
-require 'net/http'
-require 'json'
+require "net/http"
+require "json"
 
 class TmdbService
   BASE_URL = "https://api.themoviedb.org/3"
   API_KEY = ENV["TMDB_API_KEY"]
 
-  def fetch_movie_details(tmdb_id)
-    url = URI("#{BASE_URL}/movie/#{tmdb_id}?api_key=#{API_KEY}&language=it-IT")
+  def fetch_movie_details(tmdb_id, type)
+    url = URI("#{BASE_URL}/#{type}/#{tmdb_id}?api_key=#{API_KEY}&language=it-IT")
     response = Net::HTTP.get(url)
     JSON.parse(response)
   rescue StandardError => e
@@ -14,27 +14,27 @@ class TmdbService
     nil
   end
 
-  def fetch_movie_watch_providers(tmdb_id)
-    url = URI("https://api.themoviedb.org/3/movie/#{tmdb_id}/watch/providers?api_key=#{API_KEY}")
+  def fetch_movie_watch_providers(tmdb_id, type)
+    url = URI("https://api.themoviedb.org/3/#{type}/#{tmdb_id}/watch/providers?api_key=#{API_KEY}")
     response = Net::HTTP.get(url)
     JSON.parse(response)
   end
 
-  def fetch_italian_movie_providers
-    url = URI("https://api.themoviedb.org/3/watch/providers/movie?api_key=#{ENV['TMDB_API_KEY']}&watch_region=IT")
+  def fetch_italian_movie_providers(type)
+    url = URI("https://api.themoviedb.org/3/watch/providers/#{type}?api_key=#{ENV['TMDB_API_KEY']}&watch_region=IT")
     response = Net::HTTP.get(url)
     JSON.parse(response)
   end
 
 
-  def fetch_movie_credits(tmdb_id)
-    url = URI("https://api.themoviedb.org/3/movie/#{tmdb_id}/credits?api_key=#{API_KEY}&language=it-IT")
+  def fetch_movie_credits(tmdb_id, type)
+    url = URI("https://api.themoviedb.org/3/#{type}/#{tmdb_id}/credits?api_key=#{API_KEY}&language=it-IT")
     response = Net::HTTP.get(url)
     JSON.parse(response)
   end
 
-  def fetch_movie_videos(tmdb_id)
-    url = URI("https://api.themoviedb.org/3/movie/#{tmdb_id}/videos?api_key=#{API_KEY}&language=it-IT")
+  def fetch_movie_videos(tmdb_id, type)
+    url = URI("https://api.themoviedb.org/3/#{type}/#{tmdb_id}/videos?api_key=#{API_KEY}&language=it-IT")
     response = Net::HTTP.get(url)
     JSON.parse(response)
   end
@@ -96,6 +96,4 @@ class TmdbService
     Rails.logger.error "Errore TMDB (top_10_streaming_movies): #{e.message}"
     []
   end
-
-  
 end
