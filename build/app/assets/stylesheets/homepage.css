@@ -2,7 +2,7 @@
 .contenitore{
     position:relative;
     flex: 0 0 auto;
-    border: 0.2em solid #FD7474;
+    
     border-radius: 1.5em;
     display: flex;
     overflow: hidden;
@@ -23,9 +23,7 @@
   height: 40vh; 
 }
 
-.bord{
-    border-right: 2px solid #FD7474;
-}
+
 
 .cinema_link{
   text-align: left;

@@ -103,10 +103,10 @@
     <%= image_tag "homepage/pin.svg", class: "icon" %>
 </div>
 
-<script>
+<!--<script>
     console.log(window.cinemas)
     window.cinemas = <%= raw @cinemas_for_map.to_json %>;
-</script>
+</script> -->
 
 
 
@@ -114,20 +114,20 @@
     <div class="contenitore contenitore_maps" style="width: 80%;">
         <div id="map" class="bord maps"></div>
         
-        <!--<div class="cinema-list-container">
+        <!-- <div class="cinema-list-container">
           <ul id="cinema-list">
-          <% @cinemas_for_map.each do |cinema| %>
+          <%# @cinemas_for_map.each do |cinema| %>
 
-            <li class="cinema-item cinema-item-homepage" data-id="<%= cinema[:id] %>">
+            <li class="cinema-item cinema-item-homepage" data-id="<%#= cinema[:id] %>">
             
-              <h3><%= cinema[:name] %></h3>
-              <p><%= cinema[:address] %></p>
+              <h3><%#= cinema[:name] %></h3>
+              <p><%#= cinema[:address] %></p>
            
             </li>
 
-          <%end%>
+          <%#end%>
           </ul>
-        </div>-->
+        </div> -->
     </div>
 </div>
 
@@ -144,7 +144,7 @@
         <% @top_series.each_with_index do |movie, index| %>
         
             <div class="contenitore contenitore_top10 contenitore-film">
-                <a href="#"><img class="top10" src="https://image.tmdb.org/t/p/w500<%= movie['poster_path'] %>" alt="<%= movie['title'] %>" >
+                <a href="/movies/<%= movie['id'] %>" data-movie-id="<%= movie['id'] %>"><img class="top10" src="https://image.tmdb.org/t/p/w500<%= movie['poster_path'] %>" alt="<%= movie['title'] %>" >
                 <span class="number"><b><%= index + 1 %></b></span></a>
             </div>
 

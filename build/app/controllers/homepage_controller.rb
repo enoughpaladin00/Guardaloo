@@ -30,30 +30,30 @@ class HomepageController < ApplicationController
 
         @cinemas = SerpApiClient.search_cinema("cinema", location_str)
 
-        @cinemas_for_map = []
-
-##        @cinemas[:places]&.each do |cinema_data|
-##          cinema = Cinema.find_or_geocode({
-##            id: cinema_data[:place_id],
-##            name: cinema_data[:title],
-##            address: cinema_data[:address],
-##            lat: cinema_data[:gps_coordinates][:lat],
-##            lng: cinema_data[:gps_coordinates][:lng]
-##          })
-##          
-##        
-##          if cinema&.geocoded?
-##            Rails.logger.info "✔ Geocoded: #{cinema.name} (#{cinema.latitude}, #{cinema.longitude})"
-##            @cinemas_for_map << {
-##              id: cinema.id,
-##              name: cinema.name,
-##              address: cinema.address,
-##              lat: cinema.latitude,
-##              lng: cinema.longitude
-##            }
-##          else
-##            Rails.logger.warn "⚠ Geocoding fallito per: #{cinema.name}"
-##          end
-##        end
+      #        @cinemas_for_map = []
+      #
+      #        @cinemas[:places]&.each do |cinema_data|
+      #          cinema = Cinema.find_or_geocode({
+      #            id: cinema_data[:place_id],
+      #            name: cinema_data[:title],
+      #            address: cinema_data[:address],
+      #            lat: cinema_data[:gps_coordinates][:lat],
+      #            lng: cinema_data[:gps_coordinates][:lng]
+      #          })
+      #
+      #
+      #          if cinema&.geocoded?
+      #            Rails.logger.info "✔ Geocoded: #{cinema.name} (#{cinema.latitude}, #{cinema.longitude})"
+      #            @cinemas_for_map << {
+      #              id: cinema.id,
+      #              name: cinema.name,
+      #              address: cinema.address,
+      #              lat: cinema.latitude,
+      #              lng: cinema.longitude
+      #            }
+      #          else
+      #            Rails.logger.warn "⚠ Geocoding fallito per: #{cinema.name}"
+      #          end
+      #        end
     end
 end
