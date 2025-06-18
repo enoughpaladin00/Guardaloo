@@ -29,8 +29,39 @@
                 <%= link_to "La Mia Lista", root_path, class: "nav-link fw-bold navbar_text", style: "font-size:large; border-right: 3px solid #F9BD24" %>
             </li>
         </ul>
-        <a class="px-2" href="#">
-            <%= image_tag "navbar/user.svg", alt: "user", style: "width: 2em; height: 2em" %>
+        <a class="px-2" data-bs-toggle="modal" data-bs-target="#profileMenuModal" href="#">
+            <%= image_tag "navbar/user.svg", class:"profile-svg", alt: "user", style: "width: 2em; height: 2em" %>
         </a>
     </div>
 </nav>
+
+<div id="profile-menu" class="menu-overlay" style="display: none;">
+    <div class="menu-content">
+        <div class="menu-box">
+            <div>
+                <span class="popup-txt" style="color: var(--color-2)">Benvenuto <%= current_user.username%>!</span>
+            </div>
+            <hr>
+            <div>
+                <span class="popup-txt" style="color: var(--color-2)">Gestione Profilo</span>
+            </div>
+            <div>
+                <span class="popup-txt" style="color: var(--color-2)">Impostazioni Generali</span>
+            </div>
+            <hr>
+            <div>
+                <button class="yellow-button button-1 Logout-button"> Logout </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.querySelector(".profile-svg").addEventListener("click", function() {
+        document.getElementById("profile-menu").style.display = "flex";
+    });
+
+    document.getElementById("close-popup").addEventListener("click", function() {
+        document.getElementById("profile-menu").style.display = "none";
+    });
+</script>

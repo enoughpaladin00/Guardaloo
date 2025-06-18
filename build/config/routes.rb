@@ -37,6 +37,11 @@ Rails.application.routes.draw do
   # homepage
   get "home", to: "homepage#homepage"
 
+  # User Profile
+  get "/profile", to: "profile_page#profile_index", as: "profile"
+  get "/profile/edit", to: "profile_page#edit", as: "edit_profile"
+  patch "/profile", to: "profile_page#update"
+
   # Google and Facebook Auth
   get "/auth/:provider/callback", to: "sessions#omniauth"
   get "/auth/failure", to: redirect("/")
