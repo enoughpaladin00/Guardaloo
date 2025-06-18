@@ -103,10 +103,10 @@
     <%= image_tag "homepage/pin.svg", class: "icon" %>
 </div>
 
-<!--<script>
+<script>
     console.log(window.cinemas)
     window.cinemas = <%= raw @cinemas_for_map.to_json %>;
-</script> -->
+</script>
 
 
 
@@ -114,24 +114,24 @@
     <div class="contenitore contenitore_maps" style="width: 80%;">
         <div id="map" class="bord maps"></div>
         
-        <!-- <div class="cinema-list-container">
+        <div class="cinema-list-container">
           <ul id="cinema-list">
-          <%# @cinemas_for_map.each do |cinema| %>
+          <% @cinemas_for_map.each do |cinema| %>
 
-            <li class="cinema-item cinema-item-homepage" data-id="<%#= cinema[:id] %>">
+            <li class="cinema-item cinema-item-homepage" data-id="<%= cinema[:id] %>">
             
-              <h3><%#= cinema[:name] %></h3>
-              <p><%#= cinema[:address] %></p>
+              <h3><%= cinema[:name] %></h3>
+              <p><%= cinema[:address] %></p>
            
             </li>
 
-          <%#end%>
+          <%end%>
           </ul>
-        </div> -->
+        </div>
     </div>
 </div>
 
-<!--6 section "Top 10 Series"-->
+<!--5 section "Top 10 Series"-->
 
 <div class="container-fluid d-flex align-items-center">
     <h1 class="px-2 titolo"><b>Top 10 Serie TV</b></h1>
@@ -153,7 +153,7 @@
     <button class="slider-btn btn-top right"><%= image_tag "homepage/freccia.svg", class: "slider_img" %></button>
 </div>
 
-<!--5 section "Serie TV"-->
+<!--6 section "Serie TV"-->
 
 <div class="container-fluid d-flex align-items-center">
     <h1 class="px-2 pt-2 titolo"><b>Serie TV</b></h1>
@@ -184,39 +184,9 @@
 <div align="center">
 <a href="#" class="link-underline link-underline-opacity-0">
 <div class="forum-item">
-    <div class="forum-title" style="color: #004466; text-align: left;">Best Movie 2024</div>
+    <div class="forum-title-homepage" style="color: #004466; text-align: left;">Best Movie 2024</div>
     <div class="forum-meta mb-1 text-muted">
         <span>MovieBuff</span>
-        <span>45 replies</span>
-    </div>
-</div>
-</a>
-
-<a href="#" class="link-underline link-underline-opacity-0">
-<div class="forum-item">
-    <div class="forum-title" style="color: #004466; text-align: left;">Upcoming Releases Discussion</div>
-    <div class="forum-meta mb-1 text-muted">
-        <span>CinemaFan</span>
-        <span>32 replies</span>
-    </div>
-</div>
-</a>
-
-<a href="#" class="link-underline link-underline-opacity-0">
-<div class="forum-item">
-    <div class="forum-title" style="color: #004466; text-align: left;">Classic Films Appreciation</div>
-    <div class="forum-meta mb-1 text-muted">
-        <span>Cinephile</span>
-        <span>28 replies</span>
-    </div>
-</div>
-</a>
-
-<a href="#" class="link-underline link-underline-opacity-0">
-<div class="forum-item">
-    <div class="forum-title" style="color: #004466; text-align: left;">Classic Films Appreciation</div>
-    <div class="forum-meta mb-1 text-muted">
-        <span>Cinephile</span>
         <span>45 replies</span>
     </div>
 </div>

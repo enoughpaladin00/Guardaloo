@@ -14,7 +14,7 @@
         </form>
         <ul class="navbar-nav ms-auto align-items-center">
             <li class="nav-items">
-                <%= link_to "Home", root_path, class: "nav-link fw-bold navbar_text", style: "font-size:large" %>
+                <%= link_to "Home", home_path, class: "nav-link fw-bold navbar_text", style: "font-size:large" %>
             </li>
             <li class="nav-items">
                 <%= link_to "Cinema",cinemas_path, class: "nav-link fw-bold navbar_text #{'active' if current_page?(cinemas_path)}", style: "font-size:large" %>
@@ -55,13 +55,3 @@
         </div>
     </div>
 </div>
-
-<script>
-    document.querySelector(".profile-svg").addEventListener("click", function() {
-        document.getElementById("profile-menu").style.display = "flex";
-    });
-
-    document.getElementById("close-popup").addEventListener("click", function() {
-        document.getElementById("profile-menu").style.display = "none";
-    });
-</script>
