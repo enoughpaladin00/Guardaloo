@@ -49,6 +49,7 @@
     object-fit: cover;
     border-radius: 50%;
     box-shadow: 7px 7px 3px var(--color-4);
+    border: 3px solid var(--color-3)
 }
 .user_name{
     flex: 1;
@@ -95,29 +96,29 @@
     border-radius: 30px;
     border: 1px var(--color-5) solid;
     box-shadow: 7px 7px 3px var(--color-4);
-  }
+}
   
   /* 1ª immagine: in alto a sinistra */
 .Sezione_2-2 img:nth-of-type(1) {
     top: 0;
     left: 0;
     z-index: 3;
-  }
+}
   
-  /* 2ª immagine: al centro */
-  .Sezione_2-2 img:nth-of-type(2) {
+/* 2ª immagine: al centro */
+.Sezione_2-2 img:nth-of-type(2) {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 2;
-  }
+}
   
-  /* 3ª immagine: in basso a destra */
-  .Sezione_2-2 img:nth-of-type(3) {
+/* 3ª immagine: in basso a destra */
+.Sezione_2-2 img:nth-of-type(3) {
     bottom: 0;
     right: 0;
     z-index: 1;
-  }
+}
 /*PopUp*/
 .popup-overlay {
     position: fixed;

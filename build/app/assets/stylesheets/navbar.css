@@ -24,3 +24,56 @@
     font-size: 15px;
     white-space: nowrap;
 }
+
+/*profile menu layout*/
+.menu-overlay{
+    position: fixed;
+    z-index: 10;
+    display:flex;
+    top:0;
+    right:0;
+    background-color: var(--color-4);
+    width: 20rem;
+    height: auto;
+    justify-content: center;
+    border: 1px yellow solid;
+    border-radius: 20px;
+}
+.menu-content{
+    max-width: 90%;
+    padding: 20px;
+    border: 1px red solid
+}
+/*
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.6);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+  
+.popup-content {
+    max-width: 90%;
+    padding: 20px;
+}
+  
+.auth-tab {
+    cursor: pointer;
+    margin: 0 5px;
+}
+  
+.active-tab {
+    font-weight: bold;
+    color: white;
+}
+  
+.inactive-tab {
+    color: gray;
+}
+*/
