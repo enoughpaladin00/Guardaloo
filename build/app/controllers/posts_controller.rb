@@ -4,10 +4,54 @@ class PostsController < ApplicationController
   before_action :authorize_user!, only: [:edit, :update, :destroy]  # Autorizza solo il proprietario
   # before_action :set_post, only: [:show, :edit, :update, :destroy]
 
-  def index
-    @posts = Post.includes(:user).order(created_at: :desc)  # Caricamento eager degli user
-  end
+  # SENZA FILTRO
+  # def index
+  #   @posts = Post.includes(:user).order(created_at: :desc)  # Caricamento eager degli user
+  #   if params[:filter] == "my_posts" && user_signed_in?
+  #     @posts = Post.where(user: current_user)
+  #   elsif params[:filter].present?
+  #     @posts = Post.where(user_id: params[:filter])
+  #   else
+  #     @posts = Post.all
+  #   end
+  # end
 
+  #FILTRO SOLO UTENTI
+  # def index
+  #   if params[:filter] == "my_posts" && user_signed_in?
+  #     @posts = Post.where(user: current_user)
+  #   elsif params[:filter].present?
+  #     @posts = Post.where(user_id: params[:filter])
+  #   else
+  #     @posts = Post.all
+  #   end
+
+  #   @posts = @posts.includes(:user).order(created_at: :desc)
+  # end
+
+  #FILTRO COMPLETO
+  def index
+    @posts = Post.includes(:user, :comments)
+
+    # Filtro "Solo i miei post"
+    if params[:filter] == "my_posts" && user_signed_in?
+      @posts = @posts.where(user: current_user)
+    end
+
+    # Filtro testuale su titolo, contenuto del post o commenti
+    if params[:query].present?
+      keyword = params[:query].downcase
+
+      @posts = @posts.select do |post|
+        post.title.downcase.include?(keyword) ||
+        post.content.downcase.include?(keyword) ||
+        post.comments.any? { |c| c.content.downcase.include?(keyword) }
+      end
+    end
+
+    # Ordina sempre per data
+    @posts = @posts.sort_by(&:created_at).reverse
+  end
 
   def show
     @post = Post.find(params[:id])
@@ -29,7 +73,17 @@ class PostsController < ApplicationController
   end
 
   def create
-    @post = current_user.posts.build(post_params)  # Crea post associato all'utente corrente
+    @post = current_user.posts.build(post_params)
+
+    if @post.movie_title.present?
+      # Chiama il servizio per cercare il film tramite titolo
+      movie = TmdbService.search_movie_by_title(@post.movie_title).first
+
+      if movie
+        @post.movie_id = movie["id"]
+        @post.movie_poster_path = movie["poster_path"]
+      end
+    end
 
     if @post.save
       redirect_to @post, notice: 'Post was successfully created.'
@@ -38,17 +92,30 @@ class PostsController < ApplicationController
     end
   end
 
-  def update
-    if @post.update(post_params)
-      redirect_to @post, notice: 'Post was successfully updated.'
-    else
-      render :edit
+
+def update
+  if @post.update(post_params)
+    if @post.movie_title.present?
+      movie = TmdbService.search_movie_by_title(@post.movie_title).first
+      if movie
+        @post.update_columns(movie_id: movie["id"], movie_poster_path: movie["poster_path"])
+      end
     end
+    redirect_to @post, notice: 'Post was successfully updated.'
+  else
+    render :edit
   end
+end
+
 
   def destroy
-    @post.destroy
-    redirect_to posts_url, notice: 'Post was successfully destroyed.'
+    @post = Post.find(params[:id])
+    if @post.user == current_user
+      @post.destroy
+      redirect_to posts_path, notice: "Post eliminato con successo"
+    else
+      redirect_to posts_path, alert: "Non puoi eliminare questo post"
+    end
   end
 
   private
@@ -57,6 +124,7 @@ class PostsController < ApplicationController
     end
 
     def post_params
-      params.require(:post).permit(:title, :content)
+      params.require(:post).permit(:title, :content, :movie_title, :movie_id, :movie_poster_path)
     end
+
 end

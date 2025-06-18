@@ -1,15 +1,38 @@
 <!-- Navbar -->
 <%= render 'layouts/navbar' %>
 
-<h1><%= @post.title %></h1> <!-- titolo autore e contenuto post-->
-<p>Creato da <%= @post.user.username%></p>
-<h4><%= @post.content %></h4>
-
-
-<h3>Commenti</h3>     
-<div id="comments">
-  <%= render @post.comments %>  <!-- carica i commenti del post ->_comment.html.erb -->
+<div class="posts-container">
+  <div class="post-card2">
+  <div class="post-title">
+    <h1><%= @post.title %></h1> <!-- titolo autore e contenuto post-->
+    <p>Creato da <%= @post.user.username%></p>
+    <div class="post-content">
+      <h4><%= @post.content %></h4>
+    </div>
+  </div>
+  </div>
 </div>
+
+<div class="posts-container">
+  <div class="filters-container">
+
+    <h2 class="post-title">Commenti</h1> 
+
+    <div class="new-post-button">
+        <button id="show-new-post-form", class="btn sign-up popup-button auth-button"> Commenta il Post</button>
+    </div>
+  </div>
+
+  <div id="new-post-form-container" style="display:none;">
+      <div class="new-post-card">
+        <%= render 'comments/form', post: @post %> 
+      </div>
+  </div>
+
+  <div id="comments" class="posts-container">
+    <%= render @post.comments %>  <!-- carica i commenti del post ->_comment.html.erb -->
+  </div>
+</div> 
 
 
 <h2>Dai la tua opinione!</h2>
@@ -21,8 +44,22 @@
 <%= link_to 'Ritorna al Forum', posts_path %>
 
 
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+  const btn = document.getElementById('show-new-post-form');
+  const formContainer = document.getElementById('new-post-form-container');
 
-
+  btn.addEventListener('click', () => {
+    if (formContainer.style.display === 'none' || formContainer.style.display === '') {
+      formContainer.style.display = 'block';
+      btn.textContent = 'Annulla inserimento';
+    } else {
+      formContainer.style.display = 'none';
+      btn.textContent = 'Commenta il post';
+    }
+  });
+});
+</script>
 
 <!-- Footer -->
 <%= render 'layouts/footer' %>

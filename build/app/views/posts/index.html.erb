@@ -11,21 +11,115 @@
 <% end %>   
 
 
-<h1>Forum</h1>
+<h1 class="forum-title">Guardaloo's Forum</h1>
 
-<button class="btn sign-up popup-button auth-button " ><%= link_to "Scrivi un nuovo Post", new_post_path %></button> <!-- rimando a -> new.html.erb -->
+<div class="filters-container">
+  <div class="new-post-button">
+    <%= link_to 'Scrivi un nuovo Post', new_post_path, class: "btn btn-edit", id:"" %>
+  </div>
 
-<% if @posts.any? %>
-  <% @posts.each do |post| %>
-    <div class="post">
-      <h2><%= link_to post.title, post %></h2> Creato da <%= post.user.username %>
-      <p><%= truncate(post.content, length: 100) %></p>
-      <p><%= pluralize(post.comments.count, 'comment') %></p>
+  <%= form_with url: posts_path, method: :get, local: true, html: { class: "filter-form" } do %>
+    <div class="filters">
+      <%= label_tag :query, "", class:"post-content " %>
+      <%= text_field_tag :query, params[:query], placeholder: "Horror, Action...", class:" rounded-3 search_container px-2 align-items-center" %>
+
+      <%= select_tag :filter, options_for_select([
+          ['Tutti i post', 'all'],
+          ['Solo i miei post', 'my_posts']
+        ], selected: params[:filter]), include_blank: false %>
+
+      <%= submit_tag "Filtra", class: "btn btn-filtra btn-edit" %>
     </div>
   <% end %>
-<% else %>
-  <p>Non ci sono post nel forum.</p>
-<% end %>
+</div>
+
+<div class="posts-container">
+  <%# forse %>
+  <div id="new-post-form-container" style="display:none;">
+      <div class="new-post-card">
+        <%= form_with model: Post.new, url: posts_path, local: true do |f| %>
+          <div class="post-title field">
+            <%= f.label :title, "Titolo" %>
+            <%= f.text_field :title, class: "form-control limited-width" %>
+          </div>
+
+          <div class="post-title field">
+            <%= f.label :content, "Cosa ne pensi?" %>
+            <%= f.text_area :content, class: "form-control limited-width " %>
+          </div>
+
+          <div class="post-actions">
+            <%= f.submit "Pubblica", class: "btn btn-primary" %>
+          </div>
+        <% end %>
+      </div>
+  </div>
+
+  <%# post %>
+  <% if @posts.any? %>
+  <% @posts.each do |post| %>
+    <div class="post-card">      
+
+      <div class="post-title">
+        <h2 ><%= link_to post.title, post %></h2> 
+          Creato da <%= post.user.username %>
+      </div>
+      <div class="post-content">
+        <p><%= post.content %></p>
+      </div>
+      <p class="post-content">
+        <%= post.comments.count %> 
+        <%= post.comments.count == 1 ? 'commento' : 'commenti' %>
+      </p>
+
+      <div class="post-actions">
+        <% if user_signed_in? && current_user == post.user %>
+        <%= link_to 'Modifica', edit_post_path(post), class: 'btn btn-edit' %>
+        <%= button_to 'Elimina', post_path(post), method: :delete, data: { confirm: 'Sei sicuro?', turbo: false }, class: 'btn btn-delete' %>
+        <% end %>
+      </div>
+    </div>
+
+    <% end %>
+  <% else %>
+    <p class="post-title">Non ci sono risultati per la tua ricerca.</p>
+    <% end %>
+</div>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.post-card').forEach(card => {
+      card.style.cursor = 'pointer';
+      
+      card.addEventListener('click', e => {
+        if(e.target.tagName.toLowerCase() === 'a') return;
+        
+        const link = card.querySelector('.post-title h2 a');
+        if(link) {
+          window.location.href = link.href;
+        }
+      });
+    });
+  });
+
+  document.addEventListener('DOMContentLoaded', () => {
+  const btn = document.getElementById('show-new-post-form');
+  const formContainer = document.getElementById('new-post-form-container');
+
+  btn.addEventListener('click', () => {
+    if (formContainer.style.display === 'none' || formContainer.style.display === '') {
+      formContainer.style.display = 'block';
+      btn.textContent = 'Nascondi form nuovo post';
+    } else {
+      formContainer.style.display = 'none';
+      btn.textContent = 'Scrivi un nuovo Post';
+    }
+  });
+});
+
+</script>
+
 
 <!--8 section "Footer"-->
-<%= render 'layouts/footer' %>orum
+<%= render 'layouts/footer' %>

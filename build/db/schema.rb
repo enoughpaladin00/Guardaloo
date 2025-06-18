@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_16_174708) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_16_182032) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -51,17 +51,23 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_16_174708) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "cinemas", force: :cascade do |t|
-    t.string "tamburino_id"
-    t.string "name"
-    t.string "address"
-    t.string "town"
-    t.string "province"
-    t.string "phone"
-    t.string "lat"
-    t.string "lon"
+  create_table "cinema_showtimes", force: :cascade do |t|
+    t.string "day"
+    t.string "movie"
+    t.string "show_type"
+    t.text "show_times"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "cinemas", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "address", null: false
+    t.float "latitude"
+    t.float "longitude"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_cinemas_on_name", unique: true
   end
 
   create_table "comments", force: :cascade do |t|
@@ -74,21 +80,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_16_174708) do
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
-  create_table "movies", force: :cascade do |t|
-    t.integer "tmdb_id"
-    t.string "title"
-    t.date "release_date"
-    t.text "overview"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "posts", force: :cascade do |t|
     t.string "title"
     t.text "content"
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "movie_id"
+    t.string "movie_title"
+    t.string "movie_poster_path"
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 

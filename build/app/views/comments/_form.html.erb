@@ -1,6 +1,6 @@
 <%= form_with(model: [post, post.comments.build]) do |form| %>
   <div class="field">
-    <%= form.label :'Scrivi un commento!' %>
+    <%= form.label :'Scrivi il tuo commento!', class:"post-title" %>
     <%= form.text_area :content %>
   </div>
 

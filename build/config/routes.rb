@@ -3,6 +3,8 @@ Rails.application.routes.draw do
   get 'home/index'
   root "home#index"
 
+  get 'movies/search', to: 'movies#search'
+
   # Registrazione
   get "signup", to: "registrations#new"
   post "/register", to: "registrations#create"
@@ -25,10 +27,8 @@ Rails.application.routes.draw do
 
   match '/auth/:provider', to: 'sessions#passthru', via: [:get, :post]
 
-  Rails.application.routes.draw do
-    resources :posts do
-      resources :comments, only: [:create, :destroy]
-    end
+  resources :posts do
+    resources :comments, only: [:create, :destroy]
   end
 
   #health check?

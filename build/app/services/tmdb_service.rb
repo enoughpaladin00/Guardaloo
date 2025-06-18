@@ -41,5 +41,16 @@ class TmdbService
     Rails.logger.error "Errore TMDB (top_10_movies): #{e.message}"
     []
   end
-  
+
+  def self.search_movie_by_title(title)
+    url = URI("#{BASE_URL}/search/movie?api_key=#{API_KEY}&language=it-IT&query=#{URI.encode_www_form_component(title)}")
+    response = Net::HTTP.get(url)
+    json = JSON.parse(response)
+    json["results"] || []
+  rescue => e
+    Rails.logger.error("Errore TMDB (search_movie_by_title): #{e.message}")
+    []
+  end
+
+
 end
