@@ -14,7 +14,10 @@ Rails.application.routes.draw do
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
   # Defines the root path route ("/")
+  get 'home/index'
   root "home#index"
+
+  get 'movies/search', to: 'movies#search'
 
   # Registrazione
   get "signup", to: "registrations#new"
@@ -34,9 +37,20 @@ Rails.application.routes.draw do
   # homepage
   get "home", to: "homepage#homepage"
 
+  # User Profile
+  get "/profile", to: "profile_page#profile_index", as: "profile"
+  get "/profile/edit", to: "profile_page#edit", as: "edit_profile"
+  patch "/profile", to: "profile_page#update"
+
   # Google and Facebook Auth
   get "/auth/:provider/callback", to: "sessions#omniauth"
   get "/auth/failure", to: redirect("/")
 
-  match "/auth/:provider", to: "sessions#passthru", via: [ :get, :post ]
+  match '/auth/:provider', to: 'sessions#passthru', via: [:get, :post]
+
+  resources :posts do
+    resources :comments, only: [:create, :destroy]
+  end
+
+
 end

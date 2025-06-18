@@ -14,23 +14,44 @@
         </form>
         <ul class="navbar-nav ms-auto align-items-center">
             <li class="nav-items">
-                <%= link_to "Home", root_path, class: "nav-link fw-bold navbar_text", style: "font-size:large" %>
+                <%= link_to "Home", home_path, class: "nav-link fw-bold navbar_text", style: "font-size:large" %>
             </li>
             <li class="nav-items">
-                <%= link_to "Cinema", root_path, class: "nav-link fw-bold navbar_text", style: "font-size:large" %>
+                <%= link_to "Cinema",cinemas_path, class: "nav-link fw-bold navbar_text #{'active' if current_page?(cinemas_path)}", style: "font-size:large" %>
             </li>
             <li class="nav-items">
                 <%= link_to "Film", root_path, class: "nav-link fw-bold navbar_text", style: "font-size:large" %>
             </li>
             <li class="nav-items">
-                <%= link_to "Forum", root_path, class: "nav-link fw-bold navbar_text", style: "font-size:large" %>
+                <%= link_to "Forum", posts_path, class: "nav-link fw-bold navbar_text", style: "font-size:large" %>
             </li>
             <li class="nav-items">
                 <%= link_to "La Mia Lista", root_path, class: "nav-link fw-bold navbar_text", style: "font-size:large; border-right: 3px solid #F9BD24" %>
             </li>
         </ul>
-        <a class="px-2" href="#">
-            <%= image_tag "navbar/user.svg", alt: "user", style: "width: 2em; height: 2em" %>
+        <a class="px-2" data-bs-toggle="modal" data-bs-target="#profileMenuModal" href="#">
+            <%= image_tag "navbar/user.svg", class:"profile-svg", alt: "user", style: "width: 2em; height: 2em" %>
         </a>
     </div>
 </nav>
+
+<div id="profile-menu" class="menu-overlay" style="display: none;">
+    <div class="menu-content">
+        <div class="menu-box">
+            <div>
+                <span class="popup-txt" style="color: var(--color-2)">Benvenuto <%= current_user.username%>!</span>
+            </div>
+            <hr>
+            <div>
+                <span class="popup-txt" style="color: var(--color-2)">Gestione Profilo</span>
+            </div>
+            <div>
+                <span class="popup-txt" style="color: var(--color-2)">Impostazioni Generali</span>
+            </div>
+            <hr>
+            <div>
+                <button class="yellow-button button-1 Logout-button"> Logout </button>
+            </div>
+        </div>
+    </div>
+</div>

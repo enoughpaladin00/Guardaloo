@@ -12,3 +12,4 @@ pin "slider", to: "slider.js" # @1.0.4
 pin "index", to: "index.js"
 pin "moviePage", to: "moviePage.js"
 pin "google_map", to: "google_map.js"
+pin "navbar", to: "navbar.js"

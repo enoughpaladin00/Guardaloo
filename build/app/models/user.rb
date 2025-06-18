@@ -1,11 +1,18 @@
 class User < ApplicationRecord
+
     has_secure_password
+    
+    has_one_attached :avatar #riga per aggiungere il supporto immagine
+
+    has_many :posts, dependent: :destroy
+    has_many :comments, dependent: :destroy
 
     validates :email, presence:true, uniqueness:true
     validates :username, presence: true, uniqueness: true
     validates :first_name, :last_name, presence: true
     validates :birth_date, presence: true, unless: -> { provider.present? }
-    validates :password, length: {minimum: 6}
+    validates :password, presence: true, length: { minimum: 6 }, on: :create
+    validates :password, length: { minimum: 6 }, allow_nil: true, on: :update
 
     def self.from_omniauth(auth)
         user = find_by(provider: auth['provider'], uid: auth['uid'])
