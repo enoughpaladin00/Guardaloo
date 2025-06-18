@@ -49,14 +49,17 @@
             <div class="Sezione_2">
 
                 <div class=Sezione_2-1>
-                    <h2>TOP 3 FILM</h2>
-                    <button class="yellow-button button-1 top3-button">Change Film</button>
+                    <h2>TOP Film della settimana</h2>
                 </div>
-                <div class=Sezione_2-2>
-                    <%= image_tag "Profile_page/film_default.png", class:"Locandina Film1", alt: "Immagine di default", width: 200 %>
-                    <%= image_tag "Profile_page/film_default.png", class:"Locandina Film2", alt: "Immagine di default", width: 200 %>
-                    <%= image_tag "Profile_page/film_default.png", class:"Locandina Film3", alt: "Immagine di default", width: 200 %>
-                </div>
+                <div class="Sezione_2-2"> <!-- o altezza adatta -->
+                    <% @trending_movies.each_with_index do |movie, index| %>
+                        <% if movie['poster_path'].present? %>
+                            <%= image_tag "https://image.tmdb.org/t/p/w500#{movie['poster_path']}", class: "Locandina Film#{index + 1}", alt: movie['title'] %>
+                        <% else %>
+                            <%= image_tag "Profile_page/film_default.png", class: "Locandina Film#{index + 1}", alt: "Immagine di default" %>
+                        <% end %>
+                    <% end %>
+              </div>
 
             </div>
         </div>
@@ -114,19 +117,6 @@
         </div>
     </div>
 
-    <!-- PopUp Top 3-->
-    <div id="top3-popup-overlay" class="popup-overlay" style="display: none;">
-        <div class="popup-content">
-            <div class="auth-box">
-                <div>
-                    <span class="popup-txt">Inserisci i tuoi 3 film preferiti</span>
-                </div>
-
-                <button class="close-popup mt-4 btn btn-link text-light w-100">Chiudi</button>
-            </div>
-        </div>
-    </div>
-
     <!-- Script -->
     <script>
         document.querySelector(".edit-button").addEventListener("click", function() {
@@ -136,17 +126,6 @@
         document.getElementById("close-popup").addEventListener("click", function() {
             document.getElementById("edit-popup-overlay").style.display = "none";
         });
-    </script>
-
-    <script>
-        document.querySelector(".top3-button").addEventListener("click", function() {
-            document.getElementById("top3-popup-overlay").style.display = "flex";
-        });
-
-        document.getElementById("close-popup").addEventListener("click", function() {
-            document.getElementById("top3-popup-overlay").style.display = "none";
-        });
-    </script>
-  
+    </script> 
 
 </body>

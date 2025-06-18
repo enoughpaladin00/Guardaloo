@@ -4,6 +4,9 @@ class ProfilePageController < ApplicationController
   before_action :set_user
 
   def profile_index
+    @trending_movies = Rails.cache.fetch("trending_movies_top3", expires_in: 6.hours) do
+      TmdbService.trending_movies.first(3)
+    end
     # @user è già settato
   end
 
