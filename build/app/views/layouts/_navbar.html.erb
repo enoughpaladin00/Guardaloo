@@ -17,7 +17,7 @@
                 <%= link_to "Home", root_path, class: "nav-link fw-bold navbar_text", style: "font-size:large" %>
             </li>
             <li class="nav-items">
-                <%= link_to "Cinema", root_path, class: "nav-link fw-bold navbar_text", style: "font-size:large" %>
+                <%= link_to "Cinema",cinemas_path, class: "nav-link fw-bold navbar_text #{'active' if current_page?(cinemas_path)}", style: "font-size:large" %>
             </li>
             <li class="nav-items">
                 <%= link_to "Film", root_path, class: "nav-link fw-bold navbar_text", style: "font-size:large" %>
