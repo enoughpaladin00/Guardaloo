@@ -1,0 +1,124 @@
+<%= render 'layouts/navbar' %>
+
+<div class="posts-container">
+    <h1 class="post-title" style="font-size: 3em;">Crea un nuovo Post</h1>
+  <div id="new-post-form-container" class="new-post-form-container">
+
+      <!-- Colonna sinistra: immagine film -->
+      <div id="movie-poster-preview" style="overflow: hidden; flex-shrink:0">
+          <img id="movie-poster-img" src="<%= asset_path('post/placeholder.jpg')%>" alt="Poster film" style="overflow: hidden;">
+      </div>
+
+      <!-- Colonna di destra -->
+      <div class="new-post-card" style="overflow: visible; border: 0; background-color:rgb(253,116,116, 0.1);">
+        <%= form_with model: Post.new, url: posts_path, local: true do |f| %>
+          <div class="post-title field">
+            <%= f.label :title, "Titolo" %>
+            <%= f.text_field :title, class: "form-control limited-width" %>
+          </div>
+
+          <div class="post-title field">
+            <%= f.label :content, "Cosa ne pensi?" %>
+            <%= f.text_area :content, class: "form-control limited-width", style:"font-family: 'Inter', sans-serif; " %>
+          </div>
+
+          <!-- CAMPPO FILM -->
+          <div class="post-title field", style="position: relative; margin-bottom: 3em">
+            <%= f.label :movie_title, "Titolo del film" %>
+            <%= f.text_field :movie_title, class: "form-control limited-width", id: "movie_title_input", autocomplete: "off" %>
+            <%= f.hidden_field :movie_id, id: "movie_id_input" %>
+            <%= f.hidden_field :movie_poster_path, id: "movie_poster_path_input" %>
+            <div id="movie-suggestions" class="movie-suggestion"></div>
+          </div>
+          <!-- FINE CAMPPO FILM -->
+
+          <div class="post-actions" >
+            <%= link_to 'Annulla', posts_path, class:"btn btn-edit"%>
+            <%= f.submit "Pubblica", class: "btn btn-edit" %>
+          </div>
+        <% end %>
+      </div>
+  </div>
+</div>
+
+<script>
+
+document.addEventListener('DOMContentLoaded', () => {
+  const input = document.getElementById('movie_title_input');
+  const suggestions = document.getElementById('movie-suggestions');
+  const hiddenMovieId = document.getElementById('movie_id_input');
+  const hiddenPosterPath = document.getElementById('movie_poster_path_input');
+
+  let timeout = null;
+
+  input.addEventListener('input', () => {
+    clearTimeout(timeout);
+    const query = input.value.trim();
+
+    if (query.length < 2) {
+      suggestions.style.display = 'none';
+      return;
+    }
+
+    timeout = setTimeout(() => {
+      fetch(`/movies/search?query=${encodeURIComponent(query)}`)
+        .then(response => response.json())
+        .then(data => {
+          suggestions.innerHTML = '';
+          if (data.length > 0) {
+            data.slice(0, 5).forEach(movie => {
+              const item = document.createElement('div');
+              item.classList.add('movie-suggestion-item');
+
+              const poster = document.createElement('img');
+              poster.src = movie.poster_path 
+                ? `https://image.tmdb.org/t/p/w92${movie.poster_path}`
+                : '/assets/images/post/placeholder.jpg';
+              poster.alt = movie.title;
+              poster.classList.add('movie-suggestion-poster');
+
+              const text = document.createElement('span');
+              const year = movie.release_date ? ` (${new Date(movie.release_date).getFullYear()})` : '';
+              text.textContent = movie.title + year;
+
+              item.appendChild(poster);
+              item.appendChild(text);
+
+              item.addEventListener('click', () => {
+                input.value = movie.title;
+                hiddenMovieId.value = movie.id;
+                hiddenPosterPath.value = movie.poster_path;
+                suggestions.style.display = 'none';
+
+                // **AGGIORNA IMMAGINE NELLA COLONNA SINISTRA**
+                const posterImg = document.getElementById('movie-poster-img');
+                if (movie.poster_path) {
+                  posterImg.src = `https://image.tmdb.org/t/p/w342${movie.poster_path}`;
+                } else {
+                  posterImg.src = '/assets/images/post/placeholder.jpg';
+                }placeholder
+              });
+
+              suggestions.appendChild(item);
+            });
+
+            suggestions.style.display = 'block';
+          } else {
+            suggestions.style.display = 'none';
+          }
+        });
+    }, 300);
+  });
+
+  // Nascondi suggerimenti se clicchi fuori
+  document.addEventListener('click', (e) => {
+    if (!suggestions.contains(e.target) && e.target !== input) {
+      suggestions.style.display = 'none';
+    }
+  });
+});
+
+</script>
+
+
+<%= render 'layouts/footer' %>

@@ -1,0 +1,52 @@
+<%= render 'layouts/navbar' %>
+
+<div class="posts-container">
+  <h1 class="post-title" style="font-size: 3em;">Modifica il tuo Post</h1>
+
+  <div id="new-post-form-container">
+    <div class="new-post-card">
+      <%= form_with model: @post, url: post_path(@post), method: :patch, local: true, html: { id: "edit-post-form" } do |f| %>
+        <div class="post-title field">
+          <%= f.label :title, "Titolo" %>
+          <%= f.text_field :title, class: "form-control limited-width" %>
+        </div>
+
+        <div class="post-title field">
+          <%= f.label :content, "Modifica il contenuto" %>
+          <%= f.text_area :content, class: "form-control limited-width", style:"font-family: 'Inter', sans-serif;" %>
+        </div>
+
+        <div class="post-actions">
+          <%= link_to 'Annulla', post_path(@post), class:"btn btn-edit" %>
+          <%= f.submit "Salva modifiche", class: "btn btn-edit" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+
+
+<%# <div class="posts-container">
+    <h1>New Post</h1>
+</div>   %>
+<%# <%= render 'form', post: @post %>  <%# KEY: Pass @post as local variable 'post' %> %>
+<%# <%= link_to 'Annulla', posts_path %> 
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const form = document.getElementById("edit-post-form");
+    if (form) {
+      form.addEventListener("submit", function(event) {
+        const confirmed = confirm("Sei sicuro di voler modificare questo post?");
+        if (!confirmed) {
+          event.preventDefault(); // blocca l’invio del form
+        }
+      });
+    }
+  });
+</script>
+
+
+
+<%= render 'layouts/footer' %>

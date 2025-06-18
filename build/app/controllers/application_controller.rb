@@ -14,4 +14,11 @@ class ApplicationController < ActionController::Base
   def authenticate_user!
     redirect_to root_path, alert: "Effettua il login" unless user_signed_in?
   end
+
+  private
+  def authorize_user!
+    unless current_user == @post.user
+      redirect_to root_path, alert: "Non sei autorizzato a modificare questo post"
+    end
+  end
 end

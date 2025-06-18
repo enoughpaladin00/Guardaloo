@@ -2,7 +2,7 @@ class MoviesController < ApplicationController
   before_action :authenticate_user!
   def show
     tmdb_id = params[:tmdb_id]
-    tmdb_type = params[:type] || "movie"  # default "movie", oppure "tv"
+    tmdb_type = params[:type] || "movie"
 
     api_key = ENV["TMDB_API_KEY"]
     @map_id = ENV["GOOGLE_MAPS_ID"]
@@ -92,5 +92,19 @@ class MoviesController < ApplicationController
 
     @videos = service.fetch_movie_videos(tmdb_id, tmdb_type)
     @trailer = @videos["results"].find { |v| v["type"] == "Trailer" && v["site"] == "YouTube" }
+  end
+
+  def search
+    query = params[:query].to_s.strip
+    results = TmdbService.search_movie_by_title(query)
+
+    render json: results.map { |movie|
+      {
+        title: movie["title"],
+        id: movie["id"],
+        release_date: movie["release_date"],
+        poster_path: movie["poster_path"]
+      }
+    }
   end
 end
