@@ -5,9 +5,7 @@
 <% if user_signed_in? %>      <!-- controllo utente autenticato, scritte opzionali -->
     Benvenuto, <%= current_user.first_name %>!
 <% else %>
-    <h1>NON SEI REGISTRATO!</h1>  
-    <button  class="sign-up popup-button auth-button ">Registrati</button>
-    <button  class="yellow-button popup-button auth-button">Accedi</button>
+    <h1>NON SEI REGISTRATO! DEVI REGISTRARTI</h1>  <!-- blurra tutto e fai apparire il login form? -->
 <% end %>   
 
 

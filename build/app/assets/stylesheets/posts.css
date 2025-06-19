@@ -35,13 +35,6 @@
   box-shadow: 0 6px 14px rgba(0,0,0,0.2);
 }
 
-.post-image {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-  border-bottom: 2px solid #FD7474;
-}
-
 .post-content {
   font-family: 'Inter', sans-serif;
   padding: 1em;
@@ -63,8 +56,6 @@
   width: 100%;
 }
 
-
-
 .post-title {
   font-family: 'Bodoni Moda', serif;
   color: #004466;
@@ -79,38 +70,7 @@
   text-decoration: none;
   color: inherit;
 }
-
-.forum-title {
-  font-family: 'Bodoni Moda', serif;
-  color: #004466;
-  font-size: 4.5em;
-  font-weight: bold;
-  margin-bottom: 0.5em;
-  text-align: center;
-}
-
-.post-excerpt {
-  font-size: 1em;
-  color: #333;
-  flex-grow: 1;
-}
-
-.post-meta {
-  font-size: 0.85em;
-  color: #777;
-  margin-top: 1em;
-  text-align: right;
-}
-
-
-.post-actions {
-  position: absolute;
-  bottom: 1em;
-  right: 1em;
-  display: flex;
-  gap: 0.5em;
-}
-
+/* 
 .btn-edit, .btn-delete {
   padding: 0.3em 0.7em;
   font-size: 0.9rem;
@@ -127,9 +87,31 @@
 .btn-delete {
   background-color: #f44336;
   color: white;
+} */
+
+/* BOTTONI */
+.post-actions {
+  position: absolute;
+  bottom: 1em;
+  right: 1em;
+  display: flex;
+  gap: 0.5em;
+}
+
+.forum-button2 {
+  display: inline-block;
+  padding: 0.3em; 
+  background-color: #FD7474;
+  color :white;
+  border: none;
+  border-radius: 0.6em;
+  cursor: pointer;
+  font-size: 1.2em;
+  font-weight: bold;
 }
 
 
+/* FILTRI */
 .filters-container {
   display: flex;
   justify-content: space-between;
@@ -138,11 +120,6 @@
   width: 100%;
   padding-left: 4em;
   padding-right: 2em;
-}
-
-.new-post-button {
-  flex-shrink: 0;
-  background-color: green;
 }
 
 .filter-form {
@@ -157,10 +134,18 @@
   align-items: center;
 }
 
-.limited-width {
-  max-width: 400px; /* o la misura che preferisci */
-  width: 80%;       /* o un valore più stretto rispetto al 100% */
-  margin-bottom: 1em;
+/* NEW POST */
+.new-post-form-container{
+  position:relative;
+  flex: 0 0 auto;
+  display: flex;
+  overflow: visible;
+  margin: 1em;
+  width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+  align-items: center;
+  justify-content: center;
 }
 
 .new-post-card {
@@ -175,7 +160,7 @@
   flex-direction: column;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  /* margin-left: 1em; */
+  margin-left: 3em;
   margin-right: 0em;
 }
 
@@ -197,7 +182,7 @@
 
 .new-post-card form .field input,
 .new-post-card form .field textarea {
-  width: 100%;  /* ora 100% del wrapper */
+  width: 100%;  
   padding: 0.5em;
   font-size: 1rem;
   border: 1px solid #ccc;
@@ -213,12 +198,7 @@
   margin-bottom: 0.3em;
 }
 
-
-.comment-profile-icon{
-  width: 40px;
-  display: block;
-}
-
+/* MOVIE SUGGESTION */
 .movie-suggestion{
   border: 2px solid #FD7474; 
   display: none;
@@ -265,7 +245,9 @@
   color: #004466;
 }
 
-.movie-poster-preview{
+
+/* COLONNA SINISTRA */
+/* .movie-poster-preview{
   min-width: 150px; 
   max-width: 150px; 
   height: 225px; 
@@ -283,15 +265,49 @@
   height: 100%; 
   object-fit: cover; 
   border-radius: 0.5em;
+} */
+
+
+
+/* random */
+.comment-profile-icon{
+  width: 40px;
+  display: block;
 }
 
-.new-post-form-container{
-  position:relative;
-  flex: 0 0 auto;
-  display: flex;
-  overflow: visible;
-  margin: 1em;
-  width: 80%;
-  margin-left: auto;
-  margin-right: auto;
+.limited-width {
+  max-width: 400px; 
+  width: 80%;       
+  margin-bottom: 1em;
+}
+
+.forum-title {
+  font-family: 'Bodoni Moda', serif;
+  color: #004466;
+  font-size: 4.5em;
+  font-weight: bold;
+  margin-bottom: 0.5em;
+  text-align: center;
+}
+
+.title-icon{
+  width: 3em;
+  height: 3em;
+  margin-left: 1em;
+  margin-top: 0.3em;
+}
+
+.blurred{
+  filter: blur(10px);
+}
+
+.post-avatar {
+  width: 6em;
+  height: 6em;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  border: 3px solid var(--color-3);
+  margin-left: 2em;
 }
