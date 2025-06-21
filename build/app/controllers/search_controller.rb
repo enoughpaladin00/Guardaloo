@@ -4,20 +4,19 @@ require "json"
 
 class SearchController < ApplicationController
   def tmdb
-    query = params[:q].to_s
-    return render json: [] if query.blank?
+    query = params[:query]
+    return render json: { error: "Query mancante" }, status: :bad_request if query.blank?
 
-    url = URI("https://api.themoviedb.org/3/search/movie?query=#{URI.encode_www_form_component(query)}&api_key=#{ENV['TMDB_API_KEY']}&language=it-IT")
-    response = Net::HTTP.get(url)
-    results = JSON.parse(response)["results"]&.first(5) || []
+    api_key = ENV["TMDB_API_KEY"] || "INSERISCI_LA_TUA_API_KEY"
 
-    render json: results.map { |movie|
-      {
-        tmdb_id: movie["id"],
-        title: movie["title"],
-        year: movie["release_date"]&.first(4),
-        poster_url: movie["poster_path"] ? "https://image.tmdb.org/t/p/w185#{movie["poster_path"]}" : "/placeholder_poster.png"
-      }
-    }
+    url = URI("https://api.themoviedb.org/3/search/multi?api_key=#{api_key}&language=it-IT&query=#{URI.encode_www_form_component(query)}")
+    response = Net::HTTP.get_response(url)
+
+    if response.is_a?(Net::HTTPSuccess)
+      json_data = JSON.parse(response.body)
+      render json: json_data
+    else
+      render json: { error: "Errore da TMDB: #{response.code}" }, status: :bad_gateway
+    end
   end
 end
