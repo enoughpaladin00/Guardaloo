@@ -1,18 +1,25 @@
 class CinemasController < ApplicationController
   def index
-    id_servizio = 347
-    cinemas = TamburinoService.get_programmazione(id_servizio, apikey: ENV['TAMBURINO_APIKEY'], format: 'xml') || []
-    
+    cinemas = Cinemasdef.all.map do |cinema|
+      {
+        id: cinema.id,
+        name: cinema.name,
+        address: cinema.address,
+        town: cinema.town,
+        province: cinema.province,
+        phone: cinema.phone,
+        lat: cinema.lat.to_f,
+        lon: cinema.lon.to_f
+      }
+    end
+
     if params[:lat].present? && params[:lon].present?
       user_lat = params[:lat].to_f
       user_lon = params[:lon].to_f
-    
+
       cinemas = cinemas.map do |cinema|
-        cinema_lat = cinema[:lat].to_f rescue nil
-        cinema_lon = cinema[:lon].to_f rescue nil
-    
-        if cinema_lat && cinema_lon
-          distance = distance_km(user_lat, user_lon, cinema_lat, cinema_lon)
+        if cinema[:lat].nonzero? && cinema[:lon].nonzero?
+          distance = distance_km(user_lat, user_lon, cinema[:lat], cinema[:lon])
           if distance < 10.0
             cinema.merge(distance: distance.round(2))
           else
@@ -23,7 +30,6 @@ class CinemasController < ApplicationController
         end
       end.compact.sort_by { |c| c[:distance] }
     end
-    
 
     respond_to do |format|
       format.html { @cinemas = cinemas }
@@ -45,14 +51,7 @@ class CinemasController < ApplicationController
 
     a = Math.sin(dlat_rad / 2)**2 +
         Math.cos(lat1_rad) * Math.cos(lat2_rad) * Math.sin(dlon_rad / 2)**2
-
     c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-
     r_km * c
   end
-
-
-  
 end
-
-
