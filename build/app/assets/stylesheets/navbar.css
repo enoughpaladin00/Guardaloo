@@ -83,3 +83,11 @@
 .inactive-tab {
     color: gray;
 }
+
+#tmdb-suggestions {
+  max-height: 300px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+}

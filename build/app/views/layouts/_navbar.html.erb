@@ -9,7 +9,8 @@
           <span>
             <%= image_tag "navbar/Lente.svg", alt: "lente", style: "width: 1.2em; height: 1.2em" %>
           </span>
-          <input class="form-control border-0 shadow-none search_bar" type="search" placeholder="Cerca film, serie TV, cinema, discussioni...">
+          <input class="form-control border-0 shadow-none search_bar" type="search" placeholder="Cerca film, serie TV, cinema, discussioni..." data-action="input->search#fetchResults" data-search-target="input">
+          <div class="search-results position-absolute w-100 bg-white shadow rounded mt-1" data-search-target="results" style="z-index: 1000; display: none;"></div>
         </div>
       </form>
     </div>
