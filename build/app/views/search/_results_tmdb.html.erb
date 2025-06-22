@@ -1,0 +1,17 @@
+<% if results.any? %>
+  <% results.each do |result| %>
+    <div class="search-result-item d-flex align-items-center">
+      <% poster = result["poster_path"] ? "https://image.tmdb.org/t/p/w92#{result["poster_path"]}" : asset_path("navbar/no-image.png") %>
+      <%= image_tag poster, alt: result["title"] || result["name"], style: "width: 2.5em; height: auto; margin-right: 0.5em;" %>
+      <div>
+        <strong><%= result["title"] || result["name"] %></strong><br>
+        <small>
+          <%= result["media_type"] == "movie" ? "Film" : "Serie" %>
+          <%= " · #{extract_year(result)}" if extract_year(result).present? %>
+        </small>
+      </div>
+    </div>
+  <% end %>
+<% else %>
+  <div class="search-result-item">Nessun risultato</div>
+<% end %>

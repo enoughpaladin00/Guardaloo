@@ -19,6 +19,9 @@
     color: #F9BD24;
 }
 
+.search_bar{
+    position: relative;
+}
 
 .search_bar, .search_bar:focus{
     font-size: large;
@@ -90,4 +93,19 @@
   background: white;
   border: 1px solid #ddd;
   border-radius: 0.5rem;
+}
+
+.search-results-dropdown {
+  top: 3em;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.search-result-item {
+  padding: 0.5em 1em;
+  cursor: pointer;
+}
+
+.search-result-item:hover {
+  background-color: #f0f0f0;
 }

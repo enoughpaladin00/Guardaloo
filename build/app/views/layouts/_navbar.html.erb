@@ -10,6 +10,9 @@
             <%= image_tag "navbar/Lente.svg", alt: "lente", style: "width: 1.2em; height: 1.2em" %>
           </span>
           <input class="form-control border-0 shadow-none search_bar" type="search" placeholder="Cerca film, serie TV, cinema, discussioni...">
+          <div class="search-results-dropdown position-absolute bg-white border rounded mt-1" id="search-results" style="z-index: 1000; display: none; width: 35em;">
+            <!-- I risultati verranno inseriti qui dinamicamente -->
+          </div>
         </div>
       </form>
     </div>

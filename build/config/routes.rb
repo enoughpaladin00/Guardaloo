@@ -38,7 +38,8 @@ Rails.application.routes.draw do
   get "home", to: "homepage#homepage"
 
   # search
-  get "/search/tmdb", to: "search#tmdb"
+  get "/tmdb_search", to: "search#tmdb"
+
 
 
   # User Profile
