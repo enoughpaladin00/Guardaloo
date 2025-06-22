@@ -9,12 +9,17 @@
           <span>
             <%= image_tag "navbar/Lente.svg", alt: "lente", style: "width: 1.2em; height: 1.2em" %>
           </span>
-          <input class="form-control border-0 shadow-none search_bar" type="search" placeholder="Cerca film, serie TV, cinema, discussioni...">
-          <div class="search-results-dropdown position-absolute bg-white border rounded mt-1" id="search-results" style="z-index: 1000; display: none; width: 35em;">
-            <!-- I risultati verranno inseriti qui dinamicamente -->
+          <input class="form-control border-0 shadow-none search_bar" type="search" placeholder="Cerca film e serie TV" autocomplete="off">
+          <!--<div class="position-absolute mt-2 search-results-dropdown" id="search-results"></div>-->
+             
+          <!-- Dropdown risultati -->
+          <div class="position-absolute mt-1 search-results-dropdown" id="search-results" style="border-radius: 0 0 0.5em 0.5em;">
+            <div id="search-placeholder" class="ms-2 mb-1 text-muted"><b>Nessun risultato</b></div>
           </div>
+
         </div>
       </form>
+      <div id="search-overlay" class="position-fixed top-0 start-0 w-100 h-100" style="background: rgba(0, 0, 0, 0.6); display: none; z-index: 900;"></div>
     </div>
     <div class="container-fluid d-flex justify-content-end">
         <a href="#"><%= image_tag "navbar/menu.svg", alt: "logo", style: "width: 2.2em; height: 2.2em; margin-right: 0.8em" %></a>

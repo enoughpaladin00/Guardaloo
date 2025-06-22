@@ -29,7 +29,6 @@ class HomepageController < ApplicationController
 
         @cinemas = find_nearby_cinemas(41.9028, 12.4964, 20)
       end
-      # @cinemas = SerpApiClient.search_cinema("cinema", location_str)
       @cinemas_for_map = []
       @cinemas_for_map = @cinemas.map do |cinema|
         {
