@@ -120,3 +120,33 @@
   background-color: #f0f0f0;
   z-index: 900;
 }
+
+.hamburger-popup {
+    position: absolute;
+    top: 60px; /* distanza dalla navbar */
+    right: 20px;
+    background-color: #ffece2;
+    border: 2px solid #FD7474;
+    border-radius: 12px;
+    display: none;
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transition: opacity 0.3s ease;
+}
+
+.hamburger-links li {
+    padding: 10px 20px;
+}
+
+.hamburger-link {
+    text-decoration: none;
+    color: #004466;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.hamburger-link:hover {
+    background-color: #FD7474;
+    color: white;
+    border-radius: 8px;
+}

@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('turbo:load', () => {
     const input = document.getElementById('movie_title_input');
     const suggestions = document.getElementById('movie-suggestions');
     const hiddenMovieId = document.getElementById('movie_id_input');

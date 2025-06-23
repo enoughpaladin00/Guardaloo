@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("turbo:load", () => {
   const searchInput = document.querySelector(".search_bar");
   const resultsContainer = document.getElementById("search-results");
   const placeholder = document.getElementById("search-placeholder");

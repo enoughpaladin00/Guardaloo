@@ -1,6 +1,5 @@
 document.addEventListener("turbo:load", function () {
   const gliderEl = document.querySelector(".glider");
-
   if (!gliderEl) return;
 
   const glider = new Glider(gliderEl, {
@@ -8,43 +7,53 @@ document.addEventListener("turbo:load", function () {
     slidesToScroll: 1,
     draggable: true,
     dots: ".dots",
-    arrows: {
-      prev: ".glider-prev",
-      next: ".glider-next"
-    },
     responsive: [
       {
         breakpoint: 640,
         settings: {
           slidesToShow: 3,
-          slidesToScroll: 2
         }
       },
       {
         breakpoint: 1024,
         settings: {
           slidesToShow: 4,
-          slidesToScroll: 1
         }
       },
       {
         breakpoint: 1280,
         settings: {
           slidesToShow: 6,
-          slidesToScroll: 1
         }
       }
     ]
   });
 
-  let slideIndex = 0;
   const totalSlides = gliderEl.querySelectorAll(".glider-slide").length;
 
+  let slideIndex = 0;
+
+  function getCurrentSlidesToShow() {
+    const width = window.innerWidth;
+    if (width >= 1280) return 6;
+    if (width >= 1024) return 4;
+    if (width >= 640) return 3;
+    return 1;
+  }
+
   setInterval(() => {
-    slideIndex = (slideIndex + 1) % totalSlides;
+    const slidesToShow = getCurrentSlidesToShow();
+
+    slideIndex += slidesToShow;
+
+    if (slideIndex > totalSlides) {
+      slideIndex = 0;
+    }
+
     glider.scrollItem(slideIndex);
-  }, 3000);
+  }, 8000);
 });
+
 
 
 // Popup Auth Toggle

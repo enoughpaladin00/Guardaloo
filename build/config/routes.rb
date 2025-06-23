@@ -40,8 +40,6 @@ Rails.application.routes.draw do
   # search
   get "/tmdb_search", to: "search#tmdb"
 
-
-
   # User Profile
   get "/profile", to: "profile_page#profile_index", as: "profile"
   get "/profile/edit", to: "profile_page#edit", as: "edit_profile"
