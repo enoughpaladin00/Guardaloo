@@ -36,8 +36,34 @@ class SessionsController < ApplicationController
   def destroy
       session[:user_id] = nil
       respond_to do |format|
-      format.html { redirect_to root_path, notice: "Sei stato disconnesso" }
-      format.json { render json: { success: true, redirect_url: root_path } }
+        format.html { redirect_to root_path, notice: "Sei stato disconnesso" }
+        format.json { render json: { success: true, redirect_url: root_path } }
+    end
+  end
+end
+
+class SessionsController < ApplicationController
+  def create
+    user = User.find_by(email: params[:email])
+
+    if user&.authenticate(params[:password])
+      session[:user_id] = user.id
+
+      respond_to do |format|
+        format.html { redirect_to "/home", notice: "Login effettuato con successo!" }
+        format.json { render json: { success: true, redirect_url: "/home/" }, status: :ok }
+      end
+    else
+      respond_to do |format|
+        format.html do
+          flash[:alert] = "Email o password errati"
+          redirect_to root_path
+        end
+
+        format.json do
+          render json: { success: false, error: "Credenziali non valide" }, status: :unauthorized
+        end
+      end
     end
   end
 end

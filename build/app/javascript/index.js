@@ -145,7 +145,7 @@ document.querySelectorAll("#register-form-popup, #register-form-page").forEach(f
 
 
 // Login
-document.querySelectorAll('#login-form-popup', '#login-form-page').forEach(form => {
+document.querySelectorAll('#login-form-popup, #login-form-page').forEach(form => {
   form.addEventListener("submit", function (e) {
     e.preventDefault();
 
