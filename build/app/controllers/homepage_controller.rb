@@ -21,32 +21,54 @@ class HomepageController < ApplicationController
           location_str = "Rome, Italy"
           Rails.logger.warn "FALLBACK: Geocoder non ha trovato città"
         end
+
+        @cinemas = find_nearby_cinemas(location[:lat], location[:lng], 50)
       else
         location_str = "Rome, Italy"
         Rails.logger.warn "LOCATION FALLBACK TO DEFAULT: #{location_str}"
+
+        @cinemas = find_nearby_cinemas(41.9028, 12.4964, 20)
       end
-      # @cinemas = SerpApiClient.search_cinema("cinema", location_str)
-      #      @cinemas_for_map = []
-      #      @cinemas[:places]&.each do |cinema_data|
-      #        cinema = Cinema.find_or_geocode({
-      #          id: cinema_data[:place_id],
-      #          name: cinema_data[:title],
-      #          address: cinema_data[:address],
-      #          lat: cinema_data[:gps_coordinates][:lat],
-      #          lng: cinema_data[:gps_coordinates][:lng]
-      #        })
-      #        if cinema&.geocoded?
-      #          Rails.logger.info "Geocoded: #{cinema.name} (#{cinema.latitude}, #{cinema.longitude})"
-      #          @cinemas_for_map << {
-      #            id: cinema.id,
-      #            name: cinema.name,
-      #            address: cinema.address,
-      #            lat: cinema.latitude,
-      #            lng: cinema.longitude
-      #          }
-      #        else
-      #          Rails.logger.warn "Geocoding fallito per: #{cinema.name}"
-      #        end
-      #      end
+      @cinemas_for_map = []
+      @cinemas_for_map = @cinemas.map do |cinema|
+        {
+          id: cinema.id,
+          name: cinema.name,
+          address: cinema.respond_to?(:address) ? cinema.address : "Indirizzo non disponibile",
+          lat: cinema.lat,
+          lng: cinema.lon
+        }
+      end
+    end
+
+    private
+
+    def find_nearby_cinemas(lat, lng, radius_km)
+      Cinemasdef
+        .select(
+          Cinemasdef.arel_table[Arel.star],
+          Arel.sql(%(
+            6371 * acos(
+              cos(radians(#{lat})) *
+              cos(radians(lat)) *
+              cos(radians(lon) - radians(#{lng})) +
+              sin(radians(#{lat})) *
+              sin(radians(lat))
+            ) AS distance
+          ))
+        )
+        .where(
+          Arel.sql(%(
+            6371 * acos(
+              cos(radians(#{lat})) *
+              cos(radians(lat)) *
+              cos(radians(lon) - radians(#{lng})) +
+              sin(radians(#{lat})) *
+              sin(radians(lat))
+            ) < #{radius_km}
+          ))
+        )
+        .order(Arel.sql("distance"))
+        .limit(20)
     end
 end

@@ -107,7 +107,6 @@
   cursor: pointer;
   padding: 6em 0.1em;
   opacity: 0;
-  
   transition: opacity 0.3s ease;
 }
 
@@ -121,10 +120,12 @@
 
 .slider-btn.left {
   left: 0; 
+  z-index: 100;
 }
 
 .slider-btn.right { 
-  right: 0; 
+  right: 0;
+  z-index: 100; 
 }
 
 

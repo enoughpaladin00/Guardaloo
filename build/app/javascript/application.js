@@ -7,6 +7,7 @@ import * as bootstrap from "bootstrap"
 import "index"
 import "moviePage"
 import "navbar"
+import "search"
 
 document.addEventListener("turbo:load", function () {
   const swiperContainer = document.querySelector(".trend-swiper");

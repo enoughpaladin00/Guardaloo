@@ -8,9 +8,16 @@
 
 .search_container{
     border: 2px solid #FD7474;
-    background:#fd747416;
+    background:#ffece2;
     border-radius: 2rem;
-    max-width: 40rem;
+    width: 36em;
+    position: relative;
+    z-index: 1001;
+}
+
+.search_container.focused {
+  border-radius: 0.5rem 0.5rem 0 0;
+  border-bottom: none;
 }
 
 .vert_line_navbar{
@@ -19,6 +26,9 @@
     color: #F9BD24;
 }
 
+.search_bar{
+    position: relative;
+}
 
 .search_bar, .search_bar:focus{
     font-size: large;
@@ -82,4 +92,31 @@
   
 .inactive-tab {
     color: gray;
+}
+
+.search-results-dropdown {
+  transform: translateX(-0.55em);
+  z-index: 1000; 
+  display: none; 
+  width: 36em; 
+  top: 2.2em;
+  max-height: 500px;
+  overflow-y: auto;
+  background-color: #ffece2;
+  border: 2px solid #FD7474;
+  border-top: none;
+}
+
+#search-overlay {
+  backdrop-filter: blur(1.5px);
+}
+
+.search-result-item {
+  padding: 0.5em 1em;
+  cursor: pointer;
+}
+
+.search-result-item:hover {
+  background-color: #f0f0f0;
+  z-index: 900;
 }
