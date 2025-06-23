@@ -32,6 +32,7 @@ class PostsController < ApplicationController
   #FILTRO COMPLETO
   def index
     @posts = Post.includes(:user, :comments)
+    @user = current_user
     @top_movies = TmdbService.top_10_streaming_movies
 
     # Filtro "Solo i miei post"
@@ -55,6 +56,7 @@ class PostsController < ApplicationController
   end
 
   def show
+    @user = current_user
     @post = Post.find(params[:id])
     if user_signed_in?
       @comment = Comment.new(post: @post, user: current_user)  # Safer alternative

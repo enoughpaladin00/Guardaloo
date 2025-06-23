@@ -2,23 +2,32 @@
 <%= render 'layouts/navbar' %>
 
 <div class="posts-container">
-  
+  <div class="btn"><%= link_to 'Ritorna al Forum', posts_path, class:"btn forum-button2", style:"position:absolute; left:3em;" %></div>
   <div class="new-post-form-container" style="gap: 3em;">
-    <img id="movie-poster-img" src="<%= asset_path('post/placeholder.jpg')%>" alt="Poster film" style="overflow: hidden; border-radius:0.5em;">
+    <%# immagine di sinistra %>
+    <img id="movie-poster-img" alt="Poster film" style="overflow: hidden; border-radius:0.5em; width:450px;" <%= image_tag "https://image.tmdb.org/t/p/w342#{@post.movie_poster_path}" %> 
+    
+    <%# dettagli post e contenuto %>
     <div class="post-card2"  style="height:25em">
       <div id="foto-titolo-creatore" style="display: flex; flex-direction: row; justify-content: center; align-items:center; border-bottom: 2px solid #FD7474; " >
         
-        <%# <%= image_tag url_for(@user.avatar) + "?#{@user.avatar.blob.created_at.to_i}", alt: "Avatar", class: "post-avatar"%> 
-        <%= image_tag "Profile_page/default_avatar.svg", alt: "Immagine di default", class: "post-avatar" %>         
+        <% if @user.persisted? && @user.avatar.attached? %>
+            <%= image_tag url_for(@user.avatar) + "?#{@user.avatar.blob.created_at.to_i}", class: "post-avatar" %>
+        <% else %>
+            <%= image_tag "Profile_page/default_avatar.svg", alt: "Immagine di default", class: "post-avatar" %>
+        <% end %>
         
         <div class="post-title" style="margin-top:1em; width:95%; margin-left:auto; margin-right:7em; border-radius:0.5em;">
-          <h1><%= @post.title %></h1> <!-- titolo autore e contenuto post-->
-          <p>Creato da <%= @post.user.username%></p>
+          <h1><%= @post.title %></h1>
+          <p>Creato <%= time_ago_in_words(@post.created_at) %> fa da <%= @post.user.username%></p>
         </div>
+
       </div>
+
       <div class="post-content">
         <h4><%= @post.content %></h4>
       </div>
+
     </div>
   </div>
 
@@ -27,15 +36,16 @@
 <div class="posts-container">
   <div class="filters-container">
 
-    <h2 class="post-title">Commenti</h1> 
+    <h2 class="post-title" style="font-size: 3em;">Commenti</h1> 
 
-    <div style="flex-shrink:0; background-color: green;">
-        <button id="show-new-post-form", class="btn sign-up popup-button auth-button"> Commenta il Post</button>
+    <div style="flex-shrink:0;">
+        <button class="btn"> <%= link_to 'Modifica il post', edit_post_path(@post), style:"text-decoration:none;", class:"btn forum-button2"%> </button>
+        <button id="show-new-post-form", class="btn forum-button2" style="margin-left: 0.5em;"> Commenta il Post</button>
     </div>
   </div>
 
   <div id="new-post-form-container" style="display:none;">
-      <div class="new-post-card">
+      <div class="new-post-card new-comment">
         <%= render 'comments/form', post: @post %> 
       </div>
   </div>
@@ -44,11 +54,6 @@
     <%= render @post.comments %>  <!-- carica i commenti del post ->_comment.html.erb -->
   </div>
 </div> 
-
-
-<h2>Dai la tua opinione!</h2>
-<%= render 'comments/form', post: @post %>  <!-- carica form per aggiungere commento -> _form.html.erb-->
-
 
 <!-- utilità opinabile -->
 <%= link_to 'Edit', edit_post_path(@post) %>  <!-- non funziona-->
