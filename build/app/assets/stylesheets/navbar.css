@@ -42,26 +42,7 @@
     white-space: nowrap;
 }
 
-/*profile menu layout*/
-.menu-overlay{
-    position: fixed;
-    z-index: 10;
-    display:flex;
-    top:0;
-    right:0;
-    background-color: var(--color-4);
-    width: 20rem;
-    height: auto;
-    justify-content: center;
-    border: 1px yellow solid;
-    border-radius: 20px;
-}
-.menu-content{
-    max-width: 90%;
-    padding: 20px;
-    border: 1px red solid
-}
-
+/*
 .popup-overlay {
     position: fixed;
     top: 0;
@@ -79,6 +60,7 @@
     max-width: 90%;
     padding: 20px;
 }
+*/
   
 .auth-tab {
     cursor: pointer;
@@ -150,3 +132,33 @@
     color: white;
     border-radius: 8px;
 }
+
+/*profile menu layout*/
+.user-popup{
+    width:auto;
+    position: absolute;
+    top: 60px; /* distanza dalla navbar */
+    right: 20px;
+    padding: 20px 20px;
+    background-color: var(--color-3-light);
+    border: 2px solid var(--color-3);
+    border-radius: 12px;
+    display: none;
+    z-index: 1000;
+    box-shadow: 0 4px 8px var(--color-5);
+}
+.user-content{
+    max-width: 90%;
+}
+.userMenu-txt{
+    color:var(--color-4);
+    font-size: var(--size-lg);
+}
+.user-link {
+    text-decoration: none;
+    color: var(--color-4);
+    font-weight: bold;
+    font-size: var(--size-base);
+}
+
+

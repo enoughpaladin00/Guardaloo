@@ -37,29 +37,24 @@
         </div>
 
         <span class="vert_line_navbar">&#124;</span>
-        <a class="px-2" data-bs-toggle="modal" data-bs-target="#profileMenuModal" href="#">
-            <%= image_tag "navbar/user.svg", class:"profile-svg", alt: "user", style: "width: 2.2em; height: 2.2em" %>
-        </a>
-    </div>
-</nav>
 
-<div id="profile-menu" class="menu-overlay" style="display: none;">
-    <div class="menu-content">
-        <div class="menu-box">
-            <div>
-                <span class="popup-txt" style="color: var(--color-2)">Benvenuto <%= current_user.username%>!</span>
-            </div>
-            <hr>
-            <div>
-                <span class="popup-txt" style="color: var(--color-2)">Gestione Profilo</span>
-            </div>
-            <div>
-                <span class="popup-txt" style="color: var(--color-2)">Impostazioni Generali</span>
-            </div>
-            <hr>
-            <div>
-                <button class="yellow-button button-1 Logout-button"> Logout </button>
+        <div class="user-svg" id="userMenu-Trigger" data-bs-toggle="modal" data-bs-target="#profileMenuModal" href="#">
+            <%= image_tag "navbar/user.svg", class:"profile-svg", alt: "user", style: "width: 2.2em; height: 2.2em" %>
+        </div>
+        
+        <div id="user-menu" class="user-popup">
+            <div class="user-content">
+                <div>
+                    <span class="userMenu-txt">Benvenuto <%= current_user.username%>!</span>
+                </div>
+                <hr>
+                <li><%= link_to 'Il Tuo Profilo', profile_path, class: 'user-link' %></li>
+                <hr>
+                <div>
+                    <button class="yellow-button button-1 Logout-button"> Logout </button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+</nav>
+
