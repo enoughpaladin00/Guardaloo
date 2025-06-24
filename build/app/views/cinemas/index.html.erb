@@ -41,14 +41,14 @@
         const lat = position.coords.latitude;
         const lon = position.coords.longitude;
         
-        // Determina la città e la provincia corrente dell'utente per passare a Rails
+        // Determina la città e la provincia corrente dell'utente
         const geocodeResponse = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
         const geocodeData = await geocodeResponse.json();
         const userCity = geocodeData.address.city || geocodeData.address.town || geocodeData.address.village || "Frosinone"; 
         const userProvince = geocodeData.address.state || "Lazio"; 
         const userCountry = geocodeData.address.country || "Italy"; // Default Italy
 
-        // Richiedi i cinema vicini al tuo controller.
+        // Richiesta dei cinema vicini
         const response = await fetch(`/cinemas.json?lat=${lat}&lon=${lon}&user_city=${encodeURIComponent(userCity)}&user_province=${encodeURIComponent(userProvince)}&user_country=${encodeURIComponent(userCountry)}`);
         const cinemas = await response.json();
         cinemaListContainer.innerHTML = "";
@@ -62,7 +62,7 @@
           const div = document.createElement("div");
           div.classList.add("cinema-card");
 
-          // Google Maps URL: Usa l'indirizzo, la città e la provincia del cinema dal DB per una localizzazione più precisa.
+          // Google Maps URL:indirizzo, città e provincia del cinema dal DB
           const mapAddress = encodeURIComponent(`${cinema.address || ''}, ${cinema.town || ''}, ${cinema.province || ''}, Italy`);
           const map = cinema.address
             ? `<iframe width="300" height="200" frameborder="0" style="border:0"
@@ -77,7 +77,7 @@
             ${map}
           `;
           
-          // Data attributes per la chiamata a SerpAPI
+          // Per la chiamata a SerpAPI
           div.dataset.cinemaId = cinema.id; 
           div.dataset.cinemaName = cinema.name;
           div.dataset.cinemaTown = cinema.town || userCity; 
@@ -90,7 +90,7 @@
             modalProgrammazioneContent.innerHTML = "<p class='loading-message'>Caricamento programmazione...</p>"; 
 
             try {
-              // Effettua la chiamata AJAX al tuo controller Rails
+              // Chiamata AJAX al controller Rails
               const programmazioneResponse = await fetch(
                 `/cinemas/${cinema.id}/programmazione?` + 
                 `cinema_name=${encodeURIComponent(cinema.name)}&` +
@@ -102,7 +102,7 @@
               if (!programmazioneResponse.ok) {
                 throw new Error(`HTTP error! status: ${programmazioneResponse.status}`);
               }
-              // Parse la risposta JSON dal controller Rails
+              // Parse della risposta JSON dal controller Rails
               const programmazioneData = await programmazioneResponse.json();
               
               if (programmazioneData && programmazioneData.length > 0) {
