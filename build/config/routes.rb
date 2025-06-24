@@ -42,6 +42,9 @@ Rails.application.routes.draw do
   get "/profile/edit", to: "profile_page#edit", as: "edit_profile"
   patch "/profile", to: "profile_page#update"
 
+  # Update favourite film ids for User Profile
+  patch '/users/update_tmdb_id', to: 'users#update_tmdb_id'
+
   # Google and Facebook Auth
   get "/auth/:provider/callback", to: "sessions#omniauth"
   get "/auth/failure", to: redirect("/")

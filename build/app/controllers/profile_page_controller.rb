@@ -7,7 +7,17 @@ class ProfilePageController < ApplicationController
     @trending_movies = Rails.cache.fetch("trending_movies_top3", expires_in: 6.hours) do
       TmdbService.trending_movies.first(3)
     end
-    # @user è già settato
+  
+    @chosen_movies = []
+  
+    [@user.tmdb_id_1, @user.tmdb_id_2, @user.tmdb_id_3].each do |tmdb_id|
+      if tmdb_id.present?
+        movie = TmdbService.get_movie(tmdb_id)
+        @chosen_movies << movie if movie
+      else
+        @chosen_movies << nil
+      end
+    end
   end
 
   def update

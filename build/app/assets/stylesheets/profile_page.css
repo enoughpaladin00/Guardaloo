@@ -4,6 +4,7 @@
     margin-left: 8%;
     margin-right: 8%;
     border-radius: 20px;
+    margin-top: 3%;
 }
 .User_half{
     display:flex;
@@ -79,7 +80,7 @@
 .Sezione_2-1{
     display:flex;
     align-items: center;
-    gap:50%;
+    gap: 50%;
 }
 .Sezione_2-2{
     top: 5%;
@@ -91,8 +92,8 @@
 
 .Sezione_2-2 img {
     position: absolute;
-    width: 230px; /* come nel tuo image_tag */
-    height: auto;
+    width: 230px; 
+    height: 21rem;
     border-radius: 30px;
     border: 1px var(--color-5) solid;
     box-shadow: 7px 7px 3px var(--color-4);
@@ -135,7 +136,7 @@
     align-items: center;
 }
 .popup-txt{
-    color: #FFFAEF;
+    color: var(--color-1);
     font-family: 'Inter', sans-serif;
     font-size: 22px;
     font-weight: 600;
