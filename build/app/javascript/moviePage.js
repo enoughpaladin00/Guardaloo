@@ -137,7 +137,7 @@ if (document.getElementById("map")) {
 
 
 // Visualizzazione Programmazione by day
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("turbo:load", function () {
   const buttons = document.querySelectorAll(".tab-button");
   const cinemaLists = document.querySelectorAll(".cinema-list-day");
   buttons.forEach(button => {
