@@ -59,7 +59,69 @@
 
 */
 
-/* Stili per la griglia dei cinema */
+/* Titolo e Lista */
+/* Stili per il contenitore del titolo, per allinearlo alla griglia delle card */
+.titolo-pagina{
+  max-width: 1200px; /* Stessa larghezza massima della griglia delle card */
+  margin: 2rem auto 2.5rem auto; /* Centra il contenitore, aggiunge spazio sopra e sotto */
+  padding: 0 2rem; /* Aggiunge padding laterale per allinearsi al padding della griglia */
+  text-align: center; /* Centra il titolo all'interno del suo contenitore */
+}
+
+/* Stili per il titolo "Lista Cinema Vicini" */
+.titolo-pagina h1 {
+  font-family: 'Inter', sans-serif; /* Coerenza con il font delle card */
+  font-size: 3rem; /* Dimensione generosa */
+  color: #333; /* Colore scuro per leggibilità */
+  position: relative; /* Necessario per lo pseudo-elemento */
+  padding-bottom: 0.8rem; /* Spazio tra testo e underline */
+  display: inline-block; /* Per far sì che la linea ::after si adatti al testo */
+}
+
+/* Linea decorativa animata sotto il titolo */
+.titolo-pagina h1::after {
+  content: '';
+  display: block;
+  width: 0; /* Inizia senza larghezza */
+  height: 5px; /* Spessore della linea */
+  background-color: #f7b32b; /* Un bel colore d'accento */
+  margin: 8px auto 0 auto; /* Centra la linea sotto il titolo */
+  border-radius: 3px;
+  transition: width 0.6s ease-out; /* Animazione della larghezza */
+}
+
+/* Quando il mouse passa sopra il titolo, la linea si espande */
+.titolo-pagina h1:hover::after {
+  width: 100%; /* Si espande fino alla larghezza del testo */
+}
+
+/* Stili per il messaggio "Caricamento in corso..." iniziale */
+.caricamento-iniziale {
+  text-align: center;
+  font-family: 'Inter', sans-serif;
+  font-size: 1.2rem;
+  color: #888;
+  padding: 2rem;
+  margin-top: 1rem;
+  animation: pulse 1.5s infinite ease-in-out; /* Animazione leggera di pulsazione */
+}
+
+/* Animazione di pulsazione */
+@keyframes pulse {
+  0% { opacity: 0.7; }
+  50% { opacity: 1; }
+  100% { opacity: 0.7; }
+}
+
+#modal-programmazione-content .loading-message {
+  text-align: center;
+  font-style: italic;
+  color: #888;
+  padding: 20px;
+  animation: pulse 1.5s infinite ease-in-out; /* Anche qui una leggera animazione */
+}
+
+/* Griglia dei cinema */
 #cinema-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
