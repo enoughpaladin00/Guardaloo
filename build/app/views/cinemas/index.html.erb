@@ -1,27 +1,57 @@
 <%= render 'layouts/navbar' %>
-
-
 <h1>Lista Cinema Vicini</h1>
-
 <div id="cinema-list">
   <p>Caricamento in corso...</p>
 </div>
 
+<div id="cinema-programmazione-modal" class="modal">
+  <div class="modal-content">
+    <span class="close-button">×</span>
+    <h2 id="modal-cinema-name"></h2>
+    <div id="modal-programmazione-content">
+      <p class="loading-message">Caricamento programmazione...</p>
+    </div>
+  </div>
+</div>
+
 <script>
   document.addEventListener("DOMContentLoaded", () => {
+    const cinemaListContainer = document.getElementById("cinema-list");
+    const modal = document.getElementById("cinema-programmazione-modal");
+    const closeButton = document.querySelector(".close-button");
+    const modalCinemaName = document.getElementById("modal-cinema-name");
+    const modalProgrammazioneContent = document.getElementById("modal-programmazione-content");
+
+    // Funzioni per chiudere il modal
+    closeButton.onclick = function() {
+      modal.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(async (position) => {
         const lat = position.coords.latitude;
         const lon = position.coords.longitude;
+        
+        // Determina la città e la provincia corrente dell'utente per passare a Rails
+        const geocodeResponse = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
+        const geocodeData = await geocodeResponse.json();
+        const userCity = geocodeData.address.city || geocodeData.address.town || geocodeData.address.village || "Frosinone"; 
+        const userProvince = geocodeData.address.state || "Lazio"; 
+        const userCountry = geocodeData.address.country || "Italy"; // Default Italy
 
-        const response = await fetch(`/cinemas.json?lat=${lat}&lon=${lon}`);
+        // Richiedi i cinema vicini al tuo controller.
+        const response = await fetch(`/cinemas.json?lat=${lat}&lon=${lon}&user_city=${encodeURIComponent(userCity)}&user_province=${encodeURIComponent(userProvince)}&user_country=${encodeURIComponent(userCountry)}`);
         const cinemas = await response.json();
-
-        const listContainer = document.getElementById("cinema-list");
-        listContainer.innerHTML = "";
+        cinemaListContainer.innerHTML = "";
 
         if (cinemas.length === 0) {
-          listContainer.innerHTML = "<p>Nessun cinema trovato nelle vicinanze.</p>";
+          cinemaListContainer.innerHTML = "<p>Nessun cinema trovato nelle vicinanze.</p>";
           return;
         }
 
@@ -29,24 +59,77 @@
           const div = document.createElement("div");
           div.classList.add("cinema-card");
 
+          // Google Maps URL: Usa l'indirizzo, la città e la provincia del cinema dal DB per una localizzazione più precisa.
+          const mapAddress = encodeURIComponent(`${cinema.address || ''}, ${cinema.town || ''}, ${cinema.province || ''}, Italy`);
           const map = cinema.address
             ? `<iframe width="300" height="200" frameborder="0" style="border:0"
-                 src="https://maps.google.com/maps?q=${encodeURIComponent(cinema.address)}&output=embed"
-                 allowfullscreen></iframe>`
+                  src="http://maps.google.com/maps?q=${mapAddress}&output=embed"
+                  allowfullscreen></iframe>`
             : "";
 
           div.innerHTML = `
-            <h2>${cinema.name} (${cinema.distance ?? "?"} km)</h2>
+            <h2>${cinema.name} (${cinema.distance ? cinema.distance.toFixed(2) : "?"} km)</h2>
             <p>${cinema.address || 'Indirizzo non disponibile'}, ${cinema.town || '-'} (${cinema.province || '-'})</p>
             <p>Telefono: ${cinema.phone || 'N/A'}</p>
             ${map}
           `;
+          
+          // Data attributes per la chiamata a SerpAPI
+          div.dataset.cinemaId = cinema.id; 
+          div.dataset.cinemaName = cinema.name;
+          div.dataset.cinemaTown = cinema.town || userCity; 
+          div.dataset.cinemaProvince = cinema.province || userProvince; 
+          div.dataset.cinemaCountry = "Italy"; 
 
-          listContainer.appendChild(div);
+          div.addEventListener("click", async () => {
+            modal.style.display = "block";
+            modalCinemaName.textContent = cinema.name;
+            modalProgrammazioneContent.innerHTML = "<p class='loading-message'>Caricamento programmazione...</p>"; 
+
+            try {
+              // Effettua la chiamata AJAX al tuo controller Rails
+              const programmazioneResponse = await fetch(
+                `/cinemas/${cinema.id}/programmazione?` + 
+                `cinema_name=${encodeURIComponent(cinema.name)}&` +
+                `cinema_town=${encodeURIComponent(cinema.town || userCity)}&` +
+                `cinema_province=${encodeURIComponent(cinema.province || userProvince)}&` +
+                `cinema_country=${encodeURIComponent("Italy")}` 
+              );
+              
+              if (!programmazioneResponse.ok) {
+                throw new Error(`HTTP error! status: ${programmazioneResponse.status}`);
+              }
+              // Parse la risposta JSON dal controller Rails
+              const programmazioneData = await programmazioneResponse.json();
+              
+              if (programmazioneData && programmazioneData.length > 0) {
+                let programmazioneHtml = '';
+                programmazioneData.forEach(film => {
+                  programmazioneHtml += `
+                    <div class="movie-listing">
+                      <h4>${film.title}</h4>
+                      <p>Orari: ${film.showtimes.join(', ')}</p>
+                    </div>
+                  `;
+                });
+                modalProgrammazioneContent.innerHTML = programmazioneHtml;
+              } else {
+                modalProgrammazioneContent.innerHTML = "<p>Nessuna programmazione trovata per questo cinema.</p>";
+              }
+            } catch (error) {
+              console.error("Errore nel recupero della programmazione:", error);
+              modalProgrammazioneContent.innerHTML = "<p>Errore nel caricamento della programmazione. Riprova più tardi.</p>";
+            }
+          });
+
+          cinemaListContainer.appendChild(div);
         });
+      }, (error) => {
+        console.error("Errore di geolocalizzazione:", error);
+        cinemaListContainer.innerHTML = "<p>Impossibile ottenere la tua posizione. Assicurati che la geolocalizzazione sia abilitata nel tuo browser.</p>";
       });
     } else {
-      document.getElementById("cinema-list").innerHTML = "<p>Geolocalizzazione non supportata dal browser.</p>";
+      cinemaListContainer.innerHTML = "<p>Geolocalizzazione non supportata dal browser.</p>";
     }
   });
 </script>

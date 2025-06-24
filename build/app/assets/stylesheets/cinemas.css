@@ -59,6 +59,7 @@
 
 */
 
+/* Stili per la griglia dei cinema */
 #cinema-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
@@ -68,15 +69,19 @@
   margin: 0 auto;
 }
 
+/* Stili per le singole card dei cinema */
 .cinema-card {
-  margin: 2rem 0;
   padding: 2rem;
   background-color: #fffce8; 
-  border: 2px solid var(--color-2); 
+  border: 2px solid var(--color-2, #ccc); /* Aggiunto fallback per --color-2 */
   border-radius: 20px;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
   font-family: 'Inter', sans-serif;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease; /* Transizione anche per l'ombra */
+  cursor: pointer; /* Indica che l'elemento è cliccabile */
+  display: flex; /* Flexbox per il contenuto */
+  flex-direction: column; /* Organizza il contenuto in colonna */
+  justify-content: space-between; /* Spazio tra gli elementi interni */
 }
 
 .cinema-card:hover {
@@ -84,53 +89,129 @@
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
 }
 
-.cinema-content {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2rem;
-  margin-top: 1.5rem;
+.cinema-card h2 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+  color: #333;
 }
 
-.programmazione {
-  flex: 1;
-  font-family: 'Inter', sans-serif;
-  font-size: var(--size-base);
-  color: var(--color-5);
+.cinema-card p {
+  font-size: 1rem;
+  line-height: 1.4;
+  color: #666;
+  margin-bottom: 0.5rem; /* Spazio tra i paragrafi */
 }
 
-.map iframe {
+/* Stili per l'iframe della mappa */
+.cinema-card iframe {
   border-radius: 12px;
-  max-width: 100%;
-  height: auto;
+  width: 100%; /* La mappa occupa tutta la larghezza disponibile */
+  height: 200px; /* Altezza fissa per le mappe */
   border: 0;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  margin-top: 1.5rem; /* Spazio tra testo e mappa */
+  flex-shrink: 0; /* Impedisce alla mappa di restringersi */
 }
 
-.film-row {
-  margin-bottom: 1.5rem;
+/* --- Stili per il Modal (Popup) --- */
+.modal {
+  display: none; /* Nascosto di default */
+  position: fixed; /* Posizione fissa rispetto al viewport */
+  z-index: 1000; /* Assicurati che sia sopra tutti gli altri elementi */
+  left: 0;
+  top: 0;
+  width: 100%; /* Larghezza intera */
+  height: 100%; /* Altezza intera */
+  overflow: auto; /* Abilita lo scroll se il contenuto supera l'altezza del viewport */
+  background-color: rgba(0,0,0,0.6); /* Sfondo semi-trasparente e più scuro */
+  backdrop-filter: blur(5px); /* Effetto sfocatura sullo sfondo (browser supportati) */
+  -webkit-backdrop-filter: blur(5px); /* Prefisso per compatibilità Safari */
+  animation: fadeInBackground 0.3s ease-out; /* Animazione per lo sfondo */
 }
 
-.film-row h4 {
-  margin-bottom: 0.5rem;
-  font-size: var(--size-lg);
-  color: var(--color-4);
+@keyframes fadeInBackground {
+  from { background-color: rgba(0,0,0,0); }
+  to { background-color: rgba(0,0,0,0.6); }
 }
 
-.film-row button {
-  margin: 0.3rem;
-  padding: 0.5rem 1rem;
-  background-color: var(--color-2);
-  border: none;
-  border-radius: 20px;
-  font-weight: 600;
-  font-family: 'Inter', sans-serif;
+.modal-content {
+  background-color: #fefefe;
+  margin: 10% auto; /* 10% dal top, centrato orizzontalmente */
+  padding: 30px;
+  border: none; /* Rimuovi il bordo predefinito */
+  border-radius: 15px; /* Bordi più arrotondati */
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3); /* Ombra più pronunciata */
+  width: 90%; /* Larghezza leggermente maggiore */
+  max-width: 750px; /* Larghezza massima per non essere troppo larga su schermi grandi */
+  position: relative; /* Per posizionare il bottone di chiusura */
+  animation: fadeInContent 0.3s ease-out; /* Animazione per il contenuto */
+}
+
+@keyframes fadeInContent {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.close-button {
+  color: #aaa;
+  float: right;
+  font-size: 32px; /* Dimensione maggiore per il bottone di chiusura */
+  font-weight: bold;
+  position: absolute; /* Posizionamento assoluto all'interno del modal-content */
+  top: 15px;
+  right: 25px;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  color: #272727;
+  transition: color 0.2s ease;
 }
 
-.film-row button:hover {
-  background-color: #e0a821;
-  transform: scale(1.05);
+.close-button:hover,
+.close-button:focus {
+  color: #333;
 }
 
+/* Stili per il titolo del cinema nel popup */
+#modal-cinema-name {
+  font-size: 2.2rem;
+  margin-bottom: 1.5rem;
+  color: #222;
+  border-bottom: 2px solid var(--color-2, #ccc); /* Linea sotto il nome */
+  padding-bottom: 10px;
+}
+
+/* Contenitore della programmazione */
+#modal-programmazione-content {
+  margin-top: 1rem;
+}
+
+/* Stili per ogni film listato nella programmazione */
+.movie-listing {
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px dashed #e0e0e0; /* Linea tratteggiata tra i film */
+}
+
+.movie-listing:last-child {
+  border-bottom: none; /* Rimuovi il bordo dall'ultimo elemento */
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.movie-listing h4 {
+  font-size: 1.3rem;
+  margin: 0 0 5px 0;
+  color: #444;
+}
+
+.movie-listing p {
+  font-size: 1em;
+  color: #777;
+  margin: 0;
+}
+
+/* Stili per il messaggio di caricamento */
+.loading-message {
+  text-align: center;
+  font-style: italic;
+  color: #888;
+  padding: 20px;
+}

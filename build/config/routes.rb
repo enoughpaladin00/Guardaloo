@@ -1,12 +1,14 @@
+# config/routes.rb
 Rails.application.routes.draw do
+  # Rotte esistenti dei tuoi amici (non modificate)
   get "cinemas/index"
   get "home/index"
-  get "/cinemas", to: "cinemas#index"
+  # get "/cinemas", to: "cinemas#index" # Questa è una duplicazione, verrà gestita da 'resources :cinemas'
+  # get 'cinemas/programmazione', to: 'cinemas#programmazione' # QUESTA ROTTA È IL PROBLEMA E VA SOSTITUITA O MODIFICATA
 
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  # Define your application routes per the DSL in https://guides.rubylang.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check
 
   # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
@@ -50,8 +52,25 @@ Rails.application.routes.draw do
   get "/auth/failure", to: redirect("/")
 
   match "/auth/:provider", to: "sessions#passthru", via: [ :get, :post ]
-
   resources :posts do
     resources :comments, only: [ :create, :destroy ]
   end
+
+  # --- INIZIO MODIFICHE PER LE TUE ROTTE CINEMA ---
+
+  # Questa riga genera la rotta /cinemas (GET) per cinemas#index
+  # e la rotta /cinemas/:id/programmazione (GET) per cinemas#programmazione
+  resources :cinemas, only: [:index] do
+    member do
+      get 'programmazione'
+    end
+  end
+
+  # Le due rotte originali che avevi per i cinema sono ridondanti o non precise
+  # per la programmazione. Le ho lasciate commentate.
+  # get "/cinemas", to: "cinemas#index"
+  # get 'cinemas/programmazione', to: 'cinemas#programmazione'
+
+  # --- FINE MODIFICHE PER LE TUE ROTTE CINEMA ---
+
 end
