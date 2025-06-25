@@ -3,7 +3,6 @@
 
 
 <% if user_signed_in? %>      <!-- controllo utente autenticato, scritte opzionali -->
-    Benvenuto, <%= current_user.first_name %>!
 <% else %>
     <h1>NON SEI REGISTRATO! DEVI REGISTRARTI</h1>  <!-- blurra tutto e fai apparire il login form? -->
 <% end %>   
@@ -13,25 +12,26 @@
 
 <div class="filters-container">
   <div class="new-post-button">
-    <%= link_to 'Scrivi un nuovo Post', new_post_path, class: "btn btn-edit", id:"" %>
+    <%= link_to 'Scrivi un nuovo Post', new_post_path, class: "btn forum-button2", id:"" %>
   </div>
 
   <%= form_with url: posts_path, method: :get, local: true, html: { class: "filter-form" } do %>
     <div class="filters">
       <%= label_tag :query, "", class:"post-content " %>
-      <%= text_field_tag :query, params[:query], placeholder: "Horror, Action...", class:" rounded-3 search_container px-2 align-items-center" %>
+      <%= text_field_tag :query, params[:query], placeholder: "Cerca i post", class:"search-filters px-2 align-items-center", style:"border-radius:0.6em; height:2.1em; font-size:1.2em;"%>
 
       <%= select_tag :filter, options_for_select([
           ['Tutti i post', 'all'],
           ['Solo i miei post', 'my_posts']
-        ], selected: params[:filter]), include_blank: false %>
+        ], selected: params[:filter]), include_blank: false, style:"border-radius:0.6em; background-color: #ffece2; height:2.1em;font-size:1.2em;" %>
 
-      <%= submit_tag "Filtra", class: "btn btn-filtra btn-edit" %>
+      <%= submit_tag "Filtra", class: "btn forum-button2" %>
     </div>
   <% end %>
 </div>
 
 <div class="posts-container">
+  
   <%# forse %>
   <div id="new-post-form-container" style="display:none;">
       <div class="new-post-card">
@@ -86,6 +86,7 @@
 
 
 <script>
+
   document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.post-card').forEach(card => {
       card.style.cursor = 'pointer';
@@ -101,20 +102,20 @@
     });
   });
 
-  document.addEventListener('DOMContentLoaded', () => {
-  const btn = document.getElementById('show-new-post-form');
-  const formContainer = document.getElementById('new-post-form-container');
+//   document.addEventListener('DOMContentLoaded', () => {
+//   const btn = document.getElementById('show-new-post-form');
+//   const formContainer = document.getElementById('new-post-form-container');
 
-  btn.addEventListener('click', () => {
-    if (formContainer.style.display === 'none' || formContainer.style.display === '') {
-      formContainer.style.display = 'block';
-      btn.textContent = 'Nascondi form nuovo post';
-    } else {
-      formContainer.style.display = 'none';
-      btn.textContent = 'Scrivi un nuovo Post';
-    }
-  });
-});
+//   btn.addEventListener('click', () => {
+//     if (formContainer.style.display === 'none' || formContainer.style.display === '') {
+//       formContainer.style.display = 'block';
+//       btn.textContent = 'Nascondi form nuovo post';
+//     } else {
+//       formContainer.style.display = 'none';
+//       btn.textContent = 'Scrivi un nuovo Post';
+//     }
+//   });
+// });
 
 </script>
 
