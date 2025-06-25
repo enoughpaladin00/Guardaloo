@@ -1,27 +1,23 @@
-# app/controllers/cinemas_controller.rb
-# app/controllers/cinemas_controller.rb
+
 class CinemasController < ApplicationController
-  # Assicurati di avere un modello corrispondente alla tua tabella `cinemasdef`.
-  # Userò `Cinemasdef` come da te specificato.
   
   def index
-    # Recupera tutti i cinema dalla tua tabella `cinemasdef`
     all_cinemas = Cinemasdef.all 
     
     if params[:lat].present? && params[:lon].present?
       user_lat = params[:lat].to_f
       user_lon = params[:lon].to_f
-      user_city = params[:user_city] # Città rilevata dal frontend
-      user_province = params[:user_province] # Provincia rilevata dal frontend
+      user_city = params[:user_city] 
+      user_province = params[:user_province] 
 
       cinemas_in_range = all_cinemas.map do |cinema|
-        cinema_lat = cinema.lat.to_f rescue nil # Usa cinema.lat come da tua tabella
-        cinema_lon = cinema.lon.to_f rescue nil # Usa cinema.lon come da tua tabella
+        cinema_lat = cinema.lat.to_f rescue nil 
+        cinema_lon = cinema.lon.to_f rescue nil 
         
         if cinema_lat && cinema_lon
           distance = distance_km(user_lat, user_lon, cinema_lat, cinema_lon)
           if distance < 10.0 # Filtra entro 10 km
-            # Restituisci un hash con i dati del cinema, inclusa la distanza
+           #Hash con i dati del cinema, inclusa la distanza
             {
               id: cinema.id,
               name: cinema.name,
@@ -35,11 +31,10 @@ class CinemasController < ApplicationController
             nil
           end
         else
-          nil # Cinema senza coordinate valide
+          nil 
         end
-      end.compact.sort_by { |c| c[:distance] } # Rimuovi i nil e ordina per distanza
+      end.compact.sort_by { |c| c[:distance] } 
     else
-      # Se la geolocalizzazione non è disponibile, restituisci un array vuoto o tutti i cinema
       cinemas_in_range = [] 
     end
 
@@ -49,7 +44,6 @@ class CinemasController < ApplicationController
     end
   end
 
-  # Azione per la programmazione del cinema (chiamata via AJAX)
   def programmazione
     cinema_name = params[:cinema_name]
     cinema_town = params[:cinema_town]
@@ -61,11 +55,10 @@ class CinemasController < ApplicationController
       return
     end
 
-    # Costruisci la stringa location per SerpAPI
+    # Stringa
     location_for_serpapi = [cinema_town, cinema_province, cinema_country].compact.join(', ')
     
     begin
-      # Chiama il tuo NUOVO servizio CinemaShowtimesService
       programmazione_data = CinemaShowtimesService.fetch_showtimes(cinema_name, location_for_serpapi)
       
       render json: programmazione_data
@@ -77,7 +70,7 @@ class CinemasController < ApplicationController
 
   private
 
-  # Funzione helper per calcolare la distanza tra due punti geografici in km
+
   def distance_km(lat1, lon1, lat2, lon2)
     rad_per_deg = Math::PI / 180
     r_km = 6371 # Raggio medio della Terra in chilometri

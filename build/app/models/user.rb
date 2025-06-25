@@ -7,6 +7,11 @@ class User < ApplicationRecord
     has_many :posts, dependent: :destroy
     has_many :comments, dependent: :destroy
 
+    #per aggiungere cinema preferiti
+    has_many :favorites, dependent: :destroy #quando un utente viene eliminato, vengono eliminati anche i preferiti
+    has_many :favorite_cinemas, through: :favorites, source: :cinemasdef
+
+
     validates :email, presence:true, uniqueness:true
     validates :username, presence: true, uniqueness: true
     validates :first_name, :last_name, presence: true

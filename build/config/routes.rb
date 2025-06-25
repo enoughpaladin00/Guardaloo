@@ -1,11 +1,8 @@
-# config/routes.rb
+
 Rails.application.routes.draw do
-  # Rotte esistenti dei tuoi amici (non modificate)
   get "cinemas/index"
   get "home/index"
-  # get "/cinemas", to: "cinemas#index" # Questa è una duplicazione, verrà gestita da 'resources :cinemas'
-  # get 'cinemas/programmazione', to: 'cinemas#programmazione' # QUESTA ROTTA È IL PROBLEMA E VA SOSTITUITA O MODIFICATA
-
+  
   # Define your application routes per the DSL in https://guides.rubylang.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
@@ -56,21 +53,11 @@ Rails.application.routes.draw do
     resources :comments, only: [ :create, :destroy ]
   end
 
-  # --- INIZIO MODIFICHE PER LE TUE ROTTE CINEMA ---
-
-  # Questa riga genera la rotta /cinemas (GET) per cinemas#index
-  # e la rotta /cinemas/:id/programmazione (GET) per cinemas#programmazione
+  # Cinemas and showtimes
   resources :cinemas, only: [:index] do
     member do
       get 'programmazione'
     end
   end
-
-  # Le due rotte originali che avevi per i cinema sono ridondanti o non precise
-  # per la programmazione. Le ho lasciate commentate.
-  # get "/cinemas", to: "cinemas#index"
-  # get 'cinemas/programmazione', to: 'cinemas#programmazione'
-
-  # --- FINE MODIFICHE PER LE TUE ROTTE CINEMA ---
 
 end

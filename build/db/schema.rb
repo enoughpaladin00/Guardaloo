@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_16_182032) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_25_172436) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -70,6 +70,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_16_182032) do
     t.index ["name"], name: "index_cinemas_on_name", unique: true
   end
 
+  create_table "cinemasdef", id: :serial, force: :cascade do |t|
+    t.integer "tamburino_id"
+    t.string "name", limit: 255
+    t.string "address", limit: 255
+    t.string "town", limit: 100
+    t.string "province", limit: 100
+    t.string "phone", limit: 50
+    t.float "lat"
+    t.float "lon"
+  end
+
   create_table "comments", force: :cascade do |t|
     t.text "content"
     t.bigint "post_id", null: false
@@ -78,6 +89,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_16_182032) do
     t.datetime "updated_at", null: false
     t.index ["post_id"], name: "index_comments_on_post_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
+  create_table "favorites", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "cinemasdef_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cinemasdef_id"], name: "index_favorites_on_cinemasdef_id"
+    t.index ["user_id", "cinemasdef_id"], name: "index_favorites_on_user_id_and_cinemasdef_id", unique: true
+    t.index ["user_id"], name: "index_favorites_on_user_id"
   end
 
   create_table "posts", force: :cascade do |t|
@@ -103,11 +124,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_16_182032) do
     t.string "username"
     t.string "provider"
     t.string "uid"
+    t.integer "tmdb_id_1"
+    t.integer "tmdb_id_2"
+    t.integer "tmdb_id_3"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "comments", "posts"
   add_foreign_key "comments", "users"
+  add_foreign_key "favorites", "cinemasdef"
+  add_foreign_key "favorites", "users"
   add_foreign_key "posts", "users"
 end

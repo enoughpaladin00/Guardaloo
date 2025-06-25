@@ -276,3 +276,33 @@
   color: #888;
   padding: 20px;
 }
+
+
+.cinema-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.favorite-star {
+  font-size: 2rem; /* Dimensione stellina */
+  color: gold; 
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  padding: 5px; 
+}
+
+.favorite-star:hover {
+  transform: scale(1.1); /* Effetto al passaggio del mouse */
+}
+
+/* Stellina non selezionata  */
+.favorite-star[data-favorited="false"] {
+  color: #ccc; 
+}
+
+/* Stellina selezionata */
+.favorite-star[data-favorited="true"] {
+  color: gold; 
+}
