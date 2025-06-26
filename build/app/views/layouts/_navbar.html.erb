@@ -23,22 +23,39 @@
     </div>
     <div class="container-fluid d-flex justify-content-end">
         <div class="hamburger-wrapper" id="hamburgerMenuTrigger">
-            <%= image_tag "navbar/menu.svg", alt: "menu", style: "width: 2.2em; height: 2.2em; margin-right: 0.8em; cursor: pointer;" %>
+            <%= image_tag "navbar/menu.svg", alt: "menu", style: "width: 2em; height: 2em; margin-right: 0.8em ; cursor: pointer; margin-right: " %>
         </div>
 
         <div id="hamburgerMenu" class="hamburger-popup">
-            <ul class="hamburger-links list-unstyled m-0 p-3">
-                <li><%= link_to 'Home', root_path, class: 'hamburger-link' %></li>
-                <li><%= link_to 'Cinema', cinemas_path, class: 'hamburger-link' %></li>
-                <li><%= link_to 'Film', home_path, class: 'hamburger-link' %></li>
-                <li><%= link_to 'Forum', posts_path, class: 'hamburger-link' %></li>
-                <li><%= link_to 'La Mia Lista', profile_path, class: 'hamburger-link' %></li>
-            </ul>
+            <div class="hamburger-link">
+                <a href="../home" class="link-underline link-underline-opacity-0">
+                    <div class="hamburger-button">
+                        <%= image_tag "navbar/home.svg", class: "icon-hamburger" %>
+                        <span class="hamburger-link">Home</span>
+                    </div>
+                </a>
+                <a href="/cinemas" class="link-underline link-underline-opacity-0">
+                    <div class="hamburger-button">
+                        <%= image_tag "navbar/cinema.svg", class: "icon-hamburger" %>
+                        <span class="hamburger-link">Cinema</span>
+                    </div>
+                </a>
+                <a href="/posts" class="link-underline link-underline-opacity-0">
+                    <div class="hamburger-button">
+                        <%= image_tag "navbar/forum.svg", class: "icon-hamburger" %>
+                        <span class="hamburger-link">Forum</span>
+                    </div>
+                </a>
+                <a href="/profile" class="link-underline link-underline-opacity-0">
+                    <div class="hamburger-button">
+                        <%= image_tag "navbar/save.svg", class: "icon-hamburger" %>
+                        <span class="hamburger-link">La Mia Lista</span>
+                    </div>
+                </a>
+            </div>
         </div>
-
-        <span class="vert_line_navbar">&#124;</span>
         <a class="px-2" data-bs-toggle="modal" data-bs-target="#profileMenuModal" href="#">
-            <%= image_tag "navbar/user.svg", class:"profile-svg", alt: "user", style: "width: 2.2em; height: 2.2em" %>
+            <%= image_tag "navbar/user.svg", class:"profile-svg", alt: "user", style: "width: 2em; height: 2em" %>
         </a>
     </div>
 </nav>

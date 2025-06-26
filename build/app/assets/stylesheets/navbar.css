@@ -20,12 +20,6 @@
   border-bottom: none;
 }
 
-.vert_line_navbar{
-    font-weight: bold; 
-    font-size: 2em; 
-    color: #F9BD24;
-}
-
 .search_bar{
     position: relative;
 }
@@ -123,30 +117,39 @@
 
 .hamburger-popup {
     position: absolute;
-    top: 60px; /* distanza dalla navbar */
-    right: 20px;
+    top: 4em; 
+    right: 4em;
     background-color: #ffece2;
     border: 2px solid #FD7474;
-    border-radius: 12px;
+    border-radius: 1em;
     display: none;
     z-index: 1000;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     transition: opacity 0.3s ease;
+    overflow: hidden;
+    width: 20em;
 }
 
-.hamburger-links li {
-    padding: 10px 20px;
+.icon-hamburger{
+    width: 1em; 
+    height: 1em; 
+    vertical-align: baseline;
+    margin-right: 0.5em;
 }
 
 .hamburger-link {
     text-decoration: none;
     color: #004466;
     font-weight: bold;
-    font-size: 16px;
+    font-size: 1.1em;
 }
 
-.hamburger-link:hover {
+.hamburger-button:hover {
     background-color: #FD7474;
     color: white;
-    border-radius: 8px;
+    
+}
+
+.hamburger-button{
+    padding: 1em;
+    width: 100%;
 }
