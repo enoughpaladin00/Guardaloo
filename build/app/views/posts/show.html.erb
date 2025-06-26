@@ -3,83 +3,69 @@
 
 <div class="posts-container">
   <%= link_to 'Ritorna al Forum', posts_path, class:"btn forum-button2", style:"position:absolute; left:3em;" %>
-  <div class="new-post-form-container" style="gap: 3em;">
+  <div class="new-post-form-container" style="gap: 3em; width: 70%; display: flex; align-items: stretch;">
     <%# immagine di sinistra %>
-    <%= image_tag "https://image.tmdb.org/t/p/w342#{@post.movie_poster_path}", style:"overflow: hidden; border-radius:0.5em; width:450px;" %>
-    <%# <h3 style="margin-top: 0.5em; text-align: center; font-weight: bold;">
-      <%= @post.movie_title %>
-    <%# </h3> %>
+    <%= image_tag "https://image.tmdb.org/t/p/w342#{@post.movie_poster_path}", style:"overflow: hidden; border-radius:0.5em; height:100%; object-fit: cover;" %>
      
     <%# dettagli post e contenuto %>
-    
-    <div class="post-card2"  style="height:25em">
-      <div id="foto-titolo-creatore" style="display: flex; flex-direction: row; justify-content: center; align-items:center; border-bottom: 2px solid #FD7474; " >
+    <div class="post-card2"  style="height: 100%; min-height:24em">
+      <div id="foto-titolo-creatore" style="display: flex; flex-direction: column; justify-content: center; align-items:center; border-bottom: 2px solid #FD7474; " >
         
+        <%# avatar %>
         <% if @user.persisted? && @user.avatar.attached? %>
-            <%= image_tag url_for(@user.avatar) + "?#{@user.avatar.blob.created_at.to_i}", class: "post-avatar" %>
+            <%= image_tag url_for(@user.avatar) + "?#{@user.avatar.blob.created_at.to_i}", class: "post-avatar", style:"" %>
         <% else %>
             <%= image_tag "Profile_page/default_avatar.svg", alt: "Immagine di default", class: "post-avatar" %>
         <% end %>
         
-        <div class="post-title" style="margin-top:1em; width:95%; margin-left:auto; margin-right:7em; border-radius:0.5em;">
+        <%# titolo post e info %>
+        <div class="post-title" style="margin-top:1em; width:95%; margin-left:auto; margin-right:1em; border-radius:0.5em;">
           <h1><%= @post.title %></h1>
-          <p>Creato <%= time_ago_in_words(@post.created_at) %> fa da <%= @post.user.username%></p>
+          <p>Creato <%= time_ago_in_words(@post.created_at) %> fa da <%= @post.user.username%> riguardo: <span><a href="/movies/<%= @post.movie_id %>" style="color: #FD7474;"><%= @post.movie_title %></a></span></p>
         </div>
-
       </div>
-
-      <div class="post-content">
+      
+      <%# contenuto post %>
+      <div class="post-content" style="margin-top: 0.7em;">
         <h4><%= @post.content %></h4>
       </div>
-
     </div>
   </div>
-
 </div>
 
+<%# commenti %>
 <div class="posts-container">
   <div class="filters-container">
-
     <h2 class="post-title" style="font-size: 3em;">Commenti</h1> 
 
+    <%# modifica post %>
     <div style="flex-shrink:0;">
-        <button class="btn"> <%= link_to 'Modifica il post', edit_post_path(@post), style:"text-decoration:none;", class:"btn forum-button2"%> </button>
-        <button id="show-new-post-form", class="btn forum-button2" style="margin-left: 0.5em;"> Commenta il Post</button>
+      <button class="btn"> <%= link_to 'Modifica il post', edit_post_path(@post), style:"text-decoration:none;", class:"btn forum-button2"%> </button>
+      <button id="show-new-comment-form", class="btn forum-button2" style="margin-left: 0.5em;"> Commenta il Post</button>
     </div>
   </div>
 
-  <div id="new-post-form-container" style="display:none;">
+  <%# crea commento %>
+  <div id="new-comment-form" style="display:none;">
       <div class="new-post-card new-comment">
         <%= render 'comments/form', post: @post %> 
       </div>
   </div>
-
   <div id="comments" class="posts-container">
-    <%= render @post.comments %>  <!-- carica i commenti del post ->_comment.html.erb -->
-  </div>
+  <% valid_comments = @post.comments.select { |c| c.content.present? } %>
+  <% if valid_comments.empty? %>
+    <div class="post-card2">
+      <p class="post-content" style="margin: 1em 3em;">Non ci sono ancora commenti sotto questo post</p>
+    </div>
+  <% else %>
+    <%= render valid_comments %>
+  <% end %>
+</div>
+
 </div> 
 
-<!-- utilità opinabile -->
-<%= link_to 'Edit', edit_post_path(@post) %>  <!-- non funziona-->
-<%= link_to 'Ritorna al Forum', posts_path %>
 
 
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-  const btn = document.getElementById('show-new-post-form');
-  const formContainer = document.getElementById('new-post-form-container');
-
-  btn.addEventListener('click', () => {
-    if (formContainer.style.display === 'none' || formContainer.style.display === '') {
-      formContainer.style.display = 'block';
-      btn.textContent = 'Annulla inserimento';
-    } else {
-      formContainer.style.display = 'none';
-      btn.textContent = 'Commenta il post';
-    }
-  });
-});
-</script>
 
 <!-- Footer -->
 <%= render 'layouts/footer' %>

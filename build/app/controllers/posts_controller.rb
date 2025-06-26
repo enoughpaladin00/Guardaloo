@@ -47,9 +47,11 @@ class PostsController < ApplicationController
       @posts = @posts.select do |post|
         post.title.downcase.include?(keyword) ||
         post.content.downcase.include?(keyword) ||
+        post.user.username.downcase.include?(keyword) ||    
         post.comments.any? { |c| c.content.downcase.include?(keyword) }
       end
     end
+
 
     # Ordina sempre per data
     @posts = @posts.sort_by(&:created_at).reverse

@@ -8,6 +8,7 @@ import "index"
 import "moviePage"
 import "navbar"
 import "search"
+import "newpost"
 
 document.addEventListener("turbo:load", function () {
   const swiperContainer = document.querySelector(".trend-swiper");
@@ -34,3 +35,4 @@ document.addEventListener("turbo:load", function () {
     }
   });
 });
+

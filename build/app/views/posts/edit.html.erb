@@ -27,26 +27,4 @@
 
 
 
-<%# <div class="posts-container">
-    <h1>New Post</h1>
-</div>   %>
-<%# <%= render 'form', post: @post %>  <%# KEY: Pass @post as local variable 'post' %> %>
-<%# <%= link_to 'Annulla', posts_path %> 
-
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    const form = document.getElementById("edit-post-form");
-    if (form) {
-      form.addEventListener("submit", function(event) {
-        const confirmed = confirm("Sei sicuro di voler modificare questo post?");
-        if (!confirmed) {
-          event.preventDefault(); // blocca l’invio del form
-        }
-      });
-    }
-  });
-</script>
-
-
-
 <%= render 'layouts/footer' %>

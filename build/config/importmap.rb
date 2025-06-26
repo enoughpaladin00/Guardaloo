@@ -14,4 +14,5 @@ pin "moviePage", to: "moviePage.js"
 pin "google_map", to: "google_map.js"
 pin "navbar", to: "navbar.js"
 pin "search", to: "search.js"
+pin "newpost", to: "newpost.js"
 pin "jquery" # @3.7.1
