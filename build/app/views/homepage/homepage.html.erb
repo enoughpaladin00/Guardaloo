@@ -1,5 +1,5 @@
 
-
+<body data-turbo="false" class="homepage">
 <!--Navbar-->
 
 <%= render 'layouts/navbar' %>
@@ -104,7 +104,6 @@
 </div>
 
 <script>
-    console.log(window.cinemas)
     window.cinemas = <%= raw @cinemas_for_map.to_json %>;
 </script>
 
@@ -118,7 +117,7 @@
           <ul id="cinema-list">
           <% @cinemas_for_map.each do |cinema| %>
 
-            <li class="cinema-item cinema-item-homepage" data-id="<%= cinema[:id] %>">
+            <li class="cinema-item-homepage" data-id="<%= cinema[:id] %>">
             <button class="bg-transparent border-0 p-0 w-100 h-100" style="text-align: left;">
               <h3><%= cinema[:name] %></h3>
               <p><%= cinema[:address] %></p>
@@ -194,7 +193,7 @@
 </div>
 
 <div align="center">
-    <a href="#">
+    <a href="/posts">
     <button class="forum-button">Vedi tutti</button>
     </a>
 </div>
@@ -204,3 +203,4 @@
 <%= render 'layouts/footer' %>
 
 <script defer src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_MAPS_API_KEY'] %>&libraries=marker&map_ids=<%= ENV['GOOGLE_MAPS_ID'] %>&loading=async&callback=initMap"></script>
+</body>

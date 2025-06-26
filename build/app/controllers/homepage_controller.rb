@@ -35,6 +35,7 @@ class HomepageController < ApplicationController
           id: cinema.id,
           name: cinema.name,
           address: cinema.respond_to?(:address) ? cinema.address : "Indirizzo non disponibile",
+          phone: cinema.phone,
           lat: cinema.lat,
           lng: cinema.lon
         }

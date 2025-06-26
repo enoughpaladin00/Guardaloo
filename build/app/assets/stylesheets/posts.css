@@ -47,7 +47,7 @@
 
 .post-content p {
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  /* -webkit-line-clamp: 2; */
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -70,24 +70,6 @@
   text-decoration: none;
   color: inherit;
 }
-/* 
-.btn-edit, .btn-delete {
-  padding: 0.3em 0.7em;
-  font-size: 0.9rem;
-  border-radius: 0.3em;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.btn-edit {
-  background-color: #4CAF50;
-  color: white;
-}
-
-.btn-delete {
-  background-color: #f44336;
-  color: white;
-} */
 
 /* BOTTONI */
 .post-actions {
@@ -110,6 +92,14 @@
   font-weight: bold;
 }
 
+.forum-button2:hover{
+  background-color: #FFC0CB;
+}
+
+.forum-button2 a:hover{
+  color: #004466;
+}
+
 
 /* FILTRI */
 .filters-container {
@@ -119,7 +109,7 @@
   gap: 2em; /* opzionale, dà più spazio */
   width: 100%;
   padding-left: 4em;
-  padding-right: 2em;
+  padding-right: 4em;
 }
 
 .filter-form {
@@ -245,30 +235,6 @@
   color: #004466;
 }
 
-
-/* COLONNA SINISTRA */
-/* .movie-poster-preview{
-  min-width: 150px; 
-  max-width: 150px; 
-  height: 225px; 
-  background-color: #eee;
-  border-radius: 0.5em; 
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1); 
-  display: flex; 
-  align-items: center; 
-  justify-content: center; 
-  overflow: hidden;
-}
-
-.movie-poster-img{
-  width: 100%; 
-  height: 100%; 
-  object-fit: cover; 
-  border-radius: 0.5em;
-} */
-
-
-
 /* random */
 .comment-profile-icon{
   width: 40px;
@@ -286,8 +252,9 @@
   color: #004466;
   font-size: 4.5em;
   font-weight: bold;
-  margin-bottom: 0.5em;
+  margin-bottom: 0.8em;
   text-align: center;
+  margin-top: 0.5em;
 }
 
 .title-icon{
@@ -310,4 +277,17 @@
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   border: 3px solid var(--color-3);
   margin-left: 2em;
+}
+
+.new-comment {
+  margin-left: 0;
+}
+
+.search-filters{
+    border: 2px solid #FD7474;
+    background:#ffece2;
+    border-radius: 2rem;
+    width: 36em;
+    position: relative;
+    z-index: 1001;
 }
