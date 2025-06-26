@@ -1,4 +1,5 @@
 class CinemasController < ApplicationController
+  before_action :authenticate_user!
   def index
     cinemas = Cinemasdef.all.map do |cinema|
       {

@@ -386,24 +386,92 @@ html, body{
     transform: scale(1.05);
 }
 
-@media (max-width: 768px) {
-  .movie-card.center {
-    transform: scale(1.1);
-  }
-
-  .movie-card.left,
-  .movie-card.right {
-    transform: scale(0.9);
-  }
-
-  .movie-carousel {
-    gap: 10px;
-  }
-}
-
 .error-message {
   display: block;
   margin-top: 0.2rem;
   font-size: 0.875rem;
   color: red;
+}
+
+@media (max-width: 768px) {
+
+    .homepage-navbar {
+        flex-direction: column !important;
+        padding: 10px 20px;
+    }
+
+    .popup-button {
+        font-size: 16px;
+        padding: 5px 10px;
+    }
+
+    .pickup-line {
+        min-width: auto;
+        font-size: 24px;
+        text-align: center;
+        padding: 0 10px;
+    }
+
+    .fullscreen-section {
+        padding: 20px 10px;
+    }
+
+    .content-section {
+        flex-direction: column !important;
+        padding: 20px 10px;
+        text-align: center;
+    }
+
+    .carousel-column, .text-column, .search-carousel-column {
+        width: 100vh !important;
+    }
+
+    .movie-card img, .movie2-card img {
+        max-width: 80%;
+        height: auto;
+    }
+
+    .carousel-text {
+        font-size: 22px;
+        padding: 10px;
+    }
+
+    .search-bar {
+        width: 90%;
+        margin-bottom: 20px;
+    }
+
+    .auth-section {
+        flex-direction: column !important;
+        padding: 20px;
+    }
+
+    .register-title {
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .auth-box {
+        width: 100% !important;
+        padding: 10px;
+    }
+
+    .auth-tabs span {
+        font-size: 16px;
+    }
+
+    .glider-slide {
+        min-width: 150px !important;
+    }
+
+    .footer-logo {
+        width: 80px;
+    }
+
+    .container-fluid.d-flex {
+        flex-direction: column !important;
+        gap: 10px;
+        padding: 10px;
+        text-align: center;
+    }
 }

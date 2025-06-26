@@ -1,0 +1,7 @@
+<%= button_to bookmarks_toggle_path, method: :post, remote: true, params: { tmdb_id: tmdb_id, title: title, poster_path: poster_path }, class: 'bookmark-toggle-button' do %>
+  <% if user.bookmarks.exists?(tmdb_id: tmdb_id) %>
+    <%= image_tag 'moviePage/bookmarked.svg', class: 'w-5' %>
+  <% else %>
+    <%= image_tag 'moviePage/not_bookmarked.svg', class: 'w-5' %>
+  <% end %>
+<% end %>

@@ -54,4 +54,7 @@ Rails.application.routes.draw do
   resources :posts do
     resources :comments, only: [ :create, :destroy ]
   end
+
+  post '/bookmarks/toggle', to: 'bookmarks#toggle', as: 'bookmarks_toggle'
+
 end
