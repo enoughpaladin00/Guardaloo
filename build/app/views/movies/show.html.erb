@@ -1,4 +1,4 @@
-<!-- <pre><%= @showtimes_array.inspect%></pre> -->
+<!-- <pre><%= @movie_details.inspect%></pre> -->
 
 <head>
     <!-- TailwindCSS via CDN -->
@@ -37,6 +37,16 @@
                 </div>
 
                 <div class="font-semibold">Valutazione</div>
+                <div class="star-rating" data-score="<%= @stars %>">
+                  <% 5.times do |i| %>
+                    <div class="star">
+                      <%= image_tag 'moviePage/empty_star.svg', class: 'star-base' %>
+                      <div class="star-fill" data-star-index="<%= i %>">
+                        <%= image_tag 'moviePage/filled_star.svg', class: 'star-fill-image' %>
+                      </div>
+                    </div>
+                  <% end %>
+                </div>
             </aside>
 
             <!-- Contenuto principale -->

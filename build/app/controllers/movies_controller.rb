@@ -99,6 +99,8 @@ class MoviesController < ApplicationController
         end
       end
     end
+    @vote_average = @movie_details["vote_average"]
+    @stars = (@vote_average / 2.0).round(1)
 
     @credits = service.fetch_movie_credits(tmdb_id, tmdb_type)
     @director = @credits["crew"]&.find do |person|

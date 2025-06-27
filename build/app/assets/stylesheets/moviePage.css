@@ -88,12 +88,35 @@
   background-color: #f9fafb;
 }
 
-.showtime {
-  transition: all 0.2s ease;
+.star {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+  margin-right: 4px;
 }
 
-.showtime:hover {
-  background-color: #004466 !important;
-  color: white !important;
-  transform: translateY(-1px);
+.star-base {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
+
+.star-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  overflow: hidden;
+  width: 0%;
+}
+
+.star-fill-image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+
+

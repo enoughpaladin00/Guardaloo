@@ -197,3 +197,21 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
+
+//Valutazione tramite stelle dinamica
+document.addEventListener('turbo:load', () => {
+  document.querySelectorAll('.star-rating').forEach(rating => {
+    const score = parseFloat(rating.dataset.score);
+
+    rating.querySelectorAll('.star-fill').forEach((fill, index) => {
+      if (index + 1 <= Math.floor(score)) {
+        fill.style.width = '100%';
+      } else if (index < score) {
+        const partialWidth = ((score - index) * 100);
+        fill.style.width = `${partialWidth}%`;
+      } else {
+        fill.style.width = '0%';
+      }
+    });
+  });
+});
