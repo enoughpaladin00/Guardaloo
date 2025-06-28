@@ -11,7 +11,6 @@ pin "@rails/ujs", to: "rails-ujs.js"
 pin "slider", to: "slider.js" # @1.0.4
 pin "index", to: "index.js"
 pin "moviePage", to: "moviePage.js"
-pin "google_map", to: "google_map.js"
 pin "navbar", to: "navbar.js"
 pin "search", to: "search.js"
 pin "newpost", to: "newpost.js"
