@@ -1,8 +1,7 @@
 /*layout impaginazione*/
 .User_Page{
-    border: 2px solid var(--color-4);
-    margin-left: 8%;
-    margin-right: 8%;
+    margin-left: 4%;
+    margin-right: 4%;
     border-radius: 20px;
     margin-top: 3%;
 }
@@ -131,10 +130,20 @@
 .titolo_3{
     font-size: var(--size-2xl);
 }
+.box_3-2{
+    border: 1px red solid;
+}
 
 
 /*PopUp*/
-.popup-overlay {
+.popup-txt{
+    color: var(--color-1);
+    font-family: 'Inter', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+}
+/*edit popup*/
+.edit-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -146,16 +155,39 @@
     justify-content: center;
     align-items: center;
 }
-.popup-txt{
-    color: var(--color-1);
-    font-family: 'Inter', sans-serif;
-    font-size: 22px;
-    font-weight: 600;
-}
 .popup-content {
-    max-width: 90%;
+    max-width: 100%;
     padding: 20px;
 }
+.edit-box {
+    background-color: #272727;
+    width: 600px;
+    margin: 0 auto;
+    padding: 50px 40px;
+    border-radius: 20px;
+}
+/*favourite popup*/
+.preferiti-overlay{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.6);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.fav-box{
+    background-color: #272727;
+    width: 700px;
+    margin: 0 auto;
+    padding: 50px 40px;
+    border-radius: 20px;
+}
+
+
 /*button style*/
 .popup-button{
     border-radius: 50px;
@@ -171,4 +203,89 @@
     padding: 0px 16px;
 }
 
+
+/*responsive*/
+@media (max-width: 1280px){
+    .User_half{
+        flex-direction: column;
+    }
+    .Sezione_1{
+        width: 100%;
+        border-right: none; 
+        padding-right: 2rem;
+        margin-bottom: 3rem;
+    }
+    .Sezione_2{
+        width: 100%;
+    }
+    .Sezione_2-1 {
+      gap: 20px;
+      flex-direction: column;
+    }
+    
+    .Sezione_2-2 {
+      position: static;
+      width: 100%;
+      height: auto;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      padding: 20px;
+      overflow-x: auto;
+    }
+    
+    .Sezione_2-2 img {
+      position: static !important;
+      width: 230px;
+      height: 21rem;
+      flex-shrink: 0;
+      margin: 0;
+      transform: none !important;
+      top: auto !important;
+      left: auto !important;
+      bottom: auto !important;
+      right: auto !important;
+    }
+    
+    .Sezione_2-2 img:nth-of-type(1),
+    .Sezione_2-2 img:nth-of-type(2),
+    .Sezione_2-2 img:nth-of-type(3) {
+      position: static !important;
+      z-index: auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .Sezione_2-2 img {
+        width: 120px;
+        height: 160px;
+    }
+    
+}
+
+@media (max-width: 475px){
+    .Sezione_2-2 img {
+        width: 90px;
+        height: 120px;
+    }
+}
+
+
+
+/*da telefono a computer*/
+/*io uso un metodo da pc a telefono, cambio max-width*/
+/* xs */
+/* @media (min-width: 475px) {} */
+/* sm */
+/* @media (min-width: 640px) {} */
+/* md */
+/* @media (min-width: 768px) {} */
+/* lg */
+/* @media (min-width: 1024px) {} */
+/* xl */
+/* @media (min-width: 1280px) {} */
+/* 2xl */
+/* @media (min-width: 1536px) {} */
 

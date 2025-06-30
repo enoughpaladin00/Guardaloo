@@ -84,31 +84,28 @@
         </div>
 
         <div class="Sezione_3">
-            <div class="box_3.1">
+            <div class="box_3-1">
                 <h1 class="titolo_3"><b>La Mia Lista Preferiti</b></h1>
             </div>
 
             <div class="slider-preferiti">
                 <button class="slider-btn left"><%= image_tag "homepage/freccia.svg", class: "slider_img", style: "transform: rotate(180deg)" %></button>
-                <div class="slider-track">
-                    <% @trending_movies.each do |movie| %>
-        
-                    <div class="contenitore contenitore-film">
-                        <a href="/movies/<%= movie['id'] %>"><img class="locandina" src="https://image.tmdb.org/t/p/w500<%= movie['poster_path'] %>" alt="<%= movie['title'] %>" ></a>
-                    </div>
-
-                    <%end%>
+                <div class="box_3-2">
+                    
                 </div>
                 <button class="slider-btn right"><%= image_tag "homepage/freccia.svg", class: "slider_img" %></button>
-            </div>          
+            </div>  
+            <div class="box_3-3">
+                
+            </div>        
         </div>
     
     </div>
 
     <!-- PopUp Edit -->
-    <div id="edit-popup-overlay" class="popup-overlay" style="display: none;">
+    <div id="edit-popup-overlay" class="edit-overlay" style="display: none;">
         <div class="popup-content">
-            <div class="auth-box">
+            <div class="edit-box">
                 <div>
                     <span class="popup-txt" style="color: var(--color-1)">Modifica il tuo profilo</span>
                 </div>
@@ -155,33 +152,32 @@
     </div>
 
     <!-- Pop Up favourite Movies -->
-    <div id="favourite-popup-overlay" class="popup-overlay" style="display: none;">
-        <div class="popup-content">
-        <div class="auth-box">
-        <div>
-            <span class="popup-txt" style="color: var(--color-1)">Modifica i tuoi Film</span>
-        </div>
-        <br>
-        <div>
-        <%= form_with model: @user, url: profile_path, method: :patch, local: true, html: { multipart: true } do |f| %>
+    <div id="favourite-popup-overlay" class="preferiti-overlay" style="display: none;">
+        <div class="fav-box">
             <div>
-                <%= f.label :first_film_title, "Film #1", style:"color: var(--color-1)" %><br>
-                <%= f.text_field :first_film_title, required: false, class: "form-control mb-3", style:"color: var(--color-1)" %>
+                <span class="popup-txt" style="color: var(--color-1)">Modifica i tuoi Film</span>
             </div>
+            <br>
             <div>
-                <%= f.label :second_film_title, "Film #2", style:"color: var(--color-1)" %><br>
-                <%= f.text_field :second_film_title, required: false, class: "form-control mb-3", style:"color: var(--color-1)" %>
+                <%= form_with model: @user, url: profile_path, method: :patch, local: true, html: { multipart: true } do |f| %>
+                    <div>
+                        <%= f.label :first_film_title, "Film #1", style:"color: var(--color-1)" %><br>
+                        <%= f.text_field :first_film_title, required: false, class: "form-control mb-3", style:"color: var(--color-1)" %>
+                    </div>
+                    <div>
+                        <%= f.label :second_film_title, "Film #2", style:"color: var(--color-1)" %><br>
+                        <%= f.text_field :second_film_title, required: false, class: "form-control mb-3", style:"color: var(--color-1)" %>
+                    </div>
+                    <div>
+                        <%= f.label :third_film_title, "Film #3", style:"color: var(--color-1)" %><br>
+                        <%= f.text_field :third_film_title, required: false, class: "form-control mb-3", style:"color: var(--color-1)" %>
+                    </div>
+                    <div>
+                        <br>
+                        <%= f.submit "Salva modifiche", class:"close-popup yellow-button button-1 submit-button" %>
+                    </div>
+                <% end %>
             </div>
-            <div>
-                <%= f.label :third_film_title, "Film #3", style:"color: var(--color-1)" %><br>
-                <%= f.text_field :third_film_title, required: false, class: "form-control mb-3", style:"color: var(--color-1)" %>
-            </div>
-            <div>
-                <br>
-                <%= f.submit "Salva modifiche", class:"close-popup yellow-button button-1 submit-button" %>
-            </div>
-          <% end %>
-        </div>
         </div>
     </div>
 
@@ -202,7 +198,7 @@
                 document.getElementById("favourite-popup-overlay").style.display = "none";
               });
             });
-          });
+        });
     </script> 
 
 </body>
