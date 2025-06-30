@@ -1,5 +1,22 @@
 class MoviesController < ApplicationController
   before_action :authenticate_user!
+
+  ALLOWED_PROVIDERS = [
+    "Netflix",
+    "Amazon Prime Video",
+    "Disney Plus",
+    "NOW TV"
+    # aggiungi qui tutti i nomi provider che vuoi mostrare
+  ].freeze
+
+  PROVIDER_SEARCH_URLS = {
+    "Netflix" => "https://www.netflix.com/search?q=",
+    "Amazon Prime Video" => "https://www.primevideo.com/search/ref=atv_nb_sr?phrase=",
+    "Disney Plus" => "https://www.disneyplus.com/search?q=",
+    "NOW TV" => "https://nowtv.it/search?query="
+    # aggiungi se vuoi
+  }.freeze
+  
   def show
     tmdb_id = params[:tmdb_id]
     tmdb_type = params[:type] || "movie"

@@ -4,6 +4,7 @@
     margin-left: 8%;
     margin-right: 8%;
     border-radius: 20px;
+    margin-top: 3%;
 }
 .User_half{
     display:flex;
@@ -16,15 +17,20 @@
     margin-top: 3rem;
     margin-left: 2rem;
     padding-right: 1rem;
+    margin-bottom: 3rem;
 }
 .Sezione_2{
     width: 50%;
     margin-top: 3rem;
     margin-left: 2rem;
+    margin-bottom: 3rem;
 }
 .Sezione_3{
     margin-top: 3rem;
     margin-left: 2rem;
+    border: 1px solid green;
+    margin-bottom: 3rem;
+    margin-right: 2rem;
 }
 
 /*Sezione 1*/
@@ -79,7 +85,7 @@
 .Sezione_2-1{
     display:flex;
     align-items: center;
-    gap:50%;
+    gap: 50%;
 }
 .Sezione_2-2{
     top: 5%;
@@ -91,8 +97,8 @@
 
 .Sezione_2-2 img {
     position: absolute;
-    width: 230px; /* come nel tuo image_tag */
-    height: auto;
+    width: 230px; 
+    height: 21rem;
     border-radius: 30px;
     border: 1px var(--color-5) solid;
     box-shadow: 7px 7px 3px var(--color-4);
@@ -120,6 +126,12 @@
     z-index: 1;
 }
 
+/*Sezione 3*/
+
+.titolo_3{
+    font-size: var(--size-2xl);
+}
+
 
 /*PopUp*/
 .popup-overlay {
@@ -135,7 +147,7 @@
     align-items: center;
 }
 .popup-txt{
-    color: #FFFAEF;
+    color: var(--color-1);
     font-family: 'Inter', sans-serif;
     font-size: 22px;
     font-weight: 600;
@@ -160,31 +172,3 @@
 }
 
 
-
-
-/*CSS "globale"*/
-:root {
-    /*color palette*/
-    --color-1: #FFFAEF;
-    --color-2: #F9BD24;
-    --color-3: #FD7474;
-    --color-4: #004466;
-    --color-5: #272727;
-
-    /* sizes */
-    --size-xxs: 0.5rem;
-    --size-xs: 0.75rem;
-    --size-sm: 0.875rem;
-    --size-base: 1rem;
-    --size-lg: 1.125rem;
-    --size-xl: 1.25rem;
-    --size-2xl: 1.5rem;
-    --size-3xl: 1.875rem;
-    --size-4xl: 2.25rem;
-    --size-5xl: 3rem;
-    --size-6xl: 3.75rem;
-    --size-7xl: 4.5rem;
-    --size-8xl: 6rem;
-    --size-9xl: 8rem;
-    --size-10xl: 10rem;  
-}

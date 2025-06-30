@@ -7,7 +7,26 @@ class ProfilePageController < ApplicationController
     @trending_movies = Rails.cache.fetch("trending_movies_top3", expires_in: 6.hours) do
       TmdbService.trending_movies.first(3)
     end
-    # @user è già settato
+
+    @chosen_movies = []
+    [@user.tmdb_id_1, @user.tmdb_id_2, @user.tmdb_id_3].each do |tmdb_id|
+      if tmdb_id.present?
+        movie = TmdbService.get_movie(tmdb_id)
+        @chosen_movies << movie if movie
+      else
+        @chosen_movies << nil
+      end
+    end
+
+    # Ultimi 10 film preferiti dell'utente
+    @recent_favorites = current_user.favorite_movies.order(created_at: :desc).limit(10)
+
+    # Carica i dettagli dei trending movies in un hash per la view
+    @movie_details = {}
+    @trending_movies.each do |movie|
+      details = TmdbService.get_movie(movie['id'])
+      @movie_details[movie['id']] = details if details
+    end
   end
 
   def update
@@ -23,6 +42,10 @@ class ProfilePageController < ApplicationController
       flash.now[:alert] = "Errore nell'aggiornamento del profilo"
       render :profile_index, status: :unprocessable_entity
     end
+  end
+
+  def recent_favorite_movies
+    @recent_favorites = current_user.favorite_movies.order(created_at: :desc).limit(10)
   end
 
   private

@@ -36,26 +36,7 @@
     white-space: nowrap;
 }
 
-/*profile menu layout*/
-.menu-overlay{
-    position: fixed;
-    z-index: 10;
-    display:flex;
-    top:0;
-    right:0;
-    background-color: var(--color-4);
-    width: 20rem;
-    height: auto;
-    justify-content: center;
-    border: 1px yellow solid;
-    border-radius: 20px;
-}
-.menu-content{
-    max-width: 90%;
-    padding: 20px;
-    border: 1px red solid
-}
-
+/*
 .popup-overlay {
     position: fixed;
     top: 0;
@@ -73,6 +54,7 @@
     max-width: 90%;
     padding: 20px;
 }
+*/
   
 .auth-tab {
     cursor: pointer;
