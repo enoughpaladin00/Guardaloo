@@ -22,61 +22,42 @@
       <div id="search-overlay" class="position-fixed top-0 start-0 w-100 h-100" style="background: rgba(0, 0, 0, 0.6); display: none; z-index: 900;"></div>
     </div>
     <div class="container-fluid d-flex justify-content-end">
-        <div class="hamburger-wrapper" id="hamburgerMenuTrigger">
-            <%= image_tag "navbar/menu.svg", alt: "menu", style: "width: 2em; height: 2em; margin-right: 0.8em ; cursor: pointer; margin-right: " %>
+        <div class="hamburger-wrapper px-2" id="hamburgerMenuTrigger">
+            <%= image_tag "navbar/user.svg", class:"profile-svg", alt: "user", style: "width: 2em; height: 2em" %>
         </div>
 
-        <div id="hamburgerMenu" class="hamburger-popup">
-            <div class="hamburger-link">
-                <a href="../home" class="link-underline link-underline-opacity-0">
-                    <div class="hamburger-button">
-                        <%= image_tag "navbar/home.svg", class: "icon-hamburger" %>
-                        <span class="hamburger-link">Home</span>
-                    </div>
-                </a>
-                <a href="/cinemas" class="link-underline link-underline-opacity-0">
-                    <div class="hamburger-button">
-                        <%= image_tag "navbar/cinema.svg", class: "icon-hamburger" %>
-                        <span class="hamburger-link">Cinema</span>
-                    </div>
-                </a>
-                <a href="/posts" class="link-underline link-underline-opacity-0">
-                    <div class="hamburger-button">
-                        <%= image_tag "navbar/forum.svg", class: "icon-hamburger" %>
-                        <span class="hamburger-link">Forum</span>
-                    </div>
-                </a>
-                <a href="/profile" class="link-underline link-underline-opacity-0">
-                    <div class="hamburger-button">
-                        <%= image_tag "navbar/save.svg", class: "icon-hamburger" %>
-                        <span class="hamburger-link">La Mia Lista</span>
-                    </div>
-                </a>
+        <div id="hamburgerMenu" style="display: none">
+            <div>
+                <%= image_tag "navbar/freccia.svg", class: "arrow_menu" %>
+            </div>
+            <div class="hamburger-popup">
+                <div class="hamburger-link">
+                    <a href="../home" class="link-underline link-underline-opacity-0">
+                        <div class="hamburger-button">
+                            <%= image_tag "navbar/home.svg", class: "icon-hamburger" %>
+                            <span class="hamburger-link">Home</span>
+                        </div>
+                    </a>
+                    <a href="/cinemas" class="link-underline link-underline-opacity-0">
+                        <div class="hamburger-button">
+                            <%= image_tag "navbar/cinema.svg", class: "icon-hamburger" %>
+                            <span class="hamburger-link">Cinema</span>
+                        </div>
+                    </a>
+                    <a href="/posts" class="link-underline link-underline-opacity-0">
+                        <div class="hamburger-button">
+                            <%= image_tag "navbar/forum.svg", class: "icon-hamburger" %>
+                            <span class="hamburger-link">Forum</span>
+                        </div>
+                    </a>
+                    <a href="/profile" class="link-underline link-underline-opacity-0">
+                        <div class="hamburger-button">
+                            <%= image_tag "navbar/save.svg", class: "icon-hamburger" %>
+                            <span class="hamburger-link">La Mia Lista</span>
+                        </div>
+                    </a>
+                </div>
             </div>
         </div>
-        <a class="px-2" data-bs-toggle="modal" data-bs-target="#profileMenuModal" href="#">
-            <%= image_tag "navbar/user.svg", class:"profile-svg", alt: "user", style: "width: 2em; height: 2em" %>
-        </a>
     </div>
 </nav>
-
-<div id="profile-menu" class="menu-overlay" style="display: none;">
-    <div class="menu-content">
-        <div class="menu-box">
-            <div>
-                <span class="popup-txt" style="color: var(--color-2)">Benvenuto <%= current_user.username%>!</span>
-            </div>
-            <hr>
-            <div>
-                <span class="popup-txt" style="color: var(--color-2)">Gestione Profilo</span>
-            </div>
-            <div>
-                <span class="popup-txt" style="color: var(--color-2)">Impostazioni Generali</span>
-            </div>
-            <hr>
-            <div>
-                <button class="yellow-button button-1 Logout-button"> Logout </button>
-            </div>
-        </div>
-    </div>
-</div>
