@@ -88,12 +88,52 @@
   background-color: #f9fafb;
 }
 
-.showtime {
-  transition: all 0.2s ease;
+.star {
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+  margin-right: 4px;
 }
 
-.showtime:hover {
-  background-color: #004466 !important;
-  color: white !important;
-  transform: translateY(-1px);
+.bookmark-toggle-button{
+  border-radius: 100%;
+  background-color: #fffaef;
+  padding: 0.5rem;
+  transition: background-color 0.2s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.bookmark-toggle-button:hover {
+  background-color: transparent;
+}
+
+.aside-tab{
+  position:fixed;
+  width: 15vw;
+  left: 10rem;
+}
+
+.main-content{
+  margin-left: 30vw;
+  width: 100%;
+}
+
+.backdrop-bookmark{
+  display:none;
+}
+
+@media (max-width: 768px) {
+  .aside-tab {
+    display: none;
+  }
+
+  .main-content {
+    margin-left: 0;
+  }
+
+  .backdrop-bookmark{
+    display:block;
+    z-index: 4;
+  }
 }
