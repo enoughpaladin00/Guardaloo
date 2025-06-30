@@ -67,15 +67,6 @@ function initMap() {
           <div class="p-2 min-w-[200px]">
             <h3 class="font-bold text-lg">${cinema.name}</h3>
             <p class="text-sm text-gray-600">${cinema.address || ''}</p>
-            <p class="text-xs mt-2 font-semibold">Orari:</p>
-            <div class="flex flex-wrap gap-1 mt-1">
-              ${cinema.showing 
-                ? cinema.showing.split(', ').map(time => 
-                    `<span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs">${time}</span>`
-                  ).join('') 
-                : '<span class="text-xs text-gray-400">Nessun orario disponibile</span>'
-              }
-            </div>
           </div>
         `;
       }
@@ -115,15 +106,6 @@ function initMap() {
             <div class="p-2 min-w-[200px]">
               <h3 class="font-bold text-lg">${cinema.name}</h3>
               <p class="text-sm text-gray-600">${cinema.address || ''}</p>
-              <p class="text-xs mt-2 font-semibold">Orari:</p>
-              <div class="flex flex-wrap gap-1 mt-1">
-                ${cinema.showing 
-                  ? cinema.showing.split(', ').map(time => 
-                      `<span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs">${time}</span>`
-                    ).join('') 
-                  : '<span class="text-xs text-gray-400">Nessun orario disponibile</span>'
-                }
-              </div>
             </div>
           `;
           infoWindow.setContent(contentString);
@@ -177,7 +159,7 @@ if (document.getElementById("map")) {
 
 
 // Visualizzazione Programmazione by day
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("turbo:load", function () {
   const buttons = document.querySelectorAll(".tab-button");
   const cinemaLists = document.querySelectorAll(".cinema-list-day");
   buttons.forEach(button => {
@@ -198,12 +180,14 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-//Valutazione tramite stelle dinamica
+// Valutazione tramite stelle dinamica
 document.addEventListener('turbo:load', () => {
   document.querySelectorAll('.star-rating').forEach(rating => {
     const score = parseFloat(rating.dataset.score);
 
-    rating.querySelectorAll('.star-fill').forEach((fill, index) => {
+    rating.querySelectorAll('.star').forEach((star, index) => {
+      const fill = star.querySelector('.star-fill');
+
       if (index + 1 <= Math.floor(score)) {
         fill.style.width = '100%';
       } else if (index < score) {

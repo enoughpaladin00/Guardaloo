@@ -89,34 +89,51 @@
 }
 
 .star {
-  position: relative;
   width: 24px;
   height: 24px;
   display: inline-block;
   margin-right: 4px;
 }
 
-.star-base {
+.bookmark-toggle-button{
+  border-radius: 100%;
+  background-color: #fffaef;
+  padding: 0.5rem;
+  transition: background-color 0.2s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.bookmark-toggle-button:hover {
+  background-color: transparent;
+}
+
+.aside-tab{
+  position:fixed;
+  width: 15vw;
+  left: 10rem;
+}
+
+.main-content{
+  margin-left: 30vw;
   width: 100%;
-  height: 100%;
-  display: block;
 }
 
-.star-fill {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  overflow: hidden;
-  width: 0%;
+.backdrop-bookmark{
+  display:none;
 }
 
-.star-fill-image {
-  width: 100%;
-  height: 100%;
-  display: block;
-  object-fit: cover;
+@media (max-width: 768px) {
+  .aside-tab {
+    display: none;
+  }
+
+  .main-content {
+    margin-left: 0;
+  }
+
+  .backdrop-bookmark{
+    display:block;
+    z-index: 4;
+  }
 }
-
-
-
