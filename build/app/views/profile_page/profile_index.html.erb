@@ -7,6 +7,7 @@
     <%= render 'layouts/navbar' %>
 
     <!-- User_page -->
+
     <div class="User_Page">
 
         <div class="User_half">
@@ -14,6 +15,7 @@
             <div class="Sezione_1">
 
                 <!-- user bio -->
+
                 <div class="user_info">
                     <!--User avatar -->
                     <div class="user_img">
@@ -29,44 +31,47 @@
                     </div>
                     
                     <div class="user_edit">
-                        <button class="yellow-button button-1 edit-button"> Edit profile </button>
+                        <button class="edit-button open-popup"> Edit profile </button>
                     </div>
                 </div>
 
                 <hr style="margin-right: 2%, color: var(--color-4)">
 
                 <!-- user stats -->
+
                 <div class="post_created">
-                <div class="container-fluid d-flex align-items-center">
-                <h1 class="px-2 py-2 mb-0 titolo"><b>Forum</b></h1>
-                <%= image_tag "homepage/forum.svg", class: "icon" %>
-            </div>
+                    <div class="container-fluid d-flex align-items-center">
+                    <h1 class="px-2 py-2 mb-0 titolo"><b>Forum</b></h1>
+                    <%= image_tag "homepage/forum.svg", class: "icon" %>
+                    </div>
             
-            <div align="center">
-            <a href="#" class="link-underline link-underline-opacity-0">
-            <div class="forum-item">
-                <div class="forum-title-homepage" style="color: #004466; text-align: left;">Best Movie 2024</div>
-                <div class="forum-meta mb-1 text-muted">
-                    <span>MovieBuff</span>
-                    <span>45 replies</span>
-                </div>
-            </div>
-            </a>
-            </div>
+                    <div align="center">
+                        <a href="#" class="link-underline link-underline-opacity-0">
+                        <div class="forum-item">
+                            <div class="forum-title-homepage" style="color: #004466; text-align: left;">Best Movie 2024</div>
+                                <div class="forum-meta mb-1 text-muted">
+                                    <span>MovieBuff</span>
+                                    <span>45 replies</span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
             
-            <div align="center">
-                <a href="#">
-                <button class="forum-button">Vedi tutti</button>
-                </a>
-            </div>
+                    <div align="center">
+                        <a href="#">
+                            <button class="forum-button">Vedi tutti</button>
+                        </a>
+                    </div>
             
                 </div>
 
             </div>
+
             <!-- top 3 film  -->
+
             <div class="Sezione_2">
 
-                <div class=Sezione_2-1>
+                <div class="Sezione_2-1">
                     <h2>Film Preferiti</h2>
                 </div>
                 <div class="Sezione_2-2">
@@ -83,6 +88,7 @@
         </div>
         
         <!-- Carosello Film Preferiti -->
+
         <div class="Sezione_3">
             <div class="box_3-1">
                 <h1 class="titolo_3"><b>La Mia Lista Preferiti</b></h1>
@@ -114,66 +120,79 @@
     <!-- PopUp Edit -->
     <div id="edit-popup-overlay" class="edit-overlay" style="display: none;">
         <div class="popup-content">
-            
-        </div>
-    </div>
-
-    <!--
-    <div id="edit-popup-overlay" class="edit-overlay" style="display: none;">
-        <div class="popup-content">
-            <div class="edit-box">
+            <div class="edit-bio">
                 <div>
-                    <span class="popup-txt" style="color: var(--color-1)">Modifica il tuo profilo</span>
+                    <span class="bio-title" style="color: var(--color-4)">Modifica il tuo profilo</span>
                 </div>
                 <br>
                 <div>
                     <%= form_with model: @user, url: profile_path, method: :patch, local: true, html: { multipart: true } do |f| %>
                         <div>
-                            <%= f.label :first_name, "Nome", style:"color: var(--color-1)" %><br>
-                            <%= f.text_field :first_name, required: true, class: "form-control mb-3", style:"color: var(--color-1)" %>
+                            <%= f.label :first_name, "Nome", style:"color: var(--color-4)" %><br>
+                            <%= f.text_field :first_name, required: true, class: "form-control mb-3", style:"color: var(--color-4)" %>
                         </div>
                         <div>
-                            <%= f.label :last_name, "Cognome", style:"color: var(--color-1)" %><br>
-                            <%= f.text_field :last_name, required: true, class: "form-control mb-3", style:"color: var(--color-1)"%>
+                            <%= f.label :last_name, "Cognome", style:"color: var(--color-4)" %><br>
+                            <%= f.text_field :last_name, required: true, class: "form-control mb-3", style:"color: var(--color-4)"%>
                         </div>
                         <div>
-                            <%= f.label :birth_date, "Data di nascita", style:"color: var(--color-1)" %><br>
-                            <%= f.date_field :birth_date, required: true, class: "form-control mb-3", style:"color: var(--color-1)" %>
+                            <%= f.label :birth_date, "Data di nascita", style:"color: var(--color-4)" %><br>
+                            <%= f.date_field :birth_date, required: true, class: "form-control mb-3", style:"color: var(--color-4)" %>
                         </div>
                         <div>
-                            <%= f.label :username, "Username", style:"color: var(--color-1)" %><br>
-                            <%= f.text_field :username, required: true, class: "form-control mb-3", style:"color: var(--color-1)" %>
+                            <%= f.label :username, "Username", style:"color: var(--color-4)" %><br>
+                            <%= f.text_field :username, required: true, class: "form-control mb-3", style:"color: var(--color-4)" %>
                         </div>
                         <div>
-                            <%= f.label :email, "Email", style:"color: var(--color-1)" %><br>
-                            <%= f.email_field :email, required: true, class: "form-control mb-3", style:"color: var(--color-1)" %>
+                            <%= f.label :email, "Email", style:"color: var(--color-4)" %><br>
+                            <%= f.email_field :email, required: true, class: "form-control mb-3", style:"color: var(--color-4)" %>
                         </div>
                         <div>
-                            <%= f.label :avatar, "Immagine del profilo", style:"color: var(--color-1)" %><br>
-                            <%= f.file_field :avatar, class: "form-control mb-3", style:"color: var(--color-1)" %>
+                            <%= f.label :avatar, "Immagine del profilo", style:"color: var(--color-4)" %><br>
+                            <%= f.file_field :avatar, class: "form-control mb-3", style:"color: var(--color-4)" %>
                         </div>
                         <div>
-                            <%= label_tag :current_password, "Password attuale", style:"color: var(--color-1)" %><br>
+                            <%= label_tag :current_password, "Password attuale", style:"color: var(--color-4)" %><br>
                             <%= password_field_tag :current_password, nil, required: true, class: "form-control" %>
                         </div>
-
+                    
                         <div>
                             <br>
-                            <%= f.submit "Salva modifiche", class:"close-popup yellow-button button-1 sumbit-button" %>
+                            <%= f.submit "Salva modifiche", class:"close-popup edit-button sumbit-button" %>
+                            <button class="edit-button close-popup"> Annulla </button>
+                        </div>
+                    <% end %>
+                </div>
+            </div>
+            <div class="edit-top">
+                <div>
+                    <span class="bio-title" style="color: var(--color-4)">Modifica la tua Top 3</span>
+                </div>
+                <br>
+                <div>
+                    <%= form_with model: @user, url: profile_path, method: :patch, local: true, html: { multipart: true } do |f| %>
+                        <div>
+                            <%= f.label :first_name, "Nome", style:"color: var(--color-4)" %><br>
+                            <%= f.text_field :first_name, required: true, class: "form-control mb-3", style:"color: var(--color-4)" %>
+                        </div>
+                        <div>
+                            <%= f.label :last_name, "Cognome", style:"color: var(--color-4)" %><br>
+                            <%= f.text_field :last_name, required: true, class: "form-control mb-3", style:"color: var(--color-4)"%>
+                        </div>
+                        <div>
+                            <%= f.label :birth_date, "Data di nascita", style:"color: var(--color-4)" %><br>
+                            <%= f.date_field :birth_date, required: true, class: "form-control mb-3", style:"color: var(--color-4)" %>
                         </div>
                     <% end %>
                 </div>
             </div>
         </div>
     </div>
-    -->
-
-
 
     <!-- Script -->
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            document.querySelector(".edit-button").addEventListener("click", function () {
+            document.querySelector(".open-popup").addEventListener("click", function () {
               document.getElementById("edit-popup-overlay").style.display = "flex";
             });
             

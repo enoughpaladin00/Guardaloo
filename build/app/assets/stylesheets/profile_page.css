@@ -69,14 +69,18 @@
     display: flex;
     justify-content: flex-end;
 }
-.button-1{
-    font-size: var(--size-sm);
+
+/*button style*/
+.edit-button{
     border-radius: 50px;
     display: inline-block;
     padding: 0px 10px;
     border:none;
     font-family: 'Inter', sans-serif;
     font-weight: 600;
+    font-size: 20px;
+    background-color: var(--color-2);
+    padding: 0px 16px;
 }
 /*secondo contenitore*/
 
@@ -136,25 +140,48 @@
 
 
 /*-----PopUp-----*/
-.popup-overlay{
-    background-color: aqua;
-    width: 100%;
+.edit-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000000;
+    border: 1px red solid;
+}
+.popup-content {
+    width: 95%;
+    height: 90%;
+    background-color: var(--color-3-light);
+    border-radius: 20px;
+    padding: 2rem;
+    overflow-y: auto;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    position: relative;
+    display:flex;
+    border: 1px green solid;
+}
+.edit-bio{
+    width: 45%;
+    margin-left: 1rem;
+    display: flex;
+    flex-direction: column;
+    border: 1px blue solid;
+}
+.bio-title{
+    font-family: 'Inter', sans-serif;
+    font-weight: bold;
+    font-size: var(--size-lg);
+}
+.edit-top{
+    width: 45%;
+    margin-left: 4rem;
+    border: 1px blue solid;
 }
 
-/*button style*/
-.popup-button{
-    border-radius: 50px;
-    display: inline-block;
-    padding: 0px 10px;
-    border:none;
-    font-family: 'Inter', sans-serif;
-    font-weight: 600;
-    font-size: 20px;
-}
-.yellow-button{
-    background-color: var(--color-2);
-    padding: 0px 16px;
-}
+
 
 
 /*responsive*/
