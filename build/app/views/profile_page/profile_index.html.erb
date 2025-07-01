@@ -33,15 +33,33 @@
                     </div>
                 </div>
 
-                <hr style="margin-right: 2%">
+                <hr style="margin-right: 2%, color: var(--color-4)">
 
                 <!-- user stats -->
-                <div class="user_stat">
-                    <a>Film Visti</a>
-                    <br>
-                    <a>Recensioni Scritte</a>
-                    <br>
-                    <a>Cinema Salvati</a>
+                <div class="post_created">
+                <div class="container-fluid d-flex align-items-center">
+                <h1 class="px-2 py-2 mb-0 titolo"><b>Forum</b></h1>
+                <%= image_tag "homepage/forum.svg", class: "icon" %>
+            </div>
+            
+            <div align="center">
+            <a href="#" class="link-underline link-underline-opacity-0">
+            <div class="forum-item">
+                <div class="forum-title-homepage" style="color: #004466; text-align: left;">Best Movie 2024</div>
+                <div class="forum-meta mb-1 text-muted">
+                    <span>MovieBuff</span>
+                    <span>45 replies</span>
+                </div>
+            </div>
+            </a>
+            </div>
+            
+            <div align="center">
+                <a href="#">
+                <button class="forum-button">Vedi tutti</button>
+                </a>
+            </div>
+            
                 </div>
 
             </div>
@@ -49,61 +67,93 @@
             <div class="Sezione_2">
 
                 <div class=Sezione_2-1>
-                    <h2>TOP Film della settimana</h2>
+                    <h2>Film Preferiti</h2>
                 </div>
-                <div class="Sezione_2-2"> <!-- o altezza adatta -->
-                    <% @trending_movies.each_with_index do |movie, index| %>
-                        <% if movie['poster_path'].present? %>
-                            <%= image_tag "https://image.tmdb.org/t/p/w500#{movie['poster_path']}", class: "Locandina Film#{index + 1}", alt: movie['title'] %>
+                <div class="Sezione_2-2">
+                    <% @chosen_movies.each_with_index do |movie, index| %>
+                        <% if movie && movie['poster_path'].present? %>
+                            <%= image_tag "https://image.tmdb.org/t/p/w500#{movie['poster_path']}", class: "Locandina Film#{index + 1} movie-poster", alt: movie['title'], data: { index: index } %>
                         <% else %>
-                            <%= image_tag "Profile_page/film_default.png", class: "Locandina Film#{index + 1}", alt: "Immagine di default" %>
+                            <%= image_tag "Profile_page/film_default.png", class: "Locandina Film#{index + 1} default-poster", alt: "Immagine di default", data: { index: index } %>
                         <% end %>
                     <% end %>
-              </div>
+                </div>
 
             </div>
         </div>
+        
+        <!-- Carosello Film Preferiti -->
         <div class="Sezione_3">
-            <h1>sezione recensioni</h1>
+            <div class="box_3-1">
+                <h1 class="titolo_3"><b>La Mia Lista Preferiti</b></h1>
+            </div>
+
+            <div class="slider-preferiti">
+                <button class="slider-btn left"><%= image_tag "homepage/freccia.svg", class: "slider_img", style: "transform: rotate(180deg)" %></button>
+                <div class="box_3-2">
+                    <div class="slider-track">
+                        <% @preferiti.each do |movie| %>
+                
+                            <div class="contenitore contenitore-film">
+                                <a href="/movies/<%= movie['id'] %>"><img class="locandina" src="https://image.tmdb.org/t/p/w500<%= movie['poster_path'] %>" alt="<%= movie['title'] %>" ></a>
+                            </div>
+        
+                        <%end%>
+                    </div>
+                </div>
+                <button class="slider-btn right"><%= image_tag "homepage/freccia.svg", class: "slider_img" %></button>
+            </div> 
+
+            <div class="box_3-3">
+                
+            </div>        
         </div>
+    
     </div>
 
     <!-- PopUp Edit -->
-    <div id="edit-popup-overlay" class="popup-overlay" style="display: none;">
+    <div id="edit-popup-overlay" class="edit-overlay" style="display: none;">
         <div class="popup-content">
-            <div class="auth-box">
+            
+        </div>
+    </div>
+
+    <!--
+    <div id="edit-popup-overlay" class="edit-overlay" style="display: none;">
+        <div class="popup-content">
+            <div class="edit-box">
                 <div>
-                    <span class="popup-txt" style="color: var(--color-2)">Modifica il tuo profilo</span>
+                    <span class="popup-txt" style="color: var(--color-1)">Modifica il tuo profilo</span>
                 </div>
                 <br>
                 <div>
                     <%= form_with model: @user, url: profile_path, method: :patch, local: true, html: { multipart: true } do |f| %>
                         <div>
-                            <%= f.label :first_name, "Nome", style:"color: var(--color-3)" %><br>
-                            <%= f.text_field :first_name, required: true, class: "form-control mb-3", style:"color: var(--color-3)" %>
+                            <%= f.label :first_name, "Nome", style:"color: var(--color-1)" %><br>
+                            <%= f.text_field :first_name, required: true, class: "form-control mb-3", style:"color: var(--color-1)" %>
                         </div>
                         <div>
-                            <%= f.label :last_name, "Cognome", style:"color: var(--color-3)" %><br>
-                            <%= f.text_field :last_name, required: true, class: "form-control mb-3", style:"color: var(--color-3)"%>
+                            <%= f.label :last_name, "Cognome", style:"color: var(--color-1)" %><br>
+                            <%= f.text_field :last_name, required: true, class: "form-control mb-3", style:"color: var(--color-1)"%>
                         </div>
                         <div>
-                            <%= f.label :birth_date, "Data di nascita", style:"color: var(--color-3)" %><br>
-                            <%= f.date_field :birth_date, required: true, class: "form-control mb-3", style:"color: var(--color-3)" %>
+                            <%= f.label :birth_date, "Data di nascita", style:"color: var(--color-1)" %><br>
+                            <%= f.date_field :birth_date, required: true, class: "form-control mb-3", style:"color: var(--color-1)" %>
                         </div>
                         <div>
-                            <%= f.label :username, "Username", style:"color: var(--color-3)" %><br>
-                            <%= f.text_field :username, required: true, class: "form-control mb-3", style:"color: var(--color-3)" %>
+                            <%= f.label :username, "Username", style:"color: var(--color-1)" %><br>
+                            <%= f.text_field :username, required: true, class: "form-control mb-3", style:"color: var(--color-1)" %>
                         </div>
                         <div>
-                            <%= f.label :email, "Email", style:"color: var(--color-3)" %><br>
-                            <%= f.email_field :email, required: true, class: "form-control mb-3", style:"color: var(--color-3)" %>
+                            <%= f.label :email, "Email", style:"color: var(--color-1)" %><br>
+                            <%= f.email_field :email, required: true, class: "form-control mb-3", style:"color: var(--color-1)" %>
                         </div>
                         <div>
-                            <%= f.label :avatar, "Immagine del profilo", style:"color: var(--color-3)" %><br>
-                            <%= f.file_field :avatar, class: "form-control mb-3", style:"color: var(--color-3)" %>
+                            <%= f.label :avatar, "Immagine del profilo", style:"color: var(--color-1)" %><br>
+                            <%= f.file_field :avatar, class: "form-control mb-3", style:"color: var(--color-1)" %>
                         </div>
                         <div>
-                            <%= label_tag :current_password, "Password attuale", style:"color: var(--color-3)" %><br>
+                            <%= label_tag :current_password, "Password attuale", style:"color: var(--color-1)" %><br>
                             <%= password_field_tag :current_password, nil, required: true, class: "form-control" %>
                         </div>
 
@@ -116,15 +166,53 @@
             </div>
         </div>
     </div>
+    -->
+
+
+
+    <!-- Pop Up favourite Movies -->
+    <div id="favourite-popup-overlay" class="preferiti-overlay" style="display: none;">
+        <div class="fav-box">
+            <div>
+                <span class="popup-txt" style="color: var(--color-1)">Modifica i tuoi Film</span>
+            </div>
+            <br>
+            <div>
+                <%= form_with model: @user, url: profile_path, method: :patch, local: true, html: { multipart: true } do |f| %>
+                    <div>
+                        <%= f.label :first_film_title, "Film #1", style:"color: var(--color-1)" %><br>
+                        <%= f.text_field :first_film_title, required: false, class: "form-control mb-3", style:"color: var(--color-1)" %>
+                    </div>
+                    <div>
+                        <%= f.label :second_film_title, "Film #2", style:"color: var(--color-1)" %><br>
+                        <%= f.text_field :second_film_title, required: false, class: "form-control mb-3", style:"color: var(--color-1)" %>
+                    </div>
+                    <div>
+                        <%= f.label :third_film_title, "Film #3", style:"color: var(--color-1)" %><br>
+                        <%= f.text_field :third_film_title, required: false, class: "form-control mb-3", style:"color: var(--color-1)" %>
+                    </div>
+                    <div>
+                        <br>
+                        <%= f.submit "Salva modifiche", class:"close-popup yellow-button button-1 submit-button" %>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+    </div>
 
     <!-- Script -->
     <script>
-        document.querySelector(".edit-button").addEventListener("click", function() {
-            document.getElementById("edit-popup-overlay").style.display = "flex";
-        });
-
-        document.getElementById("close-popup").addEventListener("click", function() {
-            document.getElementById("edit-popup-overlay").style.display = "none";
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelector(".edit-button").addEventListener("click", function () {
+              document.getElementById("edit-popup-overlay").style.display = "flex";
+            });
+            
+            
+            document.querySelectorAll(".close-popup").forEach(button => {
+              button.addEventListener("click", function () {
+                document.getElementById("edit-popup-overlay").style.display = "none";
+              });
+            });
         });
     </script> 
 

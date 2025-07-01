@@ -14,7 +14,7 @@
       </div>
 
       <!-- Colonna di destra -->
-      <div class="new-post-card" style="overflow: visible; border: 0; background-color:rgb(253,116,116, 0.1);">
+      <div id="new-post-form" class="new-post-card" style="overflow: visible; border: 0; background-color:rgb(253,116,116, 0.1);">
         <%= form_with model: Post.new, url: posts_path, local: true do |f| %>
 
           <%# titolo %>

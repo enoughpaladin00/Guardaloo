@@ -22,6 +22,8 @@
   height: 30rem;
   border-radius: 0.5rem;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  flex-direction: row;
+  gap: 1rem;
 }
 
 .cinema_link{
@@ -33,6 +35,16 @@
 .top10{
   border-radius: 1.3em; 
   height: 21em
+}
+
+.contenitore-cinema{
+  background-color:rgb(253,116,116, 0.1); 
+  width: 30em;
+}
+
+.locandina-cinema{
+  height: 11.5em; 
+  width: auto;
 }
 
 .maps{
@@ -54,7 +66,7 @@
 }
 
 .titolo{
-  font-size: 30px;
+  font-size: 2em;
 }
 
 .icon{
@@ -74,6 +86,18 @@
     color:#FD7474;
     -webkit-text-stroke: 3px #003344;
     z-index: 1;
+}
+
+.virgolette{
+  position: absolute; 
+  left: 32%; 
+  width: 3em;
+}
+
+.reverse{
+  transform: rotate(180deg);
+  left: auto !important;
+  right: 32%;
 }
 
 .citazione {
@@ -138,6 +162,11 @@
   text-align: start;
 }
 
+#map, .cinema-list-container {
+  width: 50%;
+  height: 30rem;
+}
+
 #cinema-list {
   list-style: none;
   padding: 0;
@@ -188,4 +217,119 @@
   cursor: pointer;
   font-size: 1.2em;
   font-weight: bold;
+}
+
+
+@media screen and (max-width: 992px){
+
+  .titolo{
+    font-size: 1.2em;
+  }
+
+  .icon{
+    width: 1.2em; 
+    height: 1.2em;
+  }
+
+  .container-fluid.d-flex{
+    flex-direction: unset !important;
+    gap: 0 !important;
+  }
+
+  .citazione {
+    font-size: 1.5em;
+    padding-left: 1em;
+    padding-right: 1em;
+    padding-top: 1em;
+    padding-bottom: none !important;
+  }
+
+  .virgolette{
+    width: 1.2em;
+    transform: none;
+    left: 10%;
+  }
+
+  .reverse{
+    transform: rotate(180deg);
+    left: auto !important;
+    right: 10%;
+  }
+
+  .contenitore-cinema{
+    background-color:rgb(253,116,116, 0.1); 
+    width: 14em;
+    height: auto;
+  }
+
+  .locandina-cinema{
+    height: 8em; 
+    width: auto;
+  }
+
+  .text-cinema{
+    font-size: small
+  }
+
+  .slider-btn, .slider-btn.left, .slider-btn.right{
+    display: none;
+  }
+
+  .top10{
+    border-radius: 1.3em; 
+    height: 12em;
+  }
+
+  .number{
+    position: absolute; 
+    font-size: 6em;
+   -webkit-text-stroke: 2px #003344;
+  }
+
+  .contenitore_top10{
+    overflow: visible;
+    margin-top: 1em;
+    margin-left: 2em;
+    margin-right: 2em;
+    margin-bottom: 1em;
+  }
+
+  .locandina{
+    height: 12em;
+  }
+
+
+  #map, .cinema-list-container {
+    width: 50%;
+    height: 30rem;
+    font-size: small;
+  }
+}
+
+
+@media screen and (max-width: 767px){
+
+  .virgolette{
+    left: 1%;
+  }
+
+  .reverse{
+    right: 1%;
+  }
+
+  .citazione {
+    font-size: 1em;
+  }
+
+  .contenitore_maps {
+    flex-direction: column;
+    height: 40em;
+  }
+
+  #map, .cinema-list-container {
+    width: 30em;
+    height: 20rem;
+    font-size: small;
+  }
+
 }

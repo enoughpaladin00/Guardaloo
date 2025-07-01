@@ -50,8 +50,20 @@
 
       <div class="post-actions">
         <% if user_signed_in? && current_user == post.user %>
-        <%= link_to 'Modifica', edit_post_path(post), class: 'btn btn-edit' %>
-        <%= button_to 'Elimina', post_path(post), method: :delete, data: { confirm: 'Sei sicuro?', turbo: false }, class: 'btn btn-delete' %>
+        <%= link_to 'Modifica', edit_post_path(post), class: 'btn forum-button2' %>
+        <%# <%= button_to 'Elimina', post_path(post), method: :delete, data: { confirm: 'Sei sicuro di eliminare il post?'}, class: 'btn forum-button2', style:"background-color: #004466" %>
+        <%# <%= button_to 'Elimina', post_path(post), method: :delete, class: 'btn forum-button2 delete-button', form: { data: { post_title: post.title } }, style:"background-color: #004466" %>
+
+      <form action="<%= post_path(post) %>" method="post" class="delete-post-form" data-post-title="<%= post.title %>" data-turbo="false">
+        <input type="hidden" name="_method" value="delete">
+          <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+        <button type="submit" class="btn forum-button2" style="background-color: #004466">
+          Elimina
+        </button>
+      </form>
+
+
+
         <% end %>
       </div>
     </div>
@@ -62,6 +74,23 @@
     <% end %>
 </div>
 
+
+<script>
+document.addEventListener("turbo:load", function () {
+  document.querySelectorAll(".delete-post-form").forEach(function (form) {
+    if (form.dataset.confirmAttached === "true") return;
+
+    form.addEventListener("submit", function (event) {
+      const confirmed = confirm(`Sei sicuro di voler eliminare il tuo post "${form.dataset.postTitle}"?`);
+      if (!confirmed) {
+        event.preventDefault();
+      }
+    });
+
+    form.dataset.confirmAttached = "true";
+  });
+});
+</script>
 
 
 <%= render 'layouts/footer' %>
