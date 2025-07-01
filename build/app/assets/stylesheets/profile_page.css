@@ -1,32 +1,38 @@
-/*layout impaginazione*/
+/*-----layout impaginazione-----*/
 .User_Page{
     margin-left: 4%;
     margin-right: 4%;
     border-radius: 20px;
+    margin-top: 3%;
 }
 .User_half{
     display:flex;
 }
 
-/*layout sezioni*/
+/*-----layout sezioni-----*/
 .Sezione_1{
     width: 50%;
     border-right: 1px solid var(--color-5);
     margin-top: 3rem;
     margin-left: 2rem;
     padding-right: 1rem;
+    margin-bottom: 3rem;
 }
 .Sezione_2{
     width: 50%;
     margin-top: 3rem;
     margin-left: 2rem;
+    margin-bottom: 3rem;
 }
 .Sezione_3{
     margin-top: 3rem;
     margin-left: 2rem;
+    border: 1px solid green;
+    margin-bottom: 3rem;
+    margin-right: 2rem;
 }
 
-/*Sezione 1*/
+/*-----Sezione 1-----*/
 /*primo contenitore*/
 .user_info{
     display:flex;
@@ -74,11 +80,11 @@
 }
 /*secondo contenitore*/
 
-/*Sezione 2*/
+/*-----Sezione 2-----*/
 .Sezione_2-1{
     display:flex;
     align-items: center;
-    gap:50%;
+    gap: 50%;
 }
 .Sezione_2-2{
     top: 5%;
@@ -90,14 +96,14 @@
 
 .Sezione_2-2 img {
     position: absolute;
-    width: 230px; /* come nel tuo image_tag */
-    height: auto;
+    width: 230px; 
+    height: 21rem;
     border-radius: 30px;
     border: 1px var(--color-5) solid;
     box-shadow: 7px 7px 3px var(--color-4);
 }
   
-  /* 1ª immagine: in alto a sinistra */
+/* 1ª immagine: in alto a sinistra */
 .Sezione_2-2 img:nth-of-type(1) {
     top: 0;
     left: 0;
