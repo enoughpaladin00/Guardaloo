@@ -106,5 +106,17 @@ class TmdbService
     []
   end
 
+  #metodo per recuperare un singolo film dal suo ID   
+  def self.get_movie(tmdb_id)
+    url = URI("#{BASE_URL}/movie/#{tmdb_id}?api_key=#{API_KEY}&language=it-IT")
+    response = Net::HTTP.get_response(url)
+    return nil unless response.is_a?(Net::HTTPSuccess)
+  
+    JSON.parse(response.body)
+  rescue => e
+    Rails.logger.error("Errore TMDB (get_movie): #{e.message}")
+    nil
+  end
+
 
 end

@@ -1,33 +1,38 @@
-/*layout impaginazione*/
+/*-----layout impaginazione-----*/
 .User_Page{
-    border: 2px solid var(--color-4);
-    margin-left: 8%;
-    margin-right: 8%;
+    margin-left: 4%;
+    margin-right: 4%;
     border-radius: 20px;
+    margin-top: 3%;
 }
 .User_half{
     display:flex;
 }
 
-/*layout sezioni*/
+/*-----layout sezioni-----*/
 .Sezione_1{
     width: 50%;
     border-right: 1px solid var(--color-5);
     margin-top: 3rem;
     margin-left: 2rem;
     padding-right: 1rem;
+    margin-bottom: 3rem;
 }
 .Sezione_2{
     width: 50%;
     margin-top: 3rem;
     margin-left: 2rem;
+    margin-bottom: 3rem;
 }
 .Sezione_3{
     margin-top: 3rem;
     margin-left: 2rem;
+    border: 1px solid green;
+    margin-bottom: 3rem;
+    margin-right: 2rem;
 }
 
-/*Sezione 1*/
+/*-----Sezione 1-----*/
 /*primo contenitore*/
 .user_info{
     display:flex;
@@ -75,11 +80,11 @@
 }
 /*secondo contenitore*/
 
-/*Sezione 2*/
+/*-----Sezione 2-----*/
 .Sezione_2-1{
     display:flex;
     align-items: center;
-    gap:50%;
+    gap: 50%;
 }
 .Sezione_2-2{
     top: 5%;
@@ -91,14 +96,14 @@
 
 .Sezione_2-2 img {
     position: absolute;
-    width: 230px; /* come nel tuo image_tag */
-    height: auto;
+    width: 230px; 
+    height: 21rem;
     border-radius: 30px;
     border: 1px var(--color-5) solid;
     box-shadow: 7px 7px 3px var(--color-4);
 }
   
-  /* 1ª immagine: in alto a sinistra */
+/* 1ª immagine: in alto a sinistra */
 .Sezione_2-2 img:nth-of-type(1) {
     top: 0;
     left: 0;
@@ -120,9 +125,25 @@
     z-index: 1;
 }
 
+/*Sezione 3*/
+
+.titolo_3{
+    font-size: var(--size-2xl);
+}
+.box_3-2{
+    border: 1px red solid;
+}
+
 
 /*PopUp*/
-.popup-overlay {
+.popup-txt{
+    color: var(--color-1);
+    font-family: 'Inter', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+}
+/*edit popup*/
+.edit-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -134,16 +155,39 @@
     justify-content: center;
     align-items: center;
 }
-.popup-txt{
-    color: #FFFAEF;
-    font-family: 'Inter', sans-serif;
-    font-size: 22px;
-    font-weight: 600;
-}
 .popup-content {
-    max-width: 90%;
+    max-width: 100%;
     padding: 20px;
 }
+.edit-box {
+    background-color: #272727;
+    width: 600px;
+    margin: 0 auto;
+    padding: 50px 40px;
+    border-radius: 20px;
+}
+/*favourite popup*/
+.preferiti-overlay{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.6);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.fav-box{
+    background-color: #272727;
+    width: 700px;
+    margin: 0 auto;
+    padding: 50px 40px;
+    border-radius: 20px;
+}
+
+
 /*button style*/
 .popup-button{
     border-radius: 50px;
@@ -160,31 +204,88 @@
 }
 
 
-
-
-/*CSS "globale"*/
-:root {
-    /*color palette*/
-    --color-1: #FFFAEF;
-    --color-2: #F9BD24;
-    --color-3: #FD7474;
-    --color-4: #004466;
-    --color-5: #272727;
-
-    /* sizes */
-    --size-xxs: 0.5rem;
-    --size-xs: 0.75rem;
-    --size-sm: 0.875rem;
-    --size-base: 1rem;
-    --size-lg: 1.125rem;
-    --size-xl: 1.25rem;
-    --size-2xl: 1.5rem;
-    --size-3xl: 1.875rem;
-    --size-4xl: 2.25rem;
-    --size-5xl: 3rem;
-    --size-6xl: 3.75rem;
-    --size-7xl: 4.5rem;
-    --size-8xl: 6rem;
-    --size-9xl: 8rem;
-    --size-10xl: 10rem;  
+/*responsive*/
+@media (max-width: 1280px){
+    .User_half{
+        flex-direction: column;
+    }
+    .Sezione_1{
+        width: 100%;
+        border-right: none; 
+        padding-right: 2rem;
+        margin-bottom: 3rem;
+    }
+    .Sezione_2{
+        width: 100%;
+    }
+    .Sezione_2-1 {
+      gap: 20px;
+      flex-direction: column;
+    }
+    
+    .Sezione_2-2 {
+      position: static;
+      width: 100%;
+      height: auto;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      padding: 20px;
+      overflow-x: auto;
+    }
+    
+    .Sezione_2-2 img {
+      position: static !important;
+      width: 230px;
+      height: 21rem;
+      flex-shrink: 0;
+      margin: 0;
+      transform: none !important;
+      top: auto !important;
+      left: auto !important;
+      bottom: auto !important;
+      right: auto !important;
+    }
+    
+    .Sezione_2-2 img:nth-of-type(1),
+    .Sezione_2-2 img:nth-of-type(2),
+    .Sezione_2-2 img:nth-of-type(3) {
+      position: static !important;
+      z-index: auto;
+    }
 }
+
+@media (max-width: 768px) {
+    .Sezione_2-2 img {
+        width: 120px;
+        height: 160px;
+    }
+    
+}
+
+@media (max-width: 475px){
+    .Sezione_2-2 img {
+        width: 90px;
+        height: 120px;
+    }
+}
+
+
+
+/*da telefono a computer*/
+/*io uso un metodo da pc a telefono, cambio max-width*/
+/* xs */
+/* @media (min-width: 475px) {} */
+/* sm */
+/* @media (min-width: 640px) {} */
+/* md */
+/* @media (min-width: 768px) {} */
+/* lg */
+/* @media (min-width: 1024px) {} */
+/* xl */
+/* @media (min-width: 1280px) {} */
+/* 2xl */
+/* @media (min-width: 1536px) {} */
+

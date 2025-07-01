@@ -4,16 +4,18 @@ document.addEventListener("turbo:load", () => {
   const placeholder = document.getElementById("search-placeholder");
   const overlay = document.getElementById("search-overlay");
   const container = document.querySelector(".search_container");
+  const form = document.querySelector(".search_form");
   let timeout = null;
 
   function openDropdown() {
     resultsContainer.style.display = "block";
     overlay.style.display = "block";
     container.classList.add("focused");
+    form.classList.add("focused")
 
     const query = searchInput.value.trim();
     if (query.length < 2) {
-      resultsContainer.innerHTML = '<div id="search-placeholder" class="ms-2 mb-1 text-muted"><b>Nessun risultato</b></div>';
+      resultsContainer.innerHTML = '<div id="search-placeholder" class="ms-2 mb-1 text-muted text-size-search"><b>Nessun risultato</b></div>';
     }
   }
 
@@ -21,6 +23,7 @@ document.addEventListener("turbo:load", () => {
     resultsContainer.style.display = "none";
     overlay.style.display = "none";
     container.classList.remove("focused");
+    form.classList.remove("focused");
   }
 
   searchInput.addEventListener("focus", () => {
@@ -32,7 +35,7 @@ document.addEventListener("turbo:load", () => {
     clearTimeout(timeout);
 
     if (query.length < 2) {
-      resultsContainer.innerHTML = '<div id="search-placeholder" class="ms-2 mb-1 text-muted"><b>Nessun risultato</b></div>';
+      resultsContainer.innerHTML = '<div id="search-placeholder" class="ms-2 mb-1 text-muted text-size-search"><b>Nessun risultato</b></div>';
       return;
     }
 
