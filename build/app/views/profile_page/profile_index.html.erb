@@ -37,32 +37,34 @@
 
                 <!-- user stats -->
                 <div class="post_created">
-                <div class="container-fluid d-flex align-items-center">
-                <h1 class="px-2 py-2 mb-0 titolo"><b>Forum</b></h1>
-                <%= image_tag "homepage/forum.svg", class: "icon" %>
-            </div>
+                    <div class="container-fluid d-flex align-items-center">
+                        <h1 class="px-2 py-2 mb-0 titolo"><b>Forum</b></h1>
+                        <%= image_tag "homepage/forum.svg", class: "icon" %>
+                    </div>
             
-            <div align="center">
-            <a href="#" class="link-underline link-underline-opacity-0">
-            <div class="forum-item">
-                <div class="forum-title-homepage" style="color: #004466; text-align: left;">Best Movie 2024</div>
-                <div class="forum-meta mb-1 text-muted">
-                    <span>MovieBuff</span>
-                    <span>45 replies</span>
-                </div>
-            </div>
-            </a>
-            </div>
+                    <div align="center">
+                        <a href="#" class="link-underline link-underline-opacity-0">
+                        <div class="forum-item">
+                            <div class="forum-title-homepage" style="color: #004466; text-align: left;">Best Movie 2024</div>
+                                <div class="forum-meta mb-1 text-muted">
+                                    <span>MovieBuff</span>
+                                    <span>45 replies</span>
+                                </div>
+                            </div>
+                        </a>
+                        </div>
             
-            <div align="center">
-                <a href="#">
-                <button class="forum-button">Vedi tutti</button>
-                </a>
-            </div>
+                    <div align="center">
+                        <a href="#">
+                        <button class="forum-button">Vedi tutti</button>
+                        </a>
+                    </div>
             
                 </div>
 
             </div>
+
+            
             <!-- top 3 film  -->
             <div class="Sezione_2">
 
@@ -82,19 +84,29 @@
 
             </div>
         </div>
-
+        
+        <!-- Carosello Film Preferiti -->
         <div class="Sezione_3">
             <div class="box_3-1">
                 <h1 class="titolo_3"><b>La Mia Lista Preferiti</b></h1>
             </div>
-
+            <br>
             <div class="slider-preferiti">
                 <button class="slider-btn left"><%= image_tag "homepage/freccia.svg", class: "slider_img", style: "transform: rotate(180deg)" %></button>
                 <div class="box_3-2">
-                    
+                    <div class="slider-track">
+                        <% @preferiti.each do |movie| %>
+                
+                            <div class="contenitore contenitore-film">
+                                <a href="/movies/<%= movie['id'] %>"><img class="locandina" src="https://image.tmdb.org/t/p/w500<%= movie['poster_path'] %>" alt="<%= movie['title'] %>" ></a>
+                            </div>
+        
+                        <%end%>
+                    </div>
                 </div>
                 <button class="slider-btn right"><%= image_tag "homepage/freccia.svg", class: "slider_img" %></button>
             </div>  
+            <br>
             <div class="box_3-3">
                 
             </div>        
