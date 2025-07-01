@@ -135,58 +135,11 @@
 }
 
 
-/*PopUp*/
-.popup-txt{
-    color: var(--color-1);
-    font-family: 'Inter', sans-serif;
-    font-size: 22px;
-    font-weight: 600;
+/*-----PopUp-----*/
+.popup-overlay{
+    background-color: aqua;
+    width: 100%;
 }
-/*edit popup*/
-.edit-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0,0,0,0.6);
-    z-index: 9999;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.popup-content {
-    max-width: 100%;
-    padding: 20px;
-}
-.edit-box {
-    background-color: #272727;
-    width: 600px;
-    margin: 0 auto;
-    padding: 50px 40px;
-    border-radius: 20px;
-}
-/*favourite popup*/
-.preferiti-overlay{
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0,0,0,0.6);
-    z-index: 9999;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.fav-box{
-    background-color: #272727;
-    width: 700px;
-    margin: 0 auto;
-    padding: 50px 40px;
-    border-radius: 20px;
-}
-
 
 /*button style*/
 .popup-button{
