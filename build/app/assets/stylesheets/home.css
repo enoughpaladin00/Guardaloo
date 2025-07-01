@@ -239,6 +239,7 @@ html, body{
   text-align: center;
   margin-top: 1rem;
 }
+
 .dots button {
   width: 10px;
   height: 10px;
@@ -247,6 +248,7 @@ html, body{
   border: none;
   margin: 0 5px;
 }
+
 .dots .glider-dot.active {
   background: #facc15;
 }
@@ -396,14 +398,20 @@ html, body{
 
 @media (max-width: 768px) {
 
-    .homepage-navbar {
+    .homepage-navbar .container-fluid {
         flex-direction: column !important;
-        padding: 10px 20px;
+        text-align: center;
+    }
+
+    .homepage-navbar .d-flex {
+        flex-direction: row !important;
+        gap: 10px;
+        padding-top: 10px;
     }
 
     .popup-button {
         font-size: 16px;
-        padding: 5px 10px;
+        padding: 0px 5px !important;
     }
 
     .pickup-line {
@@ -411,6 +419,11 @@ html, body{
         font-size: 24px;
         text-align: center;
         padding: 0 10px;
+    }
+
+    .search-bar{
+        width: 350px !important;
+        transform: translateY(-250%) !important;
     }
 
     .fullscreen-section {
@@ -424,22 +437,35 @@ html, body{
     }
 
     .carousel-column, .text-column, .search-carousel-column {
-        width: 100vh !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+
+    .movie-card, .movie2-card {
+        width: 150px !important;
+        height: 225px !important;
     }
 
     .movie-card img, .movie2-card img {
-        max-width: 80%;
-        height: auto;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
     }
+
 
     .carousel-text {
-        font-size: 22px;
-        padding: 10px;
+        font-size: 24px !important;
+        text-align: center;
+        padding: 0 10px;
     }
 
-    .search-bar {
-        width: 90%;
-        margin-bottom: 20px;
+    .inter-h1 {
+        font-size: 26px !important;
+    }
+
+    .register-title h3 {
+        font-size: 24px !important;
     }
 
     .auth-section {
@@ -465,14 +491,22 @@ html, body{
         min-width: 150px !important;
     }
 
-    .footer-logo {
-        width: 80px;
+    .container-fluid.d-flex {
+        flex-direction: row !important;
+        text-align: center;
+        padding: 20px;
+        gap: 10px;
     }
 
-    .container-fluid.d-flex {
-        flex-direction: column !important;
-        gap: 10px;
-        padding: 10px;
-        text-align: center;
+    .footer-logo {
+        display:none;
+    }
+
+    .reverse-section{
+        flex-direction: column-reverse !important;
+    }
+
+    .footer{
+        justify-content: center !important;
     }
 }

@@ -60,7 +60,7 @@ document.addEventListener("turbo:load", function () {
     }
 
     glider.scrollItem(slideIndex);
-  }, 8000);
+  }, 6000);
 });
 
 
