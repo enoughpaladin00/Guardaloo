@@ -119,7 +119,7 @@
 
     <!-- PopUp Edit -->
     <div id="edit-popup-overlay" class="edit-overlay" style="display: none;">
-        <div class="popup-content">
+        <div class="edit-popup">
             <div class="edit-bio">
                 <div>
                     <span class="bio-title" style="color: var(--color-4)">Modifica il tuo profilo</span>
@@ -166,28 +166,41 @@
             </div>
             <div class="edit-top">
                 <div>
-                    <span class="bio-title" style="color: var(--color-4)">Modifica la tua Top 3</span>
+                    <span class="top-title" style="color: var(--color-4)">Modifica la tua Top 3</span>
                 </div>
                 <br>
                 <div>
-                    <%= form_with model: @user, url: profile_path, method: :patch, local: true, html: { multipart: true } do |f| %>
-                        <div>
-                            <%= f.label :first_name, "Nome", style:"color: var(--color-4)" %><br>
-                            <%= f.text_field :first_name, required: true, class: "form-control mb-3", style:"color: var(--color-4)" %>
-                        </div>
-                        <div>
-                            <%= f.label :last_name, "Cognome", style:"color: var(--color-4)" %><br>
-                            <%= f.text_field :last_name, required: true, class: "form-control mb-3", style:"color: var(--color-4)"%>
-                        </div>
-                        <div>
-                            <%= f.label :birth_date, "Data di nascita", style:"color: var(--color-4)" %><br>
-                            <%= f.date_field :birth_date, required: true, class: "form-control mb-3", style:"color: var(--color-4)" %>
-                        </div>
-                    <% end %>
+                    <div class="poster-bt">
+                        <% @chosen_movies.each_with_index do |movie, index| %>
+                            <% position = index + 1 %>
+                            <a href="#" class="film-popup" data-position="<%= position %>">
+                                <% if movie && movie['poster_path'].present? %>
+                                    <%= image_tag "https://image.tmdb.org/t/p/w500#{movie['poster_path']}", class: "Locandina Film#{position} movie-poster", alt: movie['title'], data: { index: index } %>
+                                <% else %>
+                                    <%= image_tag "Profile_page/film_default.png", class: "Locandina Film#{position} default-poster", alt: "Immagine di default", data: { index: index } %>
+                                <% end %>
+                            </a>
+                        <% end %>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+
+    <div id="poster-popup-overlay" class="poster-overlay" style="display: none;">
+        <div class="poster-popup">
+            <h2>Scegli il tuo film preferito</h2>
+            </br>
+            <%= form_with model: @user, url: profile_path, method: :patch, local: true, html: { multipart: true } do |f| %>
+                <%= hidden_field_tag :position, nil, id: "popup-position" %>
+                <%= label_tag :tmdb_title, "Nome del Film" , style:"color: var(--color-4)" %>
+                <%= text_field_tag :tmdb_title, nil, required: true %>
+                <%= submit_tag "Salva", class: "poster-save edit-button" %>
+            <% end %>
+        </div>
+    </div>
+
 
     <!-- Script -->
     <script>
@@ -201,6 +214,34 @@
               button.addEventListener("click", function () {
                 document.getElementById("edit-popup-overlay").style.display = "none";
               });
+            });
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const popup = document.getElementById("poster-popup-overlay");
+            const openButtons = document.querySelectorAll(".film-popup");
+            const closeButton = popup.querySelector(".close-btn");
+            const positionInput = document.getElementById("popup-position");
+
+            openButtons.forEach(button => {
+                button.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    const position = this.dataset.position;
+                    positionInput.value = position;
+                    popup.style.display = "flex"; 
+                });
+            });
+
+            if (closeButton) {
+                closeButton.addEventListener("click", function () {
+                    popup.style.display = "none";
+                });
+            }
+        
+            window.addEventListener("click", function (e) {
+                if (e.target === popup) {
+                    popup.style.display = "none";
+                }
             });
         });
     </script> 

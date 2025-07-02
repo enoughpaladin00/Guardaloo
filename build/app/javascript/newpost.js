@@ -1,9 +1,11 @@
 // NEW
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('turbo:load', () => {
   const input = document.getElementById('movie_title_input');
   const suggestions = document.getElementById('movie-suggestions');
   const hiddenMovieId = document.getElementById('movie_id_input');
   const hiddenPosterPath = document.getElementById('movie_poster_path_input');
+
+  if (!input || !hiddenMovieId || !suggestions || !hiddenPosterPath) return;
 
   let timeout = null;
 
@@ -69,14 +71,17 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Impedisce che si possa scrivere titoli di film non validi
-  const form = document.querySelector('form');
-  form.addEventListener('submit', (event) => {
-    const movieId = hiddenMovieId.value.trim();
-    if (!movieId) {
-      event.preventDefault(); // blocca il submit
-      alert("Seleziona un film valido dai suggerimenti.");
-    }
-  });
+  const form = document.querySelector('#new-post-form');
+  if (form) {
+    form.addEventListener('submit', (event) => {
+      const movieId = hiddenMovieId.value.trim();
+      if (!movieId) {
+        event.preventDefault();
+        alert("Seleziona un film valido dai suggerimenti.");
+      }
+    });
+  }
+
 
   // Nascondi suggerimenti se clicchi fuori
   document.addEventListener('click', (e) => {
@@ -107,23 +112,46 @@ document.addEventListener('turbo:load', () => {
 
 
 // index
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('turbo:load', () => {
   document.querySelectorAll('.post-card').forEach(card => {
     card.style.cursor = 'pointer';
-    
+
     card.addEventListener('click', e => {
-      if(e.target.tagName.toLowerCase() === 'a') return;
-      
+      const tag = e.target.tagName.toLowerCase();
+
+      // ignora click su link, button, input, textarea, svg, path, form, etc.
+      if (['a', 'button', 'svg', 'path', 'input', 'textarea', 'form'].includes(tag)) return;
+
       const link = card.querySelector('.post-title h2 a');
-      if(link) {
+      if (link) {
         window.location.href = link.href;
       }
     });
   });
 });
 
-// edit
-document.addEventListener("DOMContentLoaded", function() {
+//OPPURE QUESTO
+//<button class="btn forum-button2 no-card-click">Elimina</button>
+// document.addEventListener('turbo:load', () => {
+//   document.querySelectorAll('.post-card').forEach(card => {
+//     card.style.cursor = 'pointer';
+
+//     card.addEventListener('click', e => {
+//       if (
+//         e.target.closest('.no-card-click') // evita se clicchi su un elemento con questa classe
+//       ) return;
+
+//       const link = card.querySelector('.post-title h2 a');
+//       if (link) {
+//         window.location.href = link.href;
+//       }
+//     });
+//   });
+// });
+
+
+// edit - modifica il post
+document.addEventListener("turbo:load", function() {
   const form = document.getElementById("edit-post-form");
   if (form) {
     form.addEventListener("submit", function(event) {
@@ -134,3 +162,23 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   }
 });
+
+
+//elimina il post
+// document.addEventListener("turbo:load", function () {
+//   document.querySelectorAll(".delete-post-form").forEach(function (form) {
+//     // evita di registrare due volte
+//     if (form.dataset.listenerAttached === "true") return;
+
+//     form.addEventListener("submit", function (event) {
+//       const postTitle = form.dataset.postTitle || "questo post";
+//       const confirmed = confirm(`Sei sicuro di voler eliminare "${postTitle}"?`);
+//       if (!confirmed) {
+//         event.preventDefault();
+//       }
+//     });
+
+//     form.dataset.listenerAttached = "true";
+//   });
+// });
+

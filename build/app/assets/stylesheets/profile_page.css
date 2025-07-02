@@ -1,9 +1,9 @@
 /*-----layout impaginazione-----*/
 .User_Page{
-    margin-left: 4%;
-    margin-right: 4%;
+    margin-left: 2rem;
+    margin-right: 4rem;
     border-radius: 20px;
-    margin-top: 3%;
+    margin-top: 1rem;
 }
 .User_half{
     display:flex;
@@ -59,10 +59,14 @@
 .user_name{
     flex: 1;
     text-align: left;
-    font-size: var(--size-lg);
-    font-weight: 600;
     word-break: break-word;
     padding-left: 2rem;
+    font-family: 'Inter', sans-serif;
+}
+.user_name h2{
+    font-size: var(--size-4xl);
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
 }
 .user_edit{
     flex: 0 0 20%;
@@ -89,6 +93,11 @@
     display:flex;
     align-items: center;
     gap: 50%;
+}
+.Sezione_2-1 h2{
+    font-family: 'Inter', sans-serif;
+    font-size: var(--size-5xl);
+    font-weight: bolder;
 }
 .Sezione_2-2{
     top: 5%;
@@ -129,17 +138,15 @@
     z-index: 1;
 }
 
-/*-----Sezione 3-----*/
+/*Sezione 3*/
 
 .titolo_3{
     font-size: var(--size-2xl);
 }
-.box_3-2{
-    border: 1px red solid;
-}
 
 
 /*-----PopUp-----*/
+/*modifica info*/
 .edit-overlay {
     position: fixed;
     inset: 0;
@@ -149,9 +156,8 @@
     align-items: center;
     justify-content: center;
     z-index: 1000000;
-    border: 1px red solid;
 }
-.popup-content {
+.edit-popup {
     width: 95%;
     height: 90%;
     background-color: var(--color-3-light);
@@ -161,28 +167,73 @@
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
     position: relative;
     display:flex;
-    border: 1px green solid;
 }
 .edit-bio{
     width: 45%;
     margin-left: 1rem;
     display: flex;
     flex-direction: column;
-    border: 1px blue solid;
 }
 .bio-title{
     font-family: 'Inter', sans-serif;
     font-weight: bold;
     font-size: var(--size-lg);
 }
+/*modifica top film*/
 .edit-top{
     width: 45%;
-    margin-left: 4rem;
-    border: 1px blue solid;
 }
-
-
-
+.top-title{
+    font-family: 'Inter', sans-serif;
+    font-weight: bold;
+    font-size: var(--size-lg);
+    margin-left: 4rem;
+}
+.poster-bt{
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* Spazio tra le immagini */
+    margin-top: 20px;
+}
+.poster-bt img {
+  width: 200px;
+  height: 15rem;
+  border-radius: 8px;
+  object-fit: cover;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease;
+}
+.poster-bt img:hover {
+  transform: scale(1.05);
+}
+/*barra di ricerca film*/
+.poster-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000000;
+}
+.poster-popup {
+    margin-inline: 2%;
+    width: auto;
+    height: auto;
+    background-color: var(--color-3-light);
+    border-radius: 8px;
+    padding: 2rem;
+    overflow-y: auto;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+.poster-popup h2{
+    font-family: 'Inter', sans-serif;
+    font-weight: bold;
+    font-size: var(--size-xl);
+    margin-left: 4rem;
+}
 
 /*responsive*/
 @media (max-width: 1280px){

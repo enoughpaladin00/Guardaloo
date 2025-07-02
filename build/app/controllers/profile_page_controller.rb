@@ -5,6 +5,17 @@ class ProfilePageController < ApplicationController
 
   def profile_index
 
+    # Prendi gli ultimi 10 tmdb_id dai preferiti dell'utente
+    bookmark_tmdb_ids = @user.bookmarks.order(created_at: :desc).limit(10).pluck(:tmdb_id)
+    
+    # Usa il TmdbService esistente - stessa logica di @trending_movies
+    @preferiti = bookmark_tmdb_ids.filter_map do |tmdb_id|
+      TmdbService.new.fetch_movie_details(tmdb_id, "movie")
+    rescue => e
+      Rails.logger.error "Errore nel recuperare il film #{tmdb_id}: #{e.message}"
+      nil
+    end
+    
     # Film scelti dall'utente (fissi sul profilo) - usa TmdbService.get_movie
     @chosen_movies = []
     [@user.tmdb_id_1, @user.tmdb_id_2, @user.tmdb_id_3].each do |tmdb_id|
@@ -16,49 +27,43 @@ class ProfilePageController < ApplicationController
       end
     end
     
-    # Prendi gli ultimi 10 tmdb_id dai preferiti dell'utente
-    bookmark_tmdb_ids = @user.bookmarks.order(created_at: :desc).limit(10).pluck(:tmdb_id)
-    
-    # Usa il TmdbService esistente - stessa logica di @trending_movies
-    @preferiti = bookmark_tmdb_ids.filter_map do |tmdb_id|
-      TmdbService.new.fetch_movie_details(tmdb_id, "movie")
-    rescue => e
-      Rails.logger.error "Errore nel recuperare il film #{tmdb_id}: #{e.message}"
-      nil
-    end
+
   end
-  
-  # Metodo per cercare film - usa search_movie_by_title
+
+  # Metodo per cercare film su TMDB
   def search_movies
     query = params[:query]
-    if query.present?
-      @search_results = TmdbService.search_movie_by_title(query)
-      render json: @search_results
-    else
-      render json: { error: "Query vuota" }, status: 400
-    end
-  end
-  
-  # Metodo per salvare il film scelto
-  def update_chosen_movie
-    movie_id = params[:movie_id]
-    position = params[:position].to_i # 1, 2, o 3
+    return render json: [] if query.blank?
     
-    if position.between?(1, 3) && movie_id.present?
-      case position
-      when 1
-        @user.update(tmdb_id_1: movie_id)
-      when 2
-        @user.update(tmdb_id_2: movie_id)
-      when 3
-        @user.update(tmdb_id_3: movie_id)
-      end
-      
-      render json: { success: true, message: "Film salvato!" }
-    else
-      render json: { error: "Parametri non validi" }, status: 400
-    end
+    results = TmdbService.search_movie_by_title(query)
+    
+    render json: results
+  rescue => e
+    Rails.logger.error "Errore nella ricerca film: #{e.message}"
+    render json: []
   end
+
+  # Metodo per aggiornare un film della Top 3
+  def update_movie
+    position = params[:position].to_i
+    tmdb_id = params[:tmdb_id]
+
+    case position
+    when 1
+      @user.update(tmdb_id_1: tmdb_id)
+    when 2
+      @user.update(tmdb_id_2: tmdb_id)
+    when 3
+      @user.update(tmdb_id_3: tmdb_id)
+    end
+
+    redirect_to profile_path, notice: "Film aggiornato con successo!"
+  rescue => e
+    Rails.logger.error "Errore nell'aggiornamento: #{e.message}"
+    redirect_to profile_path, alert: "Errore nell'aggiornamento del film"
+  end
+
+
 
   def update
     if params[:current_password].blank? || !@user.authenticate(params[:current_password])

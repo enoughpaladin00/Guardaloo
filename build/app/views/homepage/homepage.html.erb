@@ -16,19 +16,19 @@
     <button class="slider-btn left" style="padding: 2.9em 0.1em;"><%= image_tag "homepage/freccia.svg", class: "slider_img", style: "transform: rotate(180deg);" %></button>
     <div class="slider-track">
         <% @trending_movies.each do |movie| %>
-        <div class="contenitore" style="background-color:rgb(253,116,116, 0.1); width: 30em;">
+        <div class="contenitore contenitore-cinema">
         
             <div class="me-3 bord" data-movie-id="<%= movie['id'] %>">
                 <% if movie["poster_path"] %>
-                    <a href="/movies/<%= movie['id'] %>"><img src="https://image.tmdb.org/t/p/w500<%= movie['poster_path'] %>" alt="<%= movie['title'] %>" style="height: 11.5em; width: auto"></a>
+                    <a href="/movies/<%= movie['id'] %>"><img src="https://image.tmdb.org/t/p/w500<%= movie['poster_path'] %>" alt="<%= movie['title'] %>" class="locandina-cinema"></a>
                 <% else %>
                     <a href="/movies/<%= movie['id'] %>"><div class="w-full h-80 bg-gray-200 flex items-center justify-center text-center px-2">Nessuna immagine</div></a>
                 <% end %>
             </div>
             <a href="/movies/<%= movie['id'] %>" class="link-underline link-underline-opacity-0"><div class="d-flex flex-column py-3 me-2" >
-              <h5 style="color: #004466;"><%= movie['title'] %></h5>
+              <h5  class="text-cinema" style="color: #004466;"><%= movie['title'] %></h5>
               <% details = @movie_details[movie['id']] %>
-              <p class="mb-1 text-muted"><%= movie['release_date'].to_date.year %> – <%= details['runtime'] %> min</p>
+              <p class="mb-1 text-muted text-cinema"><%= movie['release_date'].to_date.year %> – <%= details['runtime'] %> min</p>
             </div></a>
         </div> 
         <%end%> 
@@ -41,11 +41,11 @@
 <div class="d-flex py-5" align="center" style="justify-content: center;">
     
     <div class="d-flex">
-        <%= image_tag "homepage/virgolette.svg", style: " position: absolute; transform: translateX(-5.5em); width: 3em " %>
-        <%= image_tag "homepage/virgolette.svg", style: " position: absolute; transform: rotate(180deg) translateX(-50em); width: 3em " %>
+        <%= image_tag "homepage/virgolette.svg", class: " virgolette" %>
+        <%= image_tag "homepage/virgolette.svg", class: " virgolette reverse" %>
         <div>
             <p class="citazione" >Il cinema è un’opportunità per entrare in un altro<br>mondo, un’altra vita, un’altra mente</p>
-            <p class="citazione" style="font-size: 2em">- Martin Scorsese</p>
+            <p class="citazione">- Martin Scorsese</p>
         </div>
     </div>
     
@@ -119,8 +119,8 @@
 
             <li class="cinema-item-homepage" data-id="<%= cinema[:id] %>">
             <button class="bg-transparent border-0 p-0 w-100 h-100" style="text-align: left;">
-              <h3><%= cinema[:name] %></h3>
-              <p><%= cinema[:address] %></p>
+              <h3 ><%= cinema[:name] %></h3>
+              <p ><%= cinema[:address] %></p>
             </button>
             </li>
 
