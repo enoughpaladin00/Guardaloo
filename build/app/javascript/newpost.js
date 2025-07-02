@@ -92,7 +92,7 @@ document.addEventListener('turbo:load', () => {
 
 });
 
-  // SHOW
+// SHOW
 document.addEventListener('turbo:load', () => {
   const btn = document.getElementById('show-new-comment-form');
   const formContainer = document.getElementById('new-comment-form');
@@ -121,10 +121,7 @@ document.addEventListener('turbo:load', () => {
   });
 });
 
-
-
-
-// index
+// INDEX
 document.addEventListener('turbo:load', () => {
   document.querySelectorAll('.post-card').forEach(card => {
     card.style.cursor = 'pointer';
@@ -143,27 +140,7 @@ document.addEventListener('turbo:load', () => {
   });
 });
 
-//OPPURE QUESTO
-//<button class="btn forum-button2 no-card-click">Elimina</button>
-// document.addEventListener('turbo:load', () => {
-//   document.querySelectorAll('.post-card').forEach(card => {
-//     card.style.cursor = 'pointer';
-
-//     card.addEventListener('click', e => {
-//       if (
-//         e.target.closest('.no-card-click') // evita se clicchi su un elemento con questa classe
-//       ) return;
-
-//       const link = card.querySelector('.post-title h2 a');
-//       if (link) {
-//         window.location.href = link.href;
-//       }
-//     });
-//   });
-// });
-
-
-// edit - modifica il post
+// EDIT POST
 document.addEventListener("turbo:load", function() {
   const form = document.getElementById("edit-post-form");
   if (form) {
@@ -175,23 +152,3 @@ document.addEventListener("turbo:load", function() {
     });
   }
 });
-
-
-//elimina il post
-// document.addEventListener("turbo:load", function () {
-//   document.querySelectorAll(".delete-post-form").forEach(function (form) {
-//     // evita di registrare due volte
-//     if (form.dataset.listenerAttached === "true") return;
-
-//     form.addEventListener("submit", function (event) {
-//       const postTitle = form.dataset.postTitle || "questo post";
-//       const confirmed = confirm(`Sei sicuro di voler eliminare "${postTitle}"?`);
-//       if (!confirmed) {
-//         event.preventDefault();
-//       }
-//     });
-
-//     form.dataset.listenerAttached = "true";
-//   });
-// });
-

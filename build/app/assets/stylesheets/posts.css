@@ -378,19 +378,19 @@
   background-color: rgb(253,116,116, 0.1);
   border-radius: 1.5em;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  align-items: cover; /* 🔥 importante per allineare l'immagine */
+  align-items: cover; 
 }
 
 .post-left {
   flex: 0 0 auto;
   display: flex;
-  align-items: cover; /* 🔥 immagine allunga alla stessa altezza del contenitore */
+  align-items: cover; 
 }
 
 .post-poster {
-  height: 100%;           /* 🔥 altezza come il div genitore */
+  height: 100%;         
   width: auto;
-  max-width: 150px;       /* o 120px, a tua scelta */
+  max-width: 150px;     
   object-fit: cover;
   border-radius: 1em;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
