@@ -34,9 +34,16 @@
 <div class="posts-container">
   <% if @posts.any? %>
   <% @posts.each do |post| %>
-    <div class="post-card">      
-
-      <div class="post-title">
+    <div class="enhanced-post-card post-card">
+      <div class="post-left">
+        <% if post.movie_poster_path.present? %>
+          <%= image_tag "https://image.tmdb.org/t/p/w342#{post.movie_poster_path}", class: "post-poster" %>
+        <% else %>
+          <%= image_tag "post/placeholder.jpg", class: "post-poster" %>
+        <% end %>
+      </div>
+      <div class="post-right">
+        <div class="post-title">
         <h2 ><%= link_to post.title, post %></h2> 
           Creato da <%= post.user.username %>
       </div>
@@ -51,9 +58,7 @@
       <div class="post-actions">
         <% if user_signed_in? && current_user == post.user %>
         <%= link_to 'Modifica', edit_post_path(post), class: 'btn forum-button2' %>
-        <%# <%= button_to 'Elimina', post_path(post), method: :delete, data: { confirm: 'Sei sicuro di eliminare il post?'}, class: 'btn forum-button2', style:"background-color: #004466" %>
-        <%# <%= button_to 'Elimina', post_path(post), method: :delete, class: 'btn forum-button2 delete-button', form: { data: { post_title: post.title } }, style:"background-color: #004466" %>
-
+      
       <form action="<%= post_path(post) %>" method="post" class="delete-post-form" data-post-title="<%= post.title %>" data-turbo="false">
         <input type="hidden" name="_method" value="delete">
           <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
@@ -61,6 +66,8 @@
           Elimina
         </button>
       </form>
+      </div>      
+      
 
 
 

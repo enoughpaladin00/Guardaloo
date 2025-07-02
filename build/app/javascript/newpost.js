@@ -100,15 +100,28 @@ document.addEventListener('turbo:load', () => {
   if (!btn || !formContainer) return;
 
   btn.addEventListener('click', () => {
-    if (formContainer.style.display === 'none' || formContainer.style.display === '') {
-      formContainer.style.display = 'block';
-      btn.textContent = 'Annulla inserimento';
-    } else {
-      formContainer.style.display = 'none';
-      btn.textContent = 'Commenta il post';
+    const isHidden = formContainer.style.display === 'none' || formContainer.style.display === '';
+
+    formContainer.style.display = isHidden ? 'block' : 'none';
+    btn.textContent = isHidden ? 'Annulla inserimento' : 'Commenta il post';
+
+    // Scrolla al centro solo se il form è stato appena mostrato
+    if (isHidden) {
+      // Timeout necessario per assicurarsi che il form sia visibile prima di calcolare la posizione
+      setTimeout(() => {
+        const rect = formContainer.getBoundingClientRect();
+        const offset = rect.top + window.pageYOffset - (window.innerHeight / 2) + (rect.height / 2);
+
+        window.scrollTo({
+          top: offset,
+          behavior: 'smooth'
+        });
+      }, 100); // 100ms di attesa per sicurezza
     }
   });
 });
+
+
 
 
 // index

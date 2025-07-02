@@ -15,8 +15,14 @@
 
     <% if comment.user == current_user %>
       <div class="comment-actions">
-        <%= button_to 'Cancella', [comment.post, comment], method: :delete, data: { confirm: 'Sei sicuro?' }, class: "btn forum-button2" %>
+        <%= button_to 'Elimina', [comment.post, comment], method: :delete, data: { confirm: 'Sei sicuro?' }, class: "btn forum-button2" %>
+        <button class="btn forum-button2 edit-comment-button"
+            data-comment-id="<%= comment.id %>"
+            data-comment-content="<%= j comment.content %>">
+            Modifica il commento
+        </button>
       </div>
+      
     <% end %>
   </div>
 

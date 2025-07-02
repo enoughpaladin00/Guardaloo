@@ -1,30 +1,45 @@
 <%= render 'layouts/navbar' %>
 
-<div class="posts-container">
+<div class="posts-container" style="margin-bottom: 4em; margin-top: 2em;">
+  <%= link_to 'Ritorna al Forum', posts_path, class:"btn forum-button2", style:"position:absolute; left:3em;" %>
+
   <h1 class="post-title" style="font-size: 3em;">Modifica il tuo Post</h1>
 
-  <div id="new-post-form-container">
-    <div class="new-post-card">
+  <div class="new-post-form-container" style="gap: 3em; width: 70%; display: flex; align-items: stretch;">
+    
+    <%# immagine del film a sinistra %>
+    <div style="overflow: hidden; border-radius: 0.5em; flex-shrink:0;">
+      <% if @post.movie_poster_path.present? %>
+        <%= image_tag "https://image.tmdb.org/t/p/w342#{@post.movie_poster_path}", alt: "Poster film", style: "border-radius:0.5em; height:100%; object-fit:cover;" %>
+      <% else %>
+        <%= image_tag "post/placeholder.jpg", alt: "Nessuna immagine disponibile", style: "border-radius:0.5em; height:100%; object-fit:cover;" %>
+      <% end %>
+    </div>
+
+    <%# form per modificare il post %>
+    <div class="new-post-card" style="overflow: visible; border: 0; background-color:rgb(253,116,116, 0.1);">
       <%= form_with model: @post, url: post_path(@post), method: :patch, local: true, html: { id: "edit-post-form" } do |f| %>
+
+        <%# titolo %>
         <div class="post-title field">
-          <%= f.label :title, "Titolo" %>
-          <%= f.text_field :title, class: "form-control limited-width" %>
+          <%= f.label :title, "Titolo", style:"margin-top:0.5em;" %>
+          <%= f.text_field :title, class: "limited-width", style:"font-family: 'Inter', sans-serif; width:350px; border-radius:0.6em; border: 2px solid #FD7474", required: true %>
         </div>
 
+        <%# contenuto %>
         <div class="post-title field">
           <%= f.label :content, "Modifica il contenuto" %>
-          <%= f.text_area :content, class: "form-control limited-width", style:"font-family: 'Inter', sans-serif;" %>
+          <%= f.text_area :content, class: "limited-width", style:"font-family: 'Inter', sans-serif; height:140px; resize:none; border-radius:0.6em; border: 2px solid #FD7474", required: true %>
         </div>
 
+        <%# azioni %>
         <div class="post-actions">
-          <%= link_to 'Annulla', post_path(@post), class:"btn btn-edit" %>
-          <%= f.submit "Salva modifiche", class: "btn btn-edit" %>
+          <%= link_to 'Annulla', post_path(@post), class:"btn forum-button2" %>
+          <%= f.submit "Salva modifiche", class: "btn forum-button2" %>
         </div>
       <% end %>
     </div>
   </div>
 </div>
-
-
 
 <%= render 'layouts/footer' %>
