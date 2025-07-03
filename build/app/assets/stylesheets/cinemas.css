@@ -69,9 +69,9 @@
 
 /* Stili per il titolo "Lista Cinema Vicini" */
 .titolo-pagina h1 {
-  font-family: 'Inter', sans-serif; /* Stesso font delle card */
+  font-family: 'Inter', sans-serif; 
   font-size: 3rem; 
-  color: #333; 
+  color: #004466; 
   position: relative; 
   padding-bottom: 0.8rem; /* Spazio tra testo e underline */
   display: inline-block; /* Per far sì che la linea ::after si adatti al testo */
@@ -143,6 +143,8 @@
   display: flex; /* Flexbox per il contenuto */
   flex-direction: column; /* Organizza il contenuto in colonna */
   justify-content: space-between; /* Spazio tra elementi interni */
+  position: relative;
+  overflow: hidden;
 }
 
 .cinema-card:hover {
@@ -153,13 +155,13 @@
 .cinema-card h2 {
   font-size: 1.8rem;
   margin-bottom: 0.5rem;
-  color: #333;
+  color: #004466;
 }
 
 .cinema-card p {
   font-size: 1rem;
   line-height: 1.4;
-  color: #666;
+  color: #00446695;
   margin-bottom: 0.5rem; /* Spazio tra i paragrafi */
 }
 
@@ -178,7 +180,7 @@
 .modal {
   display: none; /* Nascosto di default */
   position: fixed; 
-  z-index: 1000; /* Deve stare opra tutti gli altri elementi */
+  z-index: 1000; 
   left: 0;
   top: 0;
   width: 100%; /* Larghezza */
@@ -252,7 +254,7 @@
 }
 
 .movie-listing:last-child {
-  border-bottom: none; /* Rimuovi il bordo dall'ultimo elemento */
+  border-bottom: none; 
   margin-bottom: 0;
   padding-bottom: 0;
 }
@@ -269,7 +271,7 @@
   margin: 0;
 }
 
-/* Messaggio di caricamento */
+
 .loading-message {
   text-align: center;
   font-style: italic;
@@ -280,29 +282,40 @@
 
 .cinema-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   margin-bottom: 0.5rem;
+  padding-right: 45px;
 }
 
-.favorite-star {
-  font-size: 2rem; /* Dimensione stellina */
-  color: gold; 
+
+.cinema-header h2{
+  margin:0;
+  padding:0;
+  font-size: 1.8 rem;
+  color: #004466;
+}
+
+.favorite-icon {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  
+  font-size: 1.6rem; /* Dimensione dell'icona */
   cursor: pointer;
-  transition: transform 0.2s ease;
-  padding: 5px; 
+  transition: transform 0.2s ease, color 0.2s ease; 
+  z-index: 10;
+
 }
 
-.favorite-star:hover {
+.favorite-icon:hover {
   transform: scale(1.1); /* Effetto al passaggio del mouse */
 }
 
-/* Stellina non selezionata  */
-.favorite-star[data-favorited="false"] {
-  color: #ccc; 
+.favorite-icon .fas.fa-bookmark{
+  color: #f7b32b;
 }
 
-/* Stellina selezionata */
-.favorite-star[data-favorited="true"] {
-  color: gold; 
+.favorite-icon .far.fa-bookmark{
+  color: #cccccc;
 }

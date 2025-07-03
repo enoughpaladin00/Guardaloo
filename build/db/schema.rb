@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_25_172436) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_02_155834) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -40,6 +40,26 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_25_172436) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "bookmarks", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "tmdb_id", null: false
+    t.string "title"
+    t.string "poster_path"
+    t.index ["user_id", "tmdb_id"], name: "index_bookmarks_on_user_id_and_tmdb_id", unique: true
+    t.index ["user_id"], name: "index_bookmarks_on_user_id"
+  end
+
+  create_table "cinema_favorites", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "cinemasdef_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cinemasdef_id"], name: "index_cinema_favorites_on_cinemasdef_id"
+    t.index ["user_id"], name: "index_cinema_favorites_on_user_id"
   end
 
   create_table "cinema_programmings", force: :cascade do |t|
@@ -91,16 +111,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_25_172436) do
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
-  create_table "favorites", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "cinemasdef_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["cinemasdef_id"], name: "index_favorites_on_cinemasdef_id"
-    t.index ["user_id", "cinemasdef_id"], name: "index_favorites_on_user_id_and_cinemasdef_id", unique: true
-    t.index ["user_id"], name: "index_favorites_on_user_id"
-  end
-
   create_table "posts", force: :cascade do |t|
     t.string "title"
     t.text "content"
@@ -131,9 +141,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_25_172436) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "bookmarks", "users"
+  add_foreign_key "cinema_favorites", "cinemasdef"
+  add_foreign_key "cinema_favorites", "users"
   add_foreign_key "comments", "posts"
   add_foreign_key "comments", "users"
-  add_foreign_key "favorites", "cinemasdef"
-  add_foreign_key "favorites", "users"
   add_foreign_key "posts", "users"
 end

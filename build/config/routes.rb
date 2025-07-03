@@ -1,63 +1,54 @@
-
 Rails.application.routes.draw do
-  get "cinemas/index"
-  get "home/index"
-  
-  # Define your application routes per the DSL in https://guides.rubylang.org/routing.html
-
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  get "up" => "rails/health#show", as: :rails_health_check
-
-  # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
-  # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
-  # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
-
-  # Defines the root path route ("/")
-  get "home/index"
+  # Root path
   root "home#index"
 
-  get "movies/search", to: "movies#search"
+  # Static pages
+  get "home/index"
+  get "home", to: "homepage#homepage"
 
-  # Registrazione
+  # Health check
+  get "up" => "rails/health#show", as: :rails_health_check
+
+  # Authentication
   get "signup", to: "registrations#new"
   post "/register", to: "registrations#create"
 
-  # Login / Logout
   get "login", to: "sessions#new"
   post "/login", to: "sessions#create"
   delete "/logout", to: "sessions#destroy"
 
-  # movie
-  get "movies/:tmdb_id", to: "movies#show", as: "movie_show"
-
-  ## route per location
-  post "/set_location", to: "sessions#set_location"
-
-  # homepage
-  get "home", to: "homepage#homepage"
-
-  # search
-  get "/tmdb_search", to: "search#tmdb"
+  # Omniauth (Google, Facebook)
+  get "/auth/:provider/callback", to: "sessions#omniauth"
+  get "/auth/failure", to: redirect("/")
+  match "/auth/:provider", to: "sessions#passthru", via: [:get, :post]
 
   # User Profile
   get "/profile", to: "profile_page#profile_index", as: "profile"
   get "/profile/edit", to: "profile_page#edit", as: "edit_profile"
   patch "/profile", to: "profile_page#update"
 
-  # Google and Facebook Auth
-  get "/auth/:provider/callback", to: "sessions#omniauth"
-  get "/auth/failure", to: redirect("/")
+  # Location
+  post "/set_location", to: "sessions#set_location"
 
-  match "/auth/:provider", to: "sessions#passthru", via: [ :get, :post ]
+  # Movie Routes
+  get "movies/search", to: "movies#search"
+  get "movies/:tmdb_id", to: "movies#show", as: "movie_show"
+
+  # TMDB Search
+  get "/tmdb_search", to: "search#tmdb"
+
+  # Posts and Comments
   resources :posts do
-    resources :comments, only: [ :create, :destroy ]
+    resources :comments, only: [:create, :destroy]
   end
 
-  # Cinemas and showtimes
+  # Cinema
   resources :cinemas, only: [:index] do
     member do
       get 'programmazione'
     end
   end
 
+  # Favorite Cinemas
+  resources :cinema_favorites, only: [:create, :destroy] 
 end

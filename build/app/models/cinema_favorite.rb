@@ -1,7 +1,5 @@
-
-class Favorite < ApplicationRecord
+class CinemaFavorite < ApplicationRecord
   belongs_to :user
   belongs_to :cinemasdef
-
-  validates :user_id, uniqueness: { scope: :cinemasdef_id, message: "Il cinema è già nei preferiti!" }
+  validates :cinemasdef_id, uniqueness: {scope: :user_id, message: "Questo cinema è già tra i preferiti"}
 end
