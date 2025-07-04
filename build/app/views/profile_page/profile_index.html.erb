@@ -192,12 +192,36 @@
         <div class="poster-popup">
             <h2>Scegli il tuo film preferito</h2>
             </br>
-            <%= form_with model: @user, url: profile_path, method: :patch, local: true, html: { multipart: true } do |f| %>
+            <%= form_with model: @user, url: update_movie_path, method: :patch, local: true, html: { multipart: true, class: "movie-search-form" } do |f| %>
                 <%= hidden_field_tag :position, nil, id: "popup-position" %>
-                <%= label_tag :tmdb_title, "Nome del Film" , style:"color: var(--color-4)" %>
-                <%= text_field_tag :tmdb_title, nil, required: true %>
-                <%= submit_tag "Salva", class: "poster-save edit-button" %>
+                
+                <!-- Campi nascosti per salvare i dati del film selezionato -->
+                <%= hidden_field_tag :selected_movie_title, nil, id: "selected-movie-title" %>
+                <%= hidden_field_tag :selected_movie_poster, nil, id: "selected-movie-poster" %>
+                <%= hidden_field_tag :selected_movie_tmdb_id, nil, id: "selected-movie-tmdb-id" %>
+                
+                <div class="movie-search-container">
+                  <%= label_tag :movie_search, "Cerca Film", class: "movie-search-label" %>
+                  <%= text_field_tag :movie_search, nil, 
+                      required: true, 
+                      class: "movie-search-input",
+                      placeholder: "Inserisci il titolo del film...",
+                      autocomplete: "off" %>
+                  
+                  <!-- Container per i risultati della ricerca -->
+                  <div id="movie-search-results" class="movie-search-results">
+                    <div class="search-message">
+                      <i class="fas fa-search"></i>
+                      Inizia a digitare per cercare un film
+                    </div>
+                  </div>
+                </div>
+                
+                <%= submit_tag "Salva Film", class: "movie-save-btn" %>
             <% end %>
+              
+              <!-- Overlay per chiudere il dropdown -->
+              <div id="movie-search-overlay" class="movie-search-overlay"></div>
         </div>
     </div>
 
@@ -242,6 +266,253 @@
                 if (e.target === popup) {
                     popup.style.display = "none";
                 }
+            });
+        });
+
+
+        document.addEventListener("turbo:load", () => {
+
+            //variabili globali
+            const searchInput = document.querySelector(".movie-search-input");
+            const resultsContainer = document.getElementById("movie-search-results");
+            const overlay = document.getElementById("movie-search-overlay");
+            const container = document.querySelector(".movie-search-container");
+            const form = document.querySelector(".movie-search-form");
+                            
+            // Campi nascosti per salvare i dati del film selezionato
+            const selectedTitleField = document.getElementById("selected-movie-title");
+            const selectedPosterField = document.getElementById("selected-movie-poster");
+            const selectedTmdbIdField = document.getElementById("selected-movie-tmdb-id");
+                            
+            let searchTimeout = null;
+                            
+            if (!searchInput) return; // Esci se non siamo nella pagina giusta
+            
+            //dropdown menu (apertura, chiusura, overlay, messaggi e loading)
+            function openDropdown() {
+                resultsContainer.style.display = "block";
+                overlay.style.display = "block";
+                container.classList.add("search-active");
+                form.classList.add("search-active");
+            }
+              
+            function closeDropdown() {
+                resultsContainer.style.display = "none";
+                overlay.style.display = "none";
+                container.classList.remove("search-active");
+                form.classList.remove("search-active");
+            }
+              
+            function showMessage(message) {
+                resultsContainer.innerHTML = `
+                  <div class="search-message">
+                    <i class="fas fa-info-circle"></i>
+                    ${message}
+                  </div>
+                `;
+            }
+              
+            function showLoading() {
+                resultsContainer.innerHTML = `
+                  <div class="search-loading">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    Ricerca in corso...
+                  </div>
+                `;
+            }
+              
+            //rendering risultati tmdb
+            function renderResults(results) {
+                if (results.length === 0) {
+                  showMessage("Nessun film trovato");
+                  return;
+                }
+                
+                const resultsHtml = results.map(movie => `
+                  <div class="movie-result-item" 
+                       data-title="${movie.title}" 
+                       data-poster="${movie.poster_path || ''}"
+                       data-tmdb-id="${movie.id}">
+                    <div class="movie-result-content">
+                      ${movie.poster_url ? `
+                        <img src="${movie.poster_url}" 
+                             alt="${movie.title}" 
+                             class="movie-poster-thumb">
+                      ` : `
+                        <div class="movie-poster-placeholder">
+                          <i class="fas fa-film"></i>
+                        </div>
+                      `}
+                      <div class="movie-info">
+                        <h4 class="movie-title">${movie.title}</h4>
+                        ${movie.year ? `<span class="movie-year">${movie.year}</span>` : ''}
+                        ${movie.overview ? `<p class="movie-overview">${movie.overview}</p>` : ''}
+                      </div>
+                    </div>
+                  </div>
+                `).join('');
+                                
+                resultsContainer.innerHTML = resultsHtml;
+            }
+              
+            //ricerca tmdb (chiamata AJAX lato client a /movie_search)
+            function performSearch(query) {
+                if (query.length < 2) {
+                  showMessage("Inserisci almeno 2 caratteri");
+                  return;
+                }
+                
+                showLoading();
+                
+                // Chiama il metodo movie_search nel ProfileController
+                fetch(`/movie_search?q=${encodeURIComponent(query)}`)
+                  .then(response => response.json())
+                  .then(data => {
+                    if (data.message) {
+                      showMessage(data.message);
+                    } else {
+                      renderResults(data.results);
+                    }
+                })
+                .catch(error => {
+                    console.error('Errore ricerca:', error);
+                    showMessage("Errore durante la ricerca");
+                });
+            }
+              
+            //Eventi per apertura dropdown e input ricerca
+            searchInput.addEventListener("focus", () => {
+                openDropdown();
+                const query = searchInput.value.trim();
+                if (query.length >= 2) {
+                  performSearch(query);
+                } else {
+                  showMessage("Inserisci almeno 2 caratteri");
+                }
+            });
+            
+            searchInput.addEventListener("input", (e) => {
+                const query = e.target.value.trim();
+                
+                clearTimeout(searchTimeout);
+                
+                if (query.length < 2) {
+                  showMessage("Inserisci almeno 2 caratteri");
+                  return;
+                }
+                
+                searchTimeout = setTimeout(() => {
+                  performSearch(query);
+                }, 300);
+            });
+            
+            //Selezione di un film dai risultati (riempimento campi + chiusura dropdown)
+            resultsContainer.addEventListener("click", (e) => {
+                const movieItem = e.target.closest(".movie-result-item");
+                if (!movieItem) return;
+                
+                const title = movieItem.dataset.title;
+                const poster = movieItem.dataset.poster;
+                const tmdbId = movieItem.dataset.tmdbId;
+                
+                // Aggiorna il campo di input con il titolo selezionato
+                searchInput.value = title;
+                
+                // Salva i dati nei campi nascosti per l'invio del form
+                if (selectedTitleField) selectedTitleField.value = title;
+                if (selectedPosterField) selectedPosterField.value = poster;
+                if (selectedTmdbIdField) selectedTmdbIdField.value = tmdbId;
+                
+                // Feedback visivo di selezione
+                movieItem.classList.add("selected");
+                
+                // Chiudi dropdown dopo un piccolo delay per mostrare la selezione
+                setTimeout(() => {
+                  closeDropdown();
+                }, 150);
+                
+                // Abilita il pulsante di salvataggio se disabilitato
+                const saveBtn = form.querySelector('.movie-save-btn');
+                if (saveBtn) {
+                  saveBtn.disabled = false;
+                  saveBtn.textContent = `Salva "${title}"`;
+                }
+                
+            });
+            
+            // Chiudi dropdown cliccando sull'overlay
+            overlay.addEventListener("click", () => {
+                closeDropdown();
+            });
+            
+            //Invio dati film selezionato al backend (/profile/update_movie)
+            form.addEventListener("submit", (e) => {
+                e.preventDefault(); // Previeni il submit normale del form
+                
+                const tmdbId = selectedTmdbIdField ? selectedTmdbIdField.value : null;
+                const title = selectedTitleField ? selectedTitleField.value : null;
+                const posterPath = selectedPosterField ? selectedPosterField.value : null;
+                
+                if (!tmdbId) {
+                  alert("Seleziona un film prima di salvare!");
+                  return false;
+                }
+                
+                // Ottieni la posizione dal form (assumendo che ci sia un campo position)
+                const position = form.querySelector('input[name="position"]')?.value;
+                
+                if (!position) {
+                  alert("Posizione non specificata!");
+                  return false;
+                }
+                
+                // Ottieni il titolo dal campo di ricerca (quello che l'utente ha digitato)
+                const searchTitle = searchInput.value.trim();
+                
+                // Invia i dati via AJAX
+                const formData = new FormData();
+                formData.append('selected_movie_tmdb_id', tmdbId);
+                formData.append('title', searchTitle);  // Titolo dal campo di ricerca
+                formData.append('selected_movie_poster', posterPath);
+                formData.append('position', position);
+                
+                // Aggiungi il token CSRF
+                const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                
+                fetch('/profile/update_movie', {
+                  method: 'POST',
+                  headers: {
+                    'X-CSRF-Token': csrfToken,
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({
+                    selected_movie_tmdb_id: tmdbId,
+                    title: searchTitle,  // Titolo dal campo di ricerca
+                    selected_movie_poster: posterPath,
+                    position: position
+                  })
+                })
+                .then(response => response.json())
+                .then(data => {
+                  if (data.message) {
+                    alert(data.message);
+                    // Ricarica la pagina o aggiorna la UI
+                    window.location.reload();
+                  } else if (data.error) {
+                    alert(data.error);
+                  }
+                })
+                .catch(error => {
+                  console.error('Errore nell\'invio:', error);
+                  alert("Errore durante il salvataggio del film");
+                });
+                
+                console.log("Invio film:", {
+                  title: searchTitle,  // Titolo dal campo di ricerca
+                  poster: posterPath,
+                  tmdbId: tmdbId,
+                  position: position
+                });
             });
         });
     </script> 

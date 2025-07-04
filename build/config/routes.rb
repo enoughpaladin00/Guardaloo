@@ -44,8 +44,10 @@ Rails.application.routes.draw do
   get "/profile", to: "profile_page#profile_index", as: "profile"
   get "/profile/edit", to: "profile_page#edit", as: "edit_profile"
   patch "/profile", to: "profile_page#update"
-  get '/profile/search_movies', to: 'profile_page#search_movies'
-  patch '/profile/update_movie', to: 'profile_page#update_movie'
+
+  get '/movie_search', to: 'profile_page#movie_search'
+  post '/profile/update_movie', to: 'profile_page#update_movie', as: "update_movie"
+
 
   # Google and Facebook Auth
   get "/auth/:provider/callback", to: "sessions#omniauth"

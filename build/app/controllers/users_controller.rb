@@ -14,7 +14,7 @@ class UsersController < ApplicationController
     private
   
     def tmdb_params
-      params.require(:user).permit(:tmdb_id_1, :tmdb_id_2, :tmdb_id_3)
+      params.require(:user).permit(:tmdb_fav1, :tmdb_fav2, :tmdb_fav3)
     end
   
     def require_login
