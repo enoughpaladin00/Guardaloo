@@ -59,92 +59,110 @@
 
 */
 
-/* Titolo e Lista */
-.titolo-pagina{
-  max-width: 1200px; /* Stessa larghezza della griglia delle card */
-  margin: 2rem auto 2.5rem auto; 
-  padding: 0 2rem; /* Padding laterale per allinearsi al padding della griglia */
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; 
+}
+
+:root {
+  --color-primary: #004466;           /* Blu */
+  --color-accent: #f7b32b;            /* Giallo */
+  --color-text-light: #00446695;      /* Testo grigio-bluastro */
+  --color-border-default: #cccccc;    /* Bordo grigio */
+  --color-background-card: #fffce8;   /* Sfondo crema per card */
+  --color-2: var(--color-accent);     
+}
+
+
+.titolo-pagina {
+  max-width: 1200px; 
+  margin: 2rem auto 2.5rem auto;
+  padding: 0 2rem; 
   text-align: center;
 }
 
-/* Stili per il titolo "Lista Cinema Vicini" */
 .titolo-pagina h1 {
-  font-family: 'Inter', sans-serif; 
+  font-family: 'Inter', sans-serif;
   font-size: 3rem; 
-  color: #004466; 
-  position: relative; 
-  padding-bottom: 0.8rem; /* Spazio tra testo e underline */
-  display: inline-block; /* Per far sì che la linea ::after si adatti al testo */
+  color: var(--color-primary);
+  position: relative;
+  padding-bottom: 0.8rem;
+  display: inline-block; 
 }
 
-/* Linea animata sotto il titolo */
 .titolo-pagina h1::after {
   content: '';
   display: block;
-  width: 0; /* All'inizio niente larghezza */
-  height: 5px; /* Spessore della linea */
-  background-color: #f7b32b;
-  margin: 8px auto 0 auto; /* Centra la linea sotto il titolo */
+  width: 0;
+  height: 5px; 
+  background-color: var(--color-accent);
+  margin: 8px auto 0 auto; 
   border-radius: 3px;
-  transition: width 0.6s ease-out; /* Animazione della larghezza */
+  transition: width 0.6s ease-out; 
 }
 
-/* Quando il mouse passa sopra il titolo, la linea si espande */
 .titolo-pagina h1:hover::after {
-  width: 100%; /* Espansione fino alla larghezza del testo */
+  width: 100%; 
 }
 
-/* Messaggio "Caricamento in corso..." iniziale */
+
 .caricamento-iniziale {
-  text-align: center;
+  text-align: center; 
+  width: 100%; 
+  margin: 0 auto; 
   font-family: 'Inter', sans-serif;
   font-size: 1.2rem;
   color: #888;
   padding: 2rem;
   margin-top: 1rem;
-  animation: pulse 1.5s infinite ease-in-out; /* Animazione di pulsazione */
+  animation: pulse 1.5s infinite ease-in-out; 
 }
 
-/* Animazione di pulsazione */
+
 @keyframes pulse {
   0% { opacity: 0.7; }
   50% { opacity: 1; }
   100% { opacity: 0.7; }
 }
 
+
 #modal-programmazione-content .loading-message {
   text-align: center;
   font-style: italic;
   color: #888;
   padding: 20px;
-  animation: pulse 1.5s infinite ease-in-out; 
+  animation: pulse 1.5s infinite ease-in-out;
 }
 
-/* Griglia dei cinema */
+/*  Griglia Cinema  */
 #cinema-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); /* Questa regola gestisce già il cambio da 3 a 2 a 1 colonna */
   gap: 2rem;
   padding: 2rem;
   max-width: 1200px;
   margin: 0 auto;
 }
 
-/* Card dei cinema */
+/*  Cinema */
 .cinema-card {
   padding: 2rem;
-  background-color: #fffce8; 
-  border: 2px solid var(--color-2, #ccc); 
+  background-color: var(--color-background-card);
+  border: 2px solid var(--color-2);
   border-radius: 20px;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
   font-family: 'Inter', sans-serif;
-  transition: transform 0.2s ease, box-shadow 0.2s ease; /* Transizione per l'ombra */
-  cursor: pointer; /* Elemento cliccabile */
-  display: flex; /* Flexbox per il contenuto */
-  flex-direction: column; /* Organizza il contenuto in colonna */
-  justify-content: space-between; /* Spazio tra elementi interni */
+  transition: transform 0.2s ease, box-shadow 0.2s ease; 
+  cursor: pointer; 
+  display: flex; 
+  flex-direction: column; 
+  justify-content: space-between; 
   position: relative;
   overflow: hidden;
+  height: 100%; 
 }
 
 .cinema-card:hover {
@@ -155,41 +173,41 @@
 .cinema-card h2 {
   font-size: 1.8rem;
   margin-bottom: 0.5rem;
-  color: #004466;
+  color: var(--color-primary);
 }
 
 .cinema-card p {
   font-size: 1rem;
   line-height: 1.4;
-  color: #00446695;
-  margin-bottom: 0.5rem; /* Spazio tra i paragrafi */
+  color: var(--color-text-light);
+  margin-bottom: 0.5rem;
 }
 
-/* Iframe della mappa */
+/* Mappa */
 .cinema-card iframe {
   border-radius: 12px;
-  width: 100%; /* La mappa si espande per tutta la larghezza disponibile */
-  height: 200px; /* Altezza mappe */
+  width: 100%; 
+  height: 200px; 
   border: 0;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
-  margin-top: 1.5rem; /* Spazio tra testo e mappa */
-  flex-shrink: 0; /* Impedisce alla mappa di restringersi */
+  margin-top: 1.5rem; 
+  flex-shrink: 0; 
 }
 
-/* Modal (Popup)*/
+/* Modal */
 .modal {
-  display: none; /* Nascosto di default */
-  position: fixed; 
-  z-index: 1000; 
+  display: none;
+  position: fixed;
+  z-index: 1000;
   left: 0;
   top: 0;
   width: 100%; /* Larghezza */
   height: 100%; /* Altezza */
   overflow: auto; /* Scroll se il contenuto supera l'altezza del viewport */
-  background-color: rgba(0,0,0,0.6); 
-  backdrop-filter: blur(5px); 
+  background-color: rgba(0,0,0,0.6);
+  backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px); /* Per compatibilità Safari */
-  animation: fadeInBackground 0.3s ease-out; /* Animazione sfondo */
+  animation: fadeInBackground 0.3s ease-out; 
 }
 
 @keyframes fadeInBackground {
@@ -199,15 +217,15 @@
 
 .modal-content {
   background-color: #fefefe;
-  margin: 10% auto; /* 10% dal top, centrato orizzontalmente */
+  margin: 10% auto; 
   padding: 30px;
-  border: none; 
+  border: none;
   border-radius: 15px; /* Bordi arrotondati */
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3); /* Ombra */
-  width: 90%; /* Larghezza leggermente maggiore */
-  max-width: 750px; 
-  position: relative; /* Per posizionare il bottone di chiusura */
-  animation: fadeInContent 0.3s ease-out; /* Animazione per il contenuto */
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3); 
+  width: 90%; 
+  max-width: 750px;
+  position: relative; 
+  animation: fadeInContent 0.3s ease-out; 
 }
 
 @keyframes fadeInContent {
@@ -218,9 +236,9 @@
 .close-button {
   color: #aaa;
   float: right;
-  font-size: 32px; 
+  font-size: 32px;
   font-weight: bold;
-  position: absolute; 
+  position: absolute;
   top: 15px;
   right: 25px;
   cursor: pointer;
@@ -237,7 +255,7 @@
   font-size: 2.2rem;
   margin-bottom: 1.5rem;
   color: #222;
-  border-bottom: 2px solid var(--color-2, #ccc); /* Linea sotto il nome */
+  border-bottom: 2px solid var(--color-2); /* Linea sotto il nome */
   padding-bottom: 10px;
 }
 
@@ -246,7 +264,7 @@
   margin-top: 1rem;
 }
 
-/* Film nella programmazione */
+
 .movie-listing {
   margin-bottom: 15px;
   padding-bottom: 15px;
@@ -254,7 +272,7 @@
 }
 
 .movie-listing:last-child {
-  border-bottom: none; 
+  border-bottom: none;
   margin-bottom: 0;
   padding-bottom: 0;
 }
@@ -272,14 +290,6 @@
 }
 
 
-.loading-message {
-  text-align: center;
-  font-style: italic;
-  color: #888;
-  padding: 20px;
-}
-
-
 .cinema-header {
   display: flex;
   justify-content: flex-start;
@@ -288,34 +298,94 @@
   padding-right: 45px;
 }
 
-
-.cinema-header h2{
-  margin:0;
-  padding:0;
-  font-size: 1.8 rem;
-  color: #004466;
+.cinema-header h2 {
+  margin: 0;
+  padding: 0;
+  font-size: 1.8rem;
+  color: var(--color-primary);
 }
 
 .favorite-icon {
   position: absolute;
   top: 15px;
   right: 15px;
-  
-  font-size: 1.6rem; /* Dimensione dell'icona */
+  font-size: 1.6rem; 
   cursor: pointer;
-  transition: transform 0.2s ease, color 0.2s ease; 
+  transition: transform 0.2s ease, color 0.2s ease;
   z-index: 10;
-
 }
 
 .favorite-icon:hover {
-  transform: scale(1.1); /* Effetto al passaggio del mouse */
+  transform: scale(1.1); 
 }
 
-.favorite-icon .fas.fa-bookmark{
-  color: #f7b32b;
+.favorite-icon .fas.fa-bookmark {
+  color: var(--color-accent);
 }
 
-.favorite-icon .far.fa-bookmark{
-  color: #cccccc;
+.favorite-icon .far.fa-bookmark {
+  color: var(--color-border-default);
+}
+
+
+/* Schermi molto piccoli (fino a 767px) */
+@media (max-width: 767px) {
+  #cinema-list {
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+
+  .cinema-card {
+    padding: 1.2rem; 
+    border-radius: 15px; 
+  }
+
+  .cinema-card h2 {
+    font-size: 1.5rem; 
+  }
+
+  .cinema-card p {
+    font-size: 0.9rem; 
+  }
+
+  .cinema-card iframe {
+    height: 150px; 
+    margin-top: 1rem; 
+  }
+
+  .favorite-icon {
+    font-size: 1.4rem; 
+    top: 10px;
+    right: 10px;
+  }
+
+  .titolo-pagina h1 {
+    font-size: 2rem; 
+  }
+}
+
+/* Schermi medi (da 768px a 991px) */
+@media (min-width: 768px) and (max-width: 991px) {
+  #cinema-list {
+    padding: 2rem;
+    gap: 2rem;
+  }
+
+  .titolo-pagina h1 {
+    font-size: 2.5rem; 
+  }
+
+  
+  .modal-content {
+    margin: 5% auto; 
+    padding: 40px; 
+  }
+}
+
+/* Schermi grandi (da 992px) */
+@media (min-width: 992px) {
+  .titolo-pagina h1 {
+    font-size: 3rem; 
+  }
 }
