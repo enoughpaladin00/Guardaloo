@@ -47,7 +47,7 @@
 
 .post-content p {
   display: -webkit-box;
-  /* -webkit-line-clamp: 2; */
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -55,6 +55,13 @@
   line-height: 1.4;
   width: 100%;
 }
+
+.post-content p::after {
+  content: '...';
+  display: inline;
+  color: #888;
+}
+
 
 .post-title {
   font-family: 'Bodoni Moda', serif;
@@ -366,35 +373,28 @@
 .enhanced-post-card {
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
   gap: 1.5em;
   padding: 1.5em;
+  background-color: rgb(253,116,116, 0.1);
+  border-radius: 1.5em;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  align-items: cover; 
 }
 
 .post-left {
   flex: 0 0 auto;
   display: flex;
-  align-items: flex-start;
+  align-items: cover; 
 }
 
 .post-poster {
-  width: 120px;
-  height: 180px;
+  height: 100%;         
+  width: auto;
+  max-width: 150px;     
   object-fit: cover;
   border-radius: 1em;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
-
-.placeholder-poster {
-  width: 120px;
-  height: 180px;
-  background-color: #ffece2;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2em;
-  border-radius: 1em;
-  color: #aaa;
+  aspect-ratio: 2/3;
 }
 
 .post-right {
@@ -402,37 +402,4 @@
   display: flex;
   flex-direction: column;
   position: relative;
-}
-
-.post-header {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 0.5em;
-}
-
-.post-author-info {
-  display: flex;
-  align-items: center;
-  gap: 1em;
-  margin-bottom: 0.5em;
-}
-
-.post-meta {
-  font-family: 'Inter', sans-serif;
-  color: #004466;
-  font-size: 0.95em;
-}
-
-.post-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 1em;
-  font-family: 'Inter', sans-serif;
-}
-
-.comment-count {
-  margin: 0;
-  font-size: 1em;
-  color: #004466;
 }

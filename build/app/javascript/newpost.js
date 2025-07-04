@@ -92,7 +92,7 @@ document.addEventListener('turbo:load', () => {
 
 });
 
-  // SHOW
+// SHOW
 document.addEventListener('turbo:load', () => {
   const btn = document.getElementById('show-new-comment-form');
   const formContainer = document.getElementById('new-comment-form');
@@ -100,18 +100,28 @@ document.addEventListener('turbo:load', () => {
   if (!btn || !formContainer) return;
 
   btn.addEventListener('click', () => {
-    if (formContainer.style.display === 'none' || formContainer.style.display === '') {
-      formContainer.style.display = 'block';
-      btn.textContent = 'Annulla inserimento';
-    } else {
-      formContainer.style.display = 'none';
-      btn.textContent = 'Commenta il post';
+    const isHidden = formContainer.style.display === 'none' || formContainer.style.display === '';
+
+    formContainer.style.display = isHidden ? 'block' : 'none';
+    btn.textContent = isHidden ? 'Annulla inserimento' : 'Commenta il post';
+
+    // Scrolla al centro solo se il form è stato appena mostrato
+    if (isHidden) {
+      // Timeout necessario per assicurarsi che il form sia visibile prima di calcolare la posizione
+      setTimeout(() => {
+        const rect = formContainer.getBoundingClientRect();
+        const offset = rect.top + window.pageYOffset - (window.innerHeight / 2) + (rect.height / 2);
+
+        window.scrollTo({
+          top: offset,
+          behavior: 'smooth'
+        });
+      }, 100); // 100ms di attesa per sicurezza
     }
   });
 });
 
-
-// index
+// INDEX
 document.addEventListener('turbo:load', () => {
   document.querySelectorAll('.post-card').forEach(card => {
     card.style.cursor = 'pointer';
@@ -130,27 +140,7 @@ document.addEventListener('turbo:load', () => {
   });
 });
 
-//OPPURE QUESTO
-//<button class="btn forum-button2 no-card-click">Elimina</button>
-// document.addEventListener('turbo:load', () => {
-//   document.querySelectorAll('.post-card').forEach(card => {
-//     card.style.cursor = 'pointer';
-
-//     card.addEventListener('click', e => {
-//       if (
-//         e.target.closest('.no-card-click') // evita se clicchi su un elemento con questa classe
-//       ) return;
-
-//       const link = card.querySelector('.post-title h2 a');
-//       if (link) {
-//         window.location.href = link.href;
-//       }
-//     });
-//   });
-// });
-
-
-// edit - modifica il post
+// EDIT POST
 document.addEventListener("turbo:load", function() {
   const form = document.getElementById("edit-post-form");
   if (form) {
@@ -162,23 +152,3 @@ document.addEventListener("turbo:load", function() {
     });
   }
 });
-
-
-//elimina il post
-// document.addEventListener("turbo:load", function () {
-//   document.querySelectorAll(".delete-post-form").forEach(function (form) {
-//     // evita di registrare due volte
-//     if (form.dataset.listenerAttached === "true") return;
-
-//     form.addEventListener("submit", function (event) {
-//       const postTitle = form.dataset.postTitle || "questo post";
-//       const confirmed = confirm(`Sei sicuro di voler eliminare "${postTitle}"?`);
-//       if (!confirmed) {
-//         event.preventDefault();
-//       }
-//     });
-
-//     form.dataset.listenerAttached = "true";
-//   });
-// });
-

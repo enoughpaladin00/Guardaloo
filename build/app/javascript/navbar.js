@@ -3,6 +3,7 @@ document.addEventListener("turbo:load", () => {
   const hamburgerMenu = document.getElementById("hamburgerMenu");
 
   hamburgerTrigger.addEventListener("mouseenter", () => {
+    
     hamburgerMenu.style.display = "block";
   });
 
@@ -17,26 +18,29 @@ document.addEventListener("turbo:load", () => {
       }
     }, 200);
   });
-});
 
-/*user menu*/ 
-document.addEventListener("turbo:load", () =>{
-  const userTrigger = document.getElementById("userMenu-Trigger");
-  const userMenu = document.getElementById("user-menu");
+  const isMobile = window.matchMedia("(max-width: 992px)").matches;
 
-  userTrigger.addEventListener("mouseenter", () =>{
-    userMenu.style.display = "block";
-  });
+  if (isMobile) {
+    hamburgerTrigger.addEventListener("click", () => {
+      const isVisible = hamburgerMenu.style.display === "block";
+      hamburgerMenu.style.display = isVisible ? "none" : "block";
+    });
+  } else {
+    hamburgerTrigger.addEventListener("mouseenter", () => {
+      hamburgerMenu.style.display = "block";
+    });
 
-  userMenu.addEventListener("mouseleave", () => {
-    userMenu.style.display = "none";
-  });
+    hamburgerMenu.addEventListener("mouseleave", () => {
+      hamburgerMenu.style.display = "none";
+    });
 
-  userTrigger.addEventListener("mouseleave", () => {
-    setTimeout(() => {
-      if (!userMenu.matches(':hover')) {
-        userMenu.style.display = "none";
-      }
-    }, 200);
-  });
+    hamburgerTrigger.addEventListener("mouseleave", () => {
+      setTimeout(() => {
+        if (!hamburgerMenu.matches(':hover')) {
+          hamburgerMenu.style.display = "none";
+        }
+      }, 200);
+    });
+  }
 });
