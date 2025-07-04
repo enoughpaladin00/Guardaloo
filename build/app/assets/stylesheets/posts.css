@@ -27,7 +27,7 @@
   display: flex;
   flex-direction: column;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;  
+  transition: transform 0.2s ease, box-shadow 0.2s ease;    
 }
 
 .post-card:hover {
@@ -56,6 +56,13 @@
   width: 100%;
 }
 
+.post-content p::after {
+  content: '...';
+  display: inline;
+  color: #888;
+}
+
+
 .post-title {
   font-family: 'Bodoni Moda', serif;
   color: #004466;
@@ -70,24 +77,6 @@
   text-decoration: none;
   color: inherit;
 }
-/* 
-.btn-edit, .btn-delete {
-  padding: 0.3em 0.7em;
-  font-size: 0.9rem;
-  border-radius: 0.3em;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.btn-edit {
-  background-color: #4CAF50;
-  color: white;
-}
-
-.btn-delete {
-  background-color: #f44336;
-  color: white;
-} */
 
 /* BOTTONI */
 .post-actions {
@@ -110,6 +99,14 @@
   font-weight: bold;
 }
 
+.forum-button2:hover{
+  background-color: #FFC0CB;
+}
+
+.forum-button2 a:hover{
+  color: #004466;
+}
+
 
 /* FILTRI */
 .filters-container {
@@ -119,7 +116,7 @@
   gap: 2em; /* opzionale, dà più spazio */
   width: 100%;
   padding-left: 4em;
-  padding-right: 2em;
+  padding-right: 4em;
 }
 
 .filter-form {
@@ -185,8 +182,8 @@
   width: 100%;  
   padding: 0.5em;
   font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 0.4em;
+  border: 2px solid #FD7474;
+  border-radius: 0.6em;
   box-sizing: border-box;
   display: block;
 }
@@ -245,30 +242,6 @@
   color: #004466;
 }
 
-
-/* COLONNA SINISTRA */
-/* .movie-poster-preview{
-  min-width: 150px; 
-  max-width: 150px; 
-  height: 225px; 
-  background-color: #eee;
-  border-radius: 0.5em; 
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1); 
-  display: flex; 
-  align-items: center; 
-  justify-content: center; 
-  overflow: hidden;
-}
-
-.movie-poster-img{
-  width: 100%; 
-  height: 100%; 
-  object-fit: cover; 
-  border-radius: 0.5em;
-} */
-
-
-
 /* random */
 .comment-profile-icon{
   width: 40px;
@@ -286,8 +259,9 @@
   color: #004466;
   font-size: 4.5em;
   font-weight: bold;
-  margin-bottom: 0.5em;
+  margin-bottom: 0.8em;
   text-align: center;
+  margin-top: 0.5em;
 }
 
 .title-icon{
@@ -310,4 +284,122 @@
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   border: 3px solid var(--color-3);
   margin-left: 2em;
+  position: absolute;
+  left: 1em;
+}
+
+.forum-search-filters{
+    border: 2px solid #FD7474;
+    background:#ffece2;
+    border-radius: 2rem;
+    width: 35em;
+    position: relative;
+}
+
+.forum-search-filters:focus {
+  border: 4px solid #FD7474;
+  outline: none; 
+}
+
+
+/* COMMENTI */
+.new-comment {
+  overflow: visible;
+  border: 0;
+  background-color: rgb(253,116,116, 0.1);
+  margin-left: auto;
+  margin-right: auto;
+  height: 20em;
+  width: 55em;
+}
+
+.comment-card {
+  background-color:rgb(253,116,116, 0.1);
+  border-radius: 1.5em;
+  padding: 1em 1.5em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8em;
+  position: relative;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  font-family: 'Inter', sans-serif;
+}
+
+.comment-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1em;
+  flex-wrap: wrap;
+}
+
+.comment-avatar {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #FD7474;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.comment-info {
+  flex-grow: 1;
+}
+
+.comment-meta {
+  margin: 0;
+  font-size: 0.95em;
+  color: #004466;
+}
+
+.comment-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.comment-body {
+  font-size: 1.1em;
+  color: #222;
+  padding: 1em;
+  border-radius: 0.8em;
+}
+
+
+/* NEW */
+
+
+.enhanced-post-card {
+  display: flex;
+  flex-direction: row;
+  gap: 1.5em;
+  padding: 1.5em;
+  background-color: rgb(253,116,116, 0.1);
+  border-radius: 1.5em;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  align-items: cover; 
+}
+
+.post-left {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: cover; 
+}
+
+.post-poster {
+  height: 100%;         
+  width: auto;
+  max-width: 150px;     
+  object-fit: cover;
+  border-radius: 1em;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  aspect-ratio: 2/3;
+}
+
+.post-right {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  position: relative;
 }

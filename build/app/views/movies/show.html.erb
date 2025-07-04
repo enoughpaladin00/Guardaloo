@@ -1,4 +1,4 @@
-<!-- <pre><%= @showtimes_array.inspect%></pre> -->
+<!-- <pre><%= @movie_details.inspect%></pre> -->
 
 <head>
     <!-- TailwindCSS via CDN -->
@@ -10,78 +10,90 @@
 <body>
     <div class='container'>
         <div class="movie-container flex-col md:grid md:grid-cols-5 gap-4 p-4">
-            <div class="movie-backdrop md:col-span-5 flex items-center justify-center rounded-lg shadow-lg">
-                <% if @movie_details["backdrop_path"] %>
-                    <div class="backdrop" style='background-image: url("https://image.tmdb.org/t/p/original<%= @movie_details["backdrop_path"] %>");'></div>
-                <% else %>
-                    <div class="w-full h-80 bg-gray-200 flex items-center justify-center text-center px-2">Nessuna immagine</div>
-                <% end %>
-            </div>
-        
             <!-- Sidebar sinistra -->
-            <aside class="col-span-1 flex flex-col items-center space-y-4">
-                <div class="w-35 h-35 rounded-md flex items-center justify-center">
+            <aside class="aside-tab col-span-1 flex flex-col items-center space-y-4">
+                <div class="side-poster relative rounded-md flex items-center justify-center">
                     <% if @movie_details["poster_path"] %>
                         <img src="https://image.tmdb.org/t/p/w500<%= @movie_details['poster_path'] %>" alt="<%= @movie_details['title'] || @movie_details['name'] %>" class="rounded">
                     <% else %>
                         <div class="w-full h-80 flex items-center justify-center text-center px-2">Nessuna immagine</div>
                     <% end %>
-                </div>
-
-                <div class="flex flex-col">
-                    <div class="flex space-x-2">
-                        <button><%= image_tag 'moviePage/Vector-3.svg', class: 'w-5' %></button>
-                        <button><%= image_tag 'moviePage/Vector-2.svg', class: 'w-5' %></button>
-                        <button><%= image_tag 'moviePage/Vector.svg', class: 'w-5' %></button>
-                        <button><%= image_tag 'moviePage/Vector-1.svg', class: 'w-5' %></button>
+                    <div id="bookmark-button-<%= params[:tmdb_id] %>" class="absolute top-3 right-3">
+                      <%= button_to bookmarks_toggle_path, method: :post, remote: true, params: { tmdb_id: params[:tmdb_id], title: @movie_details['title'], poster_path: @movie_details['poster_path'] }, class: 'bookmark-toggle-button' do %>
+                        <% if current_user.bookmarks.exists?(tmdb_id: params[:tmdb_id]) %>
+                          <%= image_tag 'moviePage/bookmarked.svg', class: 'w-5' %>
+                        <% else %>
+                          <%= image_tag 'moviePage/not_bookmarked.svg', class: 'w-5' %>
+                        <% end %>
+                      <% end %>
                     </div>
                 </div>
 
                 <div class="font-semibold">Valutazione</div>
+                <div class="star-rating">
+                  <% rounded_score = @stars.round %>
+                  <% 5.times do |i| %>
+                    <% if i < rounded_score %>
+                      <%= image_tag 'moviePage/filled_star.svg', class: 'star' %>
+                    <% else %>
+                      <%= image_tag 'moviePage/empty_star.svg', class: 'star' %>
+                    <% end %>
+                  <% end %>
+                </div>
             </aside>
 
             <!-- Contenuto principale -->
-            <main class="col-span-4 space-y-6" style="width: 100%">
+            <main class="main-content col-span-4 space-y-6">
 
-                <!-- Informazioni -->
-                <section>
-                    <h1 class="movie-title">
+            <div class="movie-backdrop md:col-span-5 flex items-center justify-center rounded-lg shadow-lg">
+              <% if @movie_details["backdrop_path"] %>
+                <div class="backdrop relative" style='background-image: url("https://image.tmdb.org/t/p/original<%= @movie_details["backdrop_path"] %>");'>
+                  <!-- Bottone preferiti -->
+                  <div id="bookmark-button-<%= params[:tmdb_id] %>" class="backdrop-bookmark absolute top-3 right-3">
+                    <%= button_to bookmarks_toggle_path, method: :post, remote: true, params: { tmdb_id: params[:tmdb_id], title: @movie_details['title'], poster_path: @movie_details['poster_path'] }, class: 'bookmark-toggle-button' do %>
+                      <% if current_user.bookmarks.exists?(tmdb_id: params[:tmdb_id]) %>
+                        <%= image_tag 'moviePage/bookmarked.svg', class: 'w-5' %>
+                      <% else %>
+                        <%= image_tag 'moviePage/not_bookmarked.svg', class: 'w-5' %>
+                      <% end %>
+                    <% end %>
+                  </div>
+                  <!-- Gradiente -->
+                  <div class="backdrop-gradient"></div>
+
+                  <!-- Informazioni sovrapposte -->
+                  <div class="movie-info-overlay p-4">
+                    <h1 class="movie-title text-white">
                       <%= @movie_details["title"] || @movie_details["name"] %>
                       <% if @director.present? %>
                         <span class="director-title">(diretto da <%= @director %>)</span>
                       <% end %>
                     </h1>
-                    <% info_parts = [] %>
 
+                    <% info_parts = [] %>
                     <% year = @movie_details["release_date"] || @movie_details["first_air_date"] %>
                     <% info_parts << year.slice(0, 4) if year.present? %>
-                    
+
                     <% runtime = @movie_details["runtime"] || (@movie_details["episode_run_time"].is_a?(Array) ? @movie_details["episode_run_time"].first : nil) %>
                     <% info_parts << "#{runtime}min" if runtime.present? %>
-                  
+
                     <% if @movie_details["genres"].present? %>
                       <% genres = @movie_details["genres"].map { |g| g["name"] }.join(", ") %>
                       <% info_parts << genres %>
                     <% end %>
-                    
-                    <p class="text-sm info-text"><%= info_parts.join(" • ") %></p>
-                </section>
 
-                <!-- Streaming -->
-                <% shown_providers = (@italian_providers["flatrate"] || []).select { |p| @allowed_providers.include?(p["provider_name"]) } %>
+                    <p class="text-white text-sm info-text mt-2"><%= info_parts.join(" • ") %></p>
+                  </div>
+                </div>
+              <% else %>
+                <div class="w-full h-80 bg-gray-200 flex items-center justify-center text-center px-2">Nessuna immagine</div>
+              <% end %>
+            </div>
+
+                <!-- Descrizione -->
                 <section class="section-box shadow">
-                    <% if shown_providers.any?%>
-                        <h3 class="font-semibold mb-2">Guarda ora</h3>
-                        <ul class="flex gap-4 mt-2">
-                            <% shown_providers.each do |provider| %>
-                                <li class="flex flex-col p-4 items-center">
-                                    <img src="https://image.tmdb.org/t/p/w45<%= provider["logo_path"] %>" alt="<%= provider["provider_name"] %>" class="rounded">
-                                </li>
-                            <% end %>
-                        </ul>
-                    <% else %>
-                        <p>Non disponibile in streaming in Italia.</p>
-                    <% end %>
+                  <h3 class="font-semibold mb-2">Descrizione</h3>
+                  <p style="text-align: justify"><%= @movie_details["overview"].presence || "Descrizione non disponibile." %></p>
                 </section>
 
                 <!-- Mappa e Cinema -->
@@ -92,16 +104,12 @@
                   <div class="section-box flex-1 flex max-h-96 overflow-hidden rounded-lg border">
                                             
                     <!-- Tabs verticali -->
-                    
                     <% if @days.empty? %>
                       <p class="text-center py-4 text-gray-500">Nessuna programmazione disponibile nei cinema.</p>
                     <% else %>
                       <div class="tabs flex flex-col min-w-[8rem] border-r bg-gray-100">
                         <% @days.each_with_index do |day, index| %>
-                          <button class="tab-button w-full text-left px-4 py-2 <%= 'active' if index == 0 %>"
-                                  data-day="<%= day %>">
-                            <%= day %>
-                          </button>
+                          <button class="tab-button w-full text-left px-4 py-2 <%= 'active' if index == 0 %>" data-day="<%= day %>"><%= day %></button>
                         <% end %>
                       </div>
                     <% end %>
@@ -137,16 +145,26 @@
                     </div>
                   </div>
                 </section>
-
-
-                
                         
-                <!-- Descrizione -->
+                <!-- Streaming -->
                 <section class="section-box shadow">
-                  <h3 class="font-semibold mb-2">Descrizione</h3>
-                  <p style="text-align: justify"><%= @movie_details["overview"].presence || "Descrizione non disponibile." %></p>
+                    <% if @shown_providers.any?%>
+                        <h3 class="font-semibold mb-2">Guarda ora</h3>
+                        <ul class="flex gap-4 mt-2">
+                          <% @provider_links.each do |provider| %>
+                            <li class="flex flex-col p-4 items-center">
+                              <a href="<%= provider[:url] %>" target="_blank" rel="noopener noreferrer">
+                                <img src="https://image.tmdb.org/t/p/w45<%= provider[:logo] %>" alt="<%= provider[:name] %>" class="rounded hover:scale-110 transition-transform">
+                              </a>
+                              <span class="text-sm mt-1"><%= provider[:name] %></span>
+                            </li>
+                          <% end %>
+                        </ul>
+                    <% else %>
+                        <p>Non disponibile in streaming in Italia.</p>
+                    <% end %>
                 </section>
-                        
+
                 <!-- Trailer -->
                 <section class="section-box shadow">
                     <h3 class="font-semibold mb-2">Trailer</h3>

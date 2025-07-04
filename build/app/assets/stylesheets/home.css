@@ -1,5 +1,6 @@
 html, body{
     overflow-x:hidden;
+    overscroll-behavior: none;
     background-color: #FFFAEF;
 }
 
@@ -238,6 +239,7 @@ html, body{
   text-align: center;
   margin-top: 1rem;
 }
+
 .dots button {
   width: 10px;
   height: 10px;
@@ -246,6 +248,7 @@ html, body{
   border: none;
   margin: 0 5px;
 }
+
 .dots .glider-dot.active {
   background: #facc15;
 }
@@ -386,24 +389,124 @@ html, body{
     transform: scale(1.05);
 }
 
-@media (max-width: 768px) {
-  .movie-card.center {
-    transform: scale(1.1);
-  }
-
-  .movie-card.left,
-  .movie-card.right {
-    transform: scale(0.9);
-  }
-
-  .movie-carousel {
-    gap: 10px;
-  }
-}
-
 .error-message {
   display: block;
   margin-top: 0.2rem;
   font-size: 0.875rem;
   color: red;
+}
+
+@media (max-width: 768px) {
+
+    .homepage-navbar .container-fluid {
+        flex-direction: column !important;
+        text-align: center;
+    }
+
+    .homepage-navbar .d-flex {
+        flex-direction: row !important;
+        gap: 10px;
+        padding-top: 10px;
+    }
+
+    .popup-button {
+        font-size: 16px;
+        padding: 0px 5px !important;
+    }
+
+    .pickup-line {
+        min-width: auto;
+        font-size: 24px;
+        text-align: center;
+        padding: 0 10px;
+    }
+
+    .search-bar{
+        width: 350px !important;
+        transform: translateY(-250%) !important;
+    }
+
+    .fullscreen-section {
+        padding: 20px 10px;
+    }
+
+    .content-section {
+        flex-direction: column !important;
+        padding: 20px 10px;
+        text-align: center;
+    }
+
+    .carousel-column, .text-column, .search-carousel-column {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+
+    .movie-card, .movie2-card {
+        width: 150px !important;
+        height: 225px !important;
+    }
+
+    .movie-card img, .movie2-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+
+    .carousel-text {
+        font-size: 24px !important;
+        text-align: center;
+        padding: 0 10px;
+    }
+
+    .inter-h1 {
+        font-size: 26px !important;
+    }
+
+    .register-title h3 {
+        font-size: 24px !important;
+    }
+
+    .auth-section {
+        flex-direction: column !important;
+        padding: 20px;
+    }
+
+    .register-title {
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .auth-box {
+        width: 100% !important;
+        padding: 10px;
+    }
+
+    .auth-tabs span {
+        font-size: 16px;
+    }
+
+    .glider-slide {
+        min-width: 150px !important;
+    }
+
+    .container-fluid.d-flex {
+        flex-direction: row !important;
+        text-align: center;
+        padding: 20px;
+        gap: 10px;
+    }
+
+    .footer-logo {
+        display:none;
+    }
+
+    .reverse-section{
+        flex-direction: column-reverse !important;
+    }
+
+    .footer{
+        justify-content: center !important;
+    }
 }

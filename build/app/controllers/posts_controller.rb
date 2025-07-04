@@ -32,6 +32,7 @@ class PostsController < ApplicationController
   #FILTRO COMPLETO
   def index
     @posts = Post.includes(:user, :comments)
+    @user = current_user
     @top_movies = TmdbService.top_10_streaming_movies
 
     # Filtro "Solo i miei post"
@@ -46,15 +47,18 @@ class PostsController < ApplicationController
       @posts = @posts.select do |post|
         post.title.downcase.include?(keyword) ||
         post.content.downcase.include?(keyword) ||
+        post.user.username.downcase.include?(keyword) ||    
         post.comments.any? { |c| c.content.downcase.include?(keyword) }
       end
     end
+
 
     # Ordina sempre per data
     @posts = @posts.sort_by(&:created_at).reverse
   end
 
   def show
+    @user = current_user
     @post = Post.find(params[:id])
     if user_signed_in?
       @comment = Comment.new(post: @post, user: current_user)  # Safer alternative

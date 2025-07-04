@@ -1,5 +1,22 @@
 class MoviesController < ApplicationController
   before_action :authenticate_user!
+
+  ALLOWED_PROVIDERS = [
+    "Netflix",
+    "Amazon Prime Video",
+    "Disney Plus",
+    "NOW TV"
+    # aggiungi qui tutti i nomi provider che vuoi mostrare
+  ].freeze
+
+  PROVIDER_SEARCH_URLS = {
+    "Netflix" => "https://www.netflix.com/search?q=",
+    "Amazon Prime Video" => "https://www.primevideo.com/search/ref=atv_nb_sr?phrase=",
+    "Disney Plus" => "https://www.disneyplus.com/search?q=",
+    "NOW TV" => "https://nowtv.it/search?query="
+    # aggiungi se vuoi
+  }.freeze
+  
   def show
     tmdb_id = params[:tmdb_id]
     tmdb_type = params[:type] || "movie"
@@ -22,15 +39,20 @@ class MoviesController < ApplicationController
 
     @providers = service.fetch_movie_watch_providers(tmdb_id, tmdb_type)
     @italian_providers = @providers["results"]["IT"] || {}
-    @allowed_providers = [
-      "Netflix", "Disney Plus", "Amazon Prime Video", "Rakuten TV", "Apple TV", "Apple TV+",
-      "Sky Go", "Google Play Movies", "Paramount Plus", "Now TV", "Mediaset Infinity", "MUBI",
-      "Timvision", "Infinity+", "Rai Play", "Nexo Plus", "GuideDoc", "YouTube Premium", "Microsoft Store"
-    ]
-
+    @shown_providers = (@italian_providers["flatrate"] || []).select { |p| ALLOWED_PROVIDERS.include?(p["provider_name"]) }
+    
     @all_italian_providers = service.fetch_italian_movie_providers(tmdb_type)["results"]
     @cleaned_providers = @all_italian_providers.map do |provider|
       provider.reject { |key, _| key == "display_priorities" }
+    end
+
+    @provider_links = @shown_providers.map do |provider|
+      search_base = PROVIDER_SEARCH_URLS[provider["provider_name"]]
+      if search_base
+        { name: provider["provider_name"], logo: provider["logo_path"], url: "#{search_base}#{URI.encode_www_form_component(@movie_details['title'])}" }
+      else
+        { name: provider["provider_name"], logo: provider["logo_path"], url: @italian_providers["link"] }
+      end
     end
 
     location_str = ""
@@ -56,7 +78,17 @@ class MoviesController < ApplicationController
     @cinemas_by_day = []
     @cinemas_by_day_hash = {}
     @showtimes_array.each do |showtimes|
-      day = showtimes[:day]
+      day_string = showtimes[:day]
+      if day_string =~ /([A-Za-z]+)(\d{1,2})\s(\w{3})/
+        abbrev_day = $1
+        day_number = $2.to_i
+        abbrev_month = $3
+        full_day = GIORNI_SETTIMANA[abbrev_day] || abbrev_day
+        full_month = MESI[abbrev_month] || abbrev_month
+        day = "#{full_day} #{day_number} #{full_month}"
+      else
+        day = day_string
+      end
       cinema = showtimes[:theaters] || []
       @days << day
       @cinemas_by_day << cinema
@@ -84,6 +116,8 @@ class MoviesController < ApplicationController
         end
       end
     end
+    @vote_average = @movie_details["vote_average"]
+    @stars = (@vote_average / 2.0).round(1)
 
     @credits = service.fetch_movie_credits(tmdb_id, tmdb_type)
     @director = @credits["crew"]&.find do |person|

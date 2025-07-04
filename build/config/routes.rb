@@ -29,6 +29,12 @@ Rails.application.routes.draw do
 
   # Location
   post "/set_location", to: "sessions#set_location"
+  # Update favourite film ids for User Profile
+  patch '/users/update_tmdb_id', to: 'users#update_tmdb_id'
+
+  # Google and Facebook Auth
+  get "/auth/:provider/callback", to: "sessions#omniauth"
+  get "/auth/failure", to: redirect("/")
 
   # Movie Routes
   get "movies/search", to: "movies#search"
@@ -51,4 +57,6 @@ Rails.application.routes.draw do
 
   # Favorite Cinemas
   resources :cinema_favorites, only: [:create, :destroy] 
+  post '/bookmarks/toggle', to: 'bookmarks#toggle', as: 'bookmarks_toggle'
+
 end

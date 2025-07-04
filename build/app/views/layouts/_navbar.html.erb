@@ -1,65 +1,63 @@
+<nav class="navbar navbar-expand-lg navbar-expand-sm navbar-expand-md row">
 
-<nav class="navbar navbar-expand-lg">
-    <div class="container-fluid d-flex justify-content-start">
-        <a href="../home"><%= image_tag "navbar/Logo.svg", alt: "logo", style: "width: 12em; height: auto" %></a>
+    <!-- Logo -->
+    <div class="col logo_container">
+        <a href="../home"><%= image_tag "navbar/Logo.svg", alt: "logo", class: "logo" %></a>
     </div>
-    <div class="container-fluid d-flex justify-content-center">
-      <form role="search" class="w-100" style="max-width: 600px;">
-        <div class="input-group search_container px-2 align-items-center">
-          <span>
-            <%= image_tag "navbar/Lente.svg", alt: "lente", style: "width: 1.2em; height: 1.2em" %>
-          </span>
-          <input class="form-control border-0 shadow-none search_bar" type="search" placeholder="Cerca film e serie TV" autocomplete="off">
-          <!--<div class="position-absolute mt-2 search-results-dropdown" id="search-results"></div>-->
-             
-          <!-- Dropdown risultati -->
-          <div class="position-absolute mt-1 search-results-dropdown" id="search-results" style="border-radius: 0 0 0.5em 0.5em;">
-            <div id="search-placeholder" class="ms-2 mb-1 text-muted"><b>Nessun risultato</b></div>
-          </div>
 
-        </div>
-      </form>
+    <!-- Search bar -->
+    <div class="col justify-items-center search_form">
+      <form role="search">
+          <div class="px-2 justify-items-start input-group search_container ">
+            <span class="margin-lente">
+              <%= image_tag "navbar/Lente.svg", alt: "lente", class: "lente_img" %>
+            </span>
+            <input class="form-control border-0 shadow-none search_bar" type="search" placeholder="Cerca film e serie TV" autocomplete="off">
+            <div class="position-absolute mt-1 search-results-dropdown" id="search-results" style="border-radius: 0 0 0.5em 0.5em;">
+              <div id="search-placeholder" class="ms-2 mb-1 text-muted text-size-search"><b>Nessun risultato</b></div>
+            </div>
+          </div>
+        </form>
       <div id="search-overlay" class="position-fixed top-0 start-0 w-100 h-100" style="background: rgba(0, 0, 0, 0.6); display: none; z-index: 900;"></div>
     </div>
-    <div class="container-fluid d-flex justify-content-end">
-        <div class="hamburger-wrapper" id="hamburgerMenuTrigger">
-            <%= image_tag "navbar/menu.svg", alt: "menu", style: "width: 2.2em; height: 2.2em; margin-right: 0.8em; cursor: pointer;" %>
+    
+    <!-- profile icon -->
+    <div class="col profile_container">
+    
+        <%= image_tag "navbar/user.svg", class:"profile-svg", alt: "user", class: "profile_logo", id: "hamburgerMenuTrigger" %>
+        <div id="hamburgerMenu" style="display: none">
+            <div>
+                <%= image_tag "navbar/freccia.svg", class: "arrow_menu" %>
+            </div>
+            <div class="hamburger-popup">
+                <div class="hamburger-link">
+                    <a href="../home" class="link-underline link-underline-opacity-0">
+                        <div class="hamburger-button">
+                            <%= image_tag "navbar/home.svg", class: "icon-hamburger" %>
+                            <span class="hamburger-link">Home</span>
+                        </div>
+                    </a>
+                    <a href="/cinemas" class="link-underline link-underline-opacity-0">
+                        <div class="hamburger-button">
+                            <%= image_tag "navbar/cinema.svg", class: "icon-hamburger" %>
+                            <span class="hamburger-link">Cinema</span>
+                        </div>
+                    </a>
+                    <a href="/posts" class="link-underline link-underline-opacity-0">
+                        <div class="hamburger-button">
+                            <%= image_tag "navbar/forum.svg", class: "icon-hamburger" %>
+                            <span class="hamburger-link">Forum</span>
+                        </div>
+                    </a>
+                    <a href="/profile" class="link-underline link-underline-opacity-0">
+                        <div class="hamburger-button">
+                            <%= image_tag "navbar/save.svg", class: "icon-hamburger" %>
+                            <span class="hamburger-link">Il Mio Profilo</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
         </div>
-
-        <div id="hamburgerMenu" class="hamburger-popup">
-            <ul class="hamburger-links list-unstyled m-0 p-3">
-                <li><%= link_to 'Home', root_path, class: 'hamburger-link' %></li>
-                <li><%= link_to 'Cinema', cinemas_path, class: 'hamburger-link' %></li>
-                <li><%= link_to 'Film', home_path, class: 'hamburger-link' %></li>
-                <li><%= link_to 'Forum', posts_path, class: 'hamburger-link' %></li>
-                <li><%= link_to 'La Mia Lista', profile_path, class: 'hamburger-link' %></li>
-            </ul>
-        </div>
-
-        <span class="vert_line_navbar">&#124;</span>
-        <a class="px-2" data-bs-toggle="modal" data-bs-target="#profileMenuModal" href="#">
-            <%= image_tag "navbar/user.svg", class:"profile-svg", alt: "user", style: "width: 2.2em; height: 2.2em" %>
-        </a>
     </div>
+
 </nav>
-
-<div id="profile-menu" class="menu-overlay" style="display: none;">
-    <div class="menu-content">
-        <div class="menu-box">
-            <div>
-                <span class="popup-txt" style="color: var(--color-2)">Benvenuto <%= current_user.username%>!</span>
-            </div>
-            <hr>
-            <div>
-                <span class="popup-txt" style="color: var(--color-2)">Gestione Profilo</span>
-            </div>
-            <div>
-                <span class="popup-txt" style="color: var(--color-2)">Impostazioni Generali</span>
-            </div>
-            <hr>
-            <div>
-                <button class="yellow-button button-1 Logout-button"> Logout </button>
-            </div>
-        </div>
-    </div>
-</div>

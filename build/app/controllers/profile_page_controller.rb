@@ -1,13 +1,63 @@
 class ProfilePageController < ApplicationController
-  
+  before_action :authenticate_user!
   before_action :require_login
   before_action :set_user
 
   def profile_index
-    @trending_movies = Rails.cache.fetch("trending_movies_top3", expires_in: 6.hours) do
-      TmdbService.trending_movies.first(3)
+
+    # Film scelti dall'utente (fissi sul profilo) - usa TmdbService.get_movie
+    @chosen_movies = []
+    [@user.tmdb_id_1, @user.tmdb_id_2, @user.tmdb_id_3].each do |tmdb_id|
+      if tmdb_id.present?
+        movie = TmdbService.get_movie(tmdb_id)
+        @chosen_movies << movie
+      else
+        @chosen_movies << nil
+      end
     end
-    # @user è già settato
+    
+    # Prendi gli ultimi 10 tmdb_id dai preferiti dell'utente
+    bookmark_tmdb_ids = @user.bookmarks.order(created_at: :desc).limit(10).pluck(:tmdb_id)
+    
+    # Usa il TmdbService esistente - stessa logica di @trending_movies
+    @preferiti = bookmark_tmdb_ids.filter_map do |tmdb_id|
+      TmdbService.new.fetch_movie_details(tmdb_id, "movie")
+    rescue => e
+      Rails.logger.error "Errore nel recuperare il film #{tmdb_id}: #{e.message}"
+      nil
+    end
+  end
+  
+  # Metodo per cercare film - usa search_movie_by_title
+  def search_movies
+    query = params[:query]
+    if query.present?
+      @search_results = TmdbService.search_movie_by_title(query)
+      render json: @search_results
+    else
+      render json: { error: "Query vuota" }, status: 400
+    end
+  end
+  
+  # Metodo per salvare il film scelto
+  def update_chosen_movie
+    movie_id = params[:movie_id]
+    position = params[:position].to_i # 1, 2, o 3
+    
+    if position.between?(1, 3) && movie_id.present?
+      case position
+      when 1
+        @user.update(tmdb_id_1: movie_id)
+      when 2
+        @user.update(tmdb_id_2: movie_id)
+      when 3
+        @user.update(tmdb_id_3: movie_id)
+      end
+      
+      render json: { success: true, message: "Film salvato!" }
+    else
+      render json: { error: "Parametri non validi" }, status: 400
+    end
   end
 
   def update

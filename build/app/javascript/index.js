@@ -12,18 +12,27 @@ document.addEventListener("turbo:load", function () {
         breakpoint: 640,
         settings: {
           slidesToShow: 3,
+          dots: '.dots',
         }
       },
       {
         breakpoint: 1024,
         settings: {
           slidesToShow: 4,
+          dots: '.dots',
         }
       },
       {
         breakpoint: 1280,
         settings: {
           slidesToShow: 6,
+          dots: '.dots',
+        }
+      },
+      {
+        breakpoint: 0,
+        settings: {
+          dots: '',
         }
       }
     ]
@@ -51,7 +60,7 @@ document.addEventListener("turbo:load", function () {
     }
 
     glider.scrollItem(slideIndex);
-  }, 8000);
+  }, 6000);
 });
 
 
