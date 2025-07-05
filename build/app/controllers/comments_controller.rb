@@ -1,5 +1,7 @@
 class CommentsController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_comment, only: [:destroy, :update]
+  before_action :authorize_comment_action!, only: [:destroy, :update]
 
   def create
     @post = Post.find(params[:post_id])
@@ -11,18 +13,21 @@ class CommentsController < ApplicationController
     else
       redirect_to post_path(@post), alert: "Errore durante la creazione del commento."
     end
-
   end
 
   def destroy
     @comment = Comment.find(params[:id])
-    @comment.destroy
-    redirect_to @comment.post, notice: 'Comment was successfully destroyed.'
+    if current_user == @comment.user || current_user == @comment.post.user || current_user.admin? || current_user.moderator?
+      @comment.destroy
+      redirect_to @comment.post, notice: 'Commento eliminato con successo.'
+    else
+      redirect_to @comment.post, alert: 'Non sei autorizzato a eliminare questo commento.'
+    end
   end
 
   def update
     @comment = Comment.find(params[:id])
-    if @comment.user == current_user
+    if current_user == @comment.user || current_user == @comment.post.user || current_user.admin? || current_user.moderator?
       if @comment.update(comment_params)
         redirect_to post_path(@comment.post, anchor: "comment-#{@comment.id}"), notice: "Commento aggiornato."
       else
@@ -34,7 +39,20 @@ class CommentsController < ApplicationController
   end
 
   private
-    def comment_params
-      params.require(:comment).permit(:content)
+
+  def set_comment
+    @comment = Comment.find(params[:id])
+  end
+
+  def authorize_comment_action!
+    # Solo admin o moderator possono modificare/eliminare qualsiasi commento
+    # L’utente normale solo i propri commenti
+    unless current_user.admin? || current_user.moderator? || @comment.user == current_user
+      redirect_to post_path(@comment.post), alert: "Non sei autorizzato a modificare o eliminare questo commento."
     end
+  end
+
+  def comment_params
+    params.require(:comment).permit(:content)
+  end
 end
