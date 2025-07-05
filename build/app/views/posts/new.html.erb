@@ -1,10 +1,9 @@
 <%= render 'layouts/navbar' %>
 
 <div class="posts-container" style="margin-bottom: 4em; margin-top: 2em;">
-  <div style="display: flex; flex-direction: row; justify-content: center;">
-    <h1 class="post-title" style="font-size: 3em;">Crea un nuovo Post</h1>
-    <%= link_to 'Ritorna al Forum', posts_path, class:"btn forum-button2", style:"position:absolute; left:3em;" %>
-    <%= image_tag "homepage/forum.svg", class: "title-icon" %>
+  <div class="crea-post-header">
+    <div class="crea-nuovo-post"> <h1 class="post-title" style="font-size: 3em;">Crea un nuovo Post</h1><%= image_tag "homepage/forum.svg", class: "title-icon" %></div>
+    <%= link_to 'Ritorna al Forum', posts_path, class:"btn forum-button2 ritorna", style:"position:absolute; left:3em;" %>
   </div>
   <div id="new-post-form-container" class="new-post-form-container">
 

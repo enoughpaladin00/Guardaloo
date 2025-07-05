@@ -30,4 +30,36 @@
   <div class="comment-body">
     <p><%= comment.content %></p>
   </div>
+
+  <script>
+  document.addEventListener("turbo:load", function () {
+    const buttons = document.querySelectorAll(".edit-comment-button");
+
+    function updateButtonLabels() {
+      buttons.forEach(button => {
+        if (window.innerWidth <= 768) {
+          button.textContent = "Modifica";
+        } else {
+          button.textContent = "Modifica il commento";
+        }
+      });
+    }
+
+    updateButtonLabels();
+    window.addEventListener("resize", updateButtonLabels);
+  });
+
+  document.addEventListener("turbo:load", function () {
+    if (window.innerWidth <= 768) {
+      document.querySelectorAll(".comment-meta").forEach(el => {
+        const regex = /meno di un minuto fa/;
+        if (regex.test(el.textContent)) {
+          el.innerHTML = el.innerHTML.replace(regex, "&lt; un minuto fa");
+        }
+      });
+    }
+  });
+
+</script>
+
 </div>

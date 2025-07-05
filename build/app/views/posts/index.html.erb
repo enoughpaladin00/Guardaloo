@@ -38,7 +38,7 @@
       <div class="post-right">
         <div class="post-title">
         <h2 ><%= link_to post.title, post %></h2> 
-          Creato da <%= post.user.username %>
+          Creato <%= time_ago_in_words(post.created_at) %> fa da <span style="color: #FD7474;"> <%= post.user.username %> </span> 
       </div>
       <div class="post-content">
         <p style="margin-left: 3em; padding-right: 8em; text-align:justify"><%= post.content %></p>
