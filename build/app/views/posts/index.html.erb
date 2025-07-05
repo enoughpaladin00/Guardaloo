@@ -49,21 +49,16 @@
       </p>
 
       <div class="post-actions">
-        <% if user_signed_in? && current_user == post.user %>
-        <%= link_to 'Modifica', edit_post_path(post), class: 'btn forum-button2' %>
-      
-      <form action="<%= post_path(post) %>" method="post" class="delete-post-form" data-post-title="<%= post.title %>" data-turbo="false">
-        <input type="hidden" name="_method" value="delete">
-          <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-        <button type="submit" class="btn forum-button2" style="background-color: #004466">
-          Elimina
-        </button>
-      </form>
-      </div>      
-      
-
-
-
+        <% if user_signed_in? && (current_user.admin? || current_user.moderator? || current_user == post.user) %>
+        <%= link_to 'Modifica', edit_post_path(post), class: 'btn forum-button2' %>      
+        <form action="<%= post_path(post) %>" method="post" class="delete-post-form" data-post-title="<%= post.title %>" data-turbo="false">
+          <input type="hidden" name="_method" value="delete">
+            <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+          <button type="submit" class="btn forum-button2" style="background-color: #004466">
+            Elimina
+          </button>
+        </form>
+        </div>      
         <% end %>
       </div>
     </div>

@@ -42,7 +42,9 @@
     <%# modifica post %>
     <div style="flex-shrink:0;" class="modifica-commenta">
       <button class="btn"> <%= link_to 'Modifica il post', edit_post_path(@post), style:"text-decoration:none;", class:"btn forum-button2"%> </button>
-      <button id="show-new-comment-form", class="btn forum-button2" style="margin-left: 0.5em;"> Commenta il Post</button>
+      <% if user_signed_in? %>
+        <button id="show-new-comment-form", class="btn forum-button2" style="margin-left: 0.5em;"> Commenta il Post</button>
+      <% end %>
     </div>
   </div>
 

@@ -15,14 +15,14 @@
       </p>
     </div>
 
-    <% if comment.user == current_user %>
+    <% if current_user == comment.user || current_user == comment.post.user || current_user&.admin? || current_user&.moderator? %>
       <div class="comment-actions">
-        <%= button_to 'Elimina', [comment.post, comment], method: :delete, data: { confirm: 'Sei sicuro?' }, class: "btn forum-button2 delete-comment-btn" %>
         <button class="btn forum-button2 edit-comment-button"
           data-comment-id="<%= comment.id %>"
           data-comment-content="<%= j comment.content %>">
-          Modifica il commento
+          Modifica
         </button>
+        <%= button_to 'Elimina', [comment.post, comment], method: :delete, data: { confirm: 'Sei sicuro?' }, class: "btn forum-button2 delete-comment-btn", style:"background-color: #004466;" %>
       </div>
     <% end %>
   </div>
@@ -32,23 +32,6 @@
   </div>
 
   <script>
-  document.addEventListener("turbo:load", function () {
-    const buttons = document.querySelectorAll(".edit-comment-button");
-
-    function updateButtonLabels() {
-      buttons.forEach(button => {
-        if (window.innerWidth <= 768) {
-          button.textContent = "Modifica";
-        } else {
-          button.textContent = "Modifica il commento";
-        }
-      });
-    }
-
-    updateButtonLabels();
-    window.addEventListener("resize", updateButtonLabels);
-  });
-
   document.addEventListener("turbo:load", function () {
     if (window.innerWidth <= 768) {
       document.querySelectorAll(".comment-meta").forEach(el => {

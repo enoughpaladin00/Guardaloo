@@ -784,10 +784,6 @@
     width: 95% !important;  
   }
 
-  body.posts.show .immagine{
-    
-  }
-
   body.posts.show .comment-header{
     justify-content: center !important;
   }
