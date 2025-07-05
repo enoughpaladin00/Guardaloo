@@ -1,10 +1,12 @@
-<div class="comment-card">
+<div id="comment-<%= comment.id %>" class="comment-card">
   <div class="comment-header">
-    <% if comment.user.avatar.attached? %>
-      <%= image_tag url_for(comment.user.avatar), class: "comment-avatar" %>
-    <% else %>
-      <%= image_tag "Profile_page/default_avatar.svg", class: "comment-avatar", alt: "Avatar" %>
-    <% end %>
+    <%= image_tag(
+      comment.user.avatar.attached? ? url_for(comment.user.avatar) + "?#{comment.user.avatar.blob.created_at.to_i}" : asset_path('Profile_page/default_avatar.svg'),
+      class: "comment-avatar",
+      alt: "Avatar",
+      onerror: "this.onerror=null; this.src='#{asset_path('Profile_page/default_avatar.svg')}';"
+    ) %>
+
 
     <div class="comment-info">
       <p class="comment-meta">
@@ -15,14 +17,13 @@
 
     <% if comment.user == current_user %>
       <div class="comment-actions">
-        <%= button_to 'Elimina', [comment.post, comment], method: :delete, data: { confirm: 'Sei sicuro?' }, class: "btn forum-button2" %>
+        <%= button_to 'Elimina', [comment.post, comment], method: :delete, data: { confirm: 'Sei sicuro?' }, class: "btn forum-button2 delete-comment-btn" %>
         <button class="btn forum-button2 edit-comment-button"
-            data-comment-id="<%= comment.id %>"
-            data-comment-content="<%= j comment.content %>">
-            Modifica il commento
+          data-comment-id="<%= comment.id %>"
+          data-comment-content="<%= j comment.content %>">
+          Modifica il commento
         </button>
       </div>
-      
     <% end %>
   </div>
 

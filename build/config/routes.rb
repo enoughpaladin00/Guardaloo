@@ -55,7 +55,7 @@ Rails.application.routes.draw do
   match "/auth/:provider", to: "sessions#passthru", via: [ :get, :post ]
 
   resources :posts do
-    resources :comments, only: [ :create, :destroy ]
+    resources :comments, only: [ :create, :update, :destroy ]
   end
 
   post '/bookmarks/toggle', to: 'bookmarks#toggle', as: 'bookmarks_toggle'

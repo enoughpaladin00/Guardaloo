@@ -1,11 +1,5 @@
 <%= render 'layouts/navbar' %>
 
-
-<% if user_signed_in? %>      <!-- controllo utente autenticato, scritte opzionali -->
-<% else %>
-    <h1>NON SEI REGISTRATO! DEVI REGISTRARTI</h1>  <!-- blurra tutto e fai apparire il login form? -->
-<% end %>   
-
 <!-- TITOLO -->
 <h1 class="forum-title">Guardaloo's Forum</h1>
 
@@ -17,13 +11,12 @@
 
   <%= form_with url: posts_path, method: :get, local: true, html: { class: "filter-form" } do %>
     <div class="filters">
-      <%= label_tag :query, "", class:"post-content"%>
       <%= text_field_tag :query, params[:query], placeholder: "Cerca i post", class:"forum-search-filters px-2 align-items-center", style:"border-radius:0.6em; height:2.1em; font-size:1.2em;", autocomplete: "off"%>
 
       <%= select_tag :filter, options_for_select([
           ['Tutti i post', 'all'],
           ['Solo i miei post', 'my_posts']
-        ], selected: params[:filter]), include_blank: false, class:"forum-search-filters", style:"border-radius:0.6em; height:2.1em; font-size:1.2em; width:20em;"%>
+        ], selected: params[:filter]), include_blank: false, class:"forum-search-filters2" %>
 
       <%= submit_tag "Filtra", class: "btn forum-button2" %>
     </div>

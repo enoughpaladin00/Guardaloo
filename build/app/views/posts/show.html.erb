@@ -3,25 +3,26 @@
 
 <div class="posts-container">
   <%= link_to 'Ritorna al Forum', posts_path, class:"btn forum-button2", style:"position:absolute; left:3em;" %>
-  <div class="new-post-form-container" style="gap: 3em; width: 70%; display: flex; align-items: stretch;">
+  <div class="new-post-form-container-show">
     <%# immagine di sinistra %>
     <%= image_tag "https://image.tmdb.org/t/p/w342#{@post.movie_poster_path}", style:"overflow: hidden; border-radius:0.5em; height:100%;" %>
      
     <%# dettagli post e contenuto %>
     <div class="post-card2"  style="height: 100%; min-height:24em">
-      <div id="foto-titolo-creatore" style="display: flex; flex-direction: column; justify-content: center; align-items:center; border-bottom: 2px solid #FD7474; " >
-        
-        <%# avatar %>
-        <% if @user.persisted? && @user.avatar.attached? %>
-            <%= image_tag url_for(@user.avatar) + "?#{@user.avatar.blob.created_at.to_i}", class: "post-avatar", style:"" %>
-        <% else %>
+      <div class="foto-titolo-creatore" id="foto-titolo-creatore" style="" >
+        <div class="avatar-container">  <%# avatar %>
+          <% if @post.user.avatar.attached? %>
+            <%= image_tag url_for(@post.user.avatar) + "?#{@post.user.avatar.blob.created_at.to_i}", class: "post-avatar" %>
+          <% else %>
             <%= image_tag "Profile_page/default_avatar.svg", alt: "Immagine di default", class: "post-avatar" %>
-        <% end %>
-        
+          <% end %>
+          <p class="post-title" style="font-size: 1.2em;">Creato <%= time_ago_in_words(@post.created_at) %> fa da <%= @post.user.username%> 
+        </div>
+    
         <%# titolo post e info %>
         <div class="post-title" style="margin-top:1em; width:95%; margin-left:auto; margin-right:1em; border-radius:0.5em;">
           <h1><%= @post.title %></h1>
-          <p>Creato <%= time_ago_in_words(@post.created_at) %> fa da <%= @post.user.username%> riguardo il film: <span><a href="/movies/<%= @post.movie_id %>" style="color: #FD7474;"><%= @post.movie_title %></a></span></p>
+          <span><a href="/movies/<%= @post.movie_id %>" style="color: #FD7474;"><%= @post.movie_title %></a></span></p>
         </div>
       </div>
       
