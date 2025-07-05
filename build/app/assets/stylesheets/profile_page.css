@@ -1,9 +1,9 @@
 /*-----layout impaginazione-----*/
 .User_Page{
-    margin-left: 4%;
-    margin-right: 4%;
+    margin-left: 2rem;
+    margin-right: 4rem;
     border-radius: 20px;
-    margin-top: 3%;
+    margin-top: 1rem;
 }
 .User_half{
     display:flex;
@@ -26,10 +26,7 @@
 }
 .Sezione_3{
     margin-top: 3rem;
-    margin-left: 2rem;
-    border: 1px solid green;
     margin-bottom: 3rem;
-    margin-right: 2rem;
 }
 
 /*-----Sezione 1-----*/
@@ -59,24 +56,32 @@
 .user_name{
     flex: 1;
     text-align: left;
-    font-size: var(--size-lg);
-    font-weight: 600;
     word-break: break-word;
     padding-left: 2rem;
+    font-family: 'Inter', sans-serif;
+}
+.user_name h2{
+    font-size: var(--size-4xl);
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
 }
 .user_edit{
     flex: 0 0 20%;
     display: flex;
     justify-content: flex-end;
 }
-.button-1{
-    font-size: var(--size-sm);
+
+/*button style*/
+.edit-button{
     border-radius: 50px;
     display: inline-block;
     padding: 0px 10px;
     border:none;
     font-family: 'Inter', sans-serif;
     font-weight: 600;
+    font-size: 20px;
+    background-color: var(--color-2);
+    padding: 0px 16px;
 }
 /*secondo contenitore*/
 
@@ -85,6 +90,11 @@
     display:flex;
     align-items: center;
     gap: 50%;
+}
+.Sezione_2-1 h2{
+    font-family: 'Inter', sans-serif;
+    font-size: var(--size-5xl);
+    font-weight: bolder;
 }
 .Sezione_2-2{
     top: 5%;
@@ -130,79 +140,266 @@
 .titolo_3{
     font-size: var(--size-2xl);
 }
-.box_3-2{
-    border: 1px red solid;
-}
 
-
-/*PopUp*/
-.popup-txt{
-    color: var(--color-1);
-    font-family: 'Inter', sans-serif;
-    font-size: 22px;
-    font-weight: 600;
-}
-/*edit popup*/
+/*-----PopUp-----*/
+/*modifica info*/
 .edit-overlay {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0,0,0,0.6);
-    z-index: 9999;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000000;
+}
+.edit-popup {
+    width: 95%;
+    height: 90%;
+    background-color: var(--color-3-light);
+    border-radius: 20px;
+    padding: 2rem;
+    overflow-y: auto;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    position: relative;
+    display:flex;
+}
+.edit-bio{
+    width: 45%;
+    margin-left: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+.bio-title{
+    font-family: 'Inter', sans-serif;
+    font-weight: bold;
+    font-size: var(--size-lg);
+}
+/*modifica top film*/
+.edit-top{
+    width: 45%;
+}
+.top-title{
+    font-family: 'Inter', sans-serif;
+    font-weight: bold;
+    font-size: var(--size-lg);
+    margin-left: 4rem;
+}
+.poster-bt{
     display: flex;
     justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+.poster-bt img {
+  width: 200px;
+  height: 15rem;
+  border-radius: 8px;
+  object-fit: cover;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease;
+}
+.poster-bt img:hover {
+  transform: scale(1.05);
+}
+/*barra di ricerca film*/
+.poster-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    display: flex;
     align-items: center;
+    justify-content: center;
+    z-index: 10000000;
 }
-.popup-content {
-    max-width: 100%;
+.poster-popup {
+    margin-inline: 2%;
+    width: auto;
+    height: auto;
+    background-color: var(--color-3-light);
+    border-radius: 8px;
+    padding: 2rem;
+    overflow-y: auto;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+.poster-popup h2{
+    font-family: 'Inter', sans-serif;
+    font-weight: bold;
+    font-size: var(--size-xl);
+    margin-left: 4rem;
+}
+
+
+.movie-search-container {
+    position: relative;
+    margin-bottom: 20px;
+  }
+  
+  .movie-search-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--color-4, #333);
+  }
+  
+  .movie-search-input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e1e5e9;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    background: white;
+  }
+  
+  .movie-search-input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+  }
+  
+  .movie-search-form.search-active .movie-search-input {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-color: transparent;
+  }
+  
+  .movie-search-results {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    max-height: 400px;
+    overflow-y: auto;
+    background: white;
+    border: 2px solid #007bff;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+  }
+  
+  .search-message, .search-loading {
     padding: 20px;
-}
-.edit-box {
-    background-color: #272727;
-    width: 600px;
-    margin: 0 auto;
-    padding: 50px 40px;
-    border-radius: 20px;
-}
-/*favourite popup*/
-.preferiti-overlay{
+    text-align: center;
+    color: #6c757d;
+    font-style: italic;
+  }
+  
+  .search-loading i {
+    margin-right: 8px;
+  }
+  
+  .movie-result-item {
+    padding: 12px;
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .movie-result-item:hover {
+    background-color: #f8f9fa;
+  }
+  
+  .movie-result-item.selected {
+    background-color: #e3f2fd;
+    border-left: 4px solid #007bff;
+  }
+  
+  .movie-result-item:last-child {
+    border-bottom: none;
+  }
+  
+  .movie-result-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .movie-poster-thumb {
+    width: 60px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+  
+  .movie-poster-placeholder {
+    width: 60px;
+    height: 90px;
+    background: #f0f0f0;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  
+  .movie-info {
+    flex: 1;
+    min-width: 0;
+  }
+  
+  .movie-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0 0 4px 0;
+    color: #333;
+  }
+  
+  .movie-year {
+    font-size: 14px;
+    color: #666;
+    background: #f0f0f0;
+    padding: 2px 6px;
+    border-radius: 3px;
+    display: inline-block;
+    margin-bottom: 8px;
+  }
+  
+  .movie-overview {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+    line-height: 1.4;
+  }
+  
+  .movie-search-overlay {
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0,0,0,0.6);
-    z-index: 9999;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.fav-box{
-    background-color: #272727;
-    width: 700px;
-    margin: 0 auto;
-    padding: 50px 40px;
-    border-radius: 20px;
-}
-
-
-/*button style*/
-.popup-button{
-    border-radius: 50px;
-    display: inline-block;
-    padding: 0px 10px;
-    border:none;
-    font-family: 'Inter', sans-serif;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.1);
+    z-index: 999;
+  }
+  
+  .movie-save-btn {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-size: 16px;
     font-weight: 600;
-    font-size: 20px;
-}
-.yellow-button{
-    background-color: var(--color-2);
-    padding: 0px 16px;
-}
-
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .movie-save-btn:hover {
+    background: #218838;
+  }
+  
+  .movie-save-btn:disabled {
+    background: #6c757d;
+    cursor: not-allowed;
+  }
 
 /*responsive*/
 @media (max-width: 1280px){
@@ -274,8 +471,7 @@
 
 
 
-/*da telefono a computer*/
-/*io uso un metodo da pc a telefono, cambio max-width*/
+/*da pc a telefono cambia con max-width*/
 /* xs */
 /* @media (min-width: 475px) {} */
 /* sm */

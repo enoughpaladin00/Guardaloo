@@ -5,17 +5,6 @@ class ProfilePageController < ApplicationController
 
   def profile_index
 
-    # Film scelti dall'utente (fissi sul profilo) - usa TmdbService.get_movie
-    @chosen_movies = []
-    [@user.tmdb_id_1, @user.tmdb_id_2, @user.tmdb_id_3].each do |tmdb_id|
-      if tmdb_id.present?
-        movie = TmdbService.get_movie(tmdb_id)
-        @chosen_movies << movie
-      else
-        @chosen_movies << nil
-      end
-    end
-    
     # Prendi gli ultimi 10 tmdb_id dai preferiti dell'utente
     bookmark_tmdb_ids = @user.bookmarks.order(created_at: :desc).limit(10).pluck(:tmdb_id)
     
@@ -26,40 +15,114 @@ class ProfilePageController < ApplicationController
       Rails.logger.error "Errore nel recuperare il film #{tmdb_id}: #{e.message}"
       nil
     end
-  end
-  
-  # Metodo per cercare film - usa search_movie_by_title
-  def search_movies
-    query = params[:query]
-    if query.present?
-      @search_results = TmdbService.search_movie_by_title(query)
-      render json: @search_results
-    else
-      render json: { error: "Query vuota" }, status: 400
-    end
-  end
-  
-  # Metodo per salvare il film scelto
-  def update_chosen_movie
-    movie_id = params[:movie_id]
-    position = params[:position].to_i # 1, 2, o 3
     
-    if position.between?(1, 3) && movie_id.present?
+    # Film scelti dall'utente (fissi sul profilo) - usa TmdbService.get_movie
+    @chosen_movies = []
+    [@user.tmdb_fav1, @user.tmdb_fav2, @user.tmdb_fav3].each do |tmdb_id|
+      if tmdb_id.present?
+        movie = TmdbService.get_movie(tmdb_id)
+        @chosen_movies << movie
+      else
+        @chosen_movies << nil
+      end
+    end
+ end
+
+  # Metodo per cercare film su TMDB
+  def search_movies
+   query = params[:query]
+   return render json: [] if query.blank?
+  
+   results = TmdbService.search_movie_by_title(query)
+  
+   render json: results
+  rescue => e
+   Rails.logger.error "Errore nella ricerca film: #{e.message}"
+   render json: []
+  end
+
+  # Metodo per aggiornare un film della Top 3
+  def update_movie
+    position = params[:position].to_i
+    tmdb_id = params[:selected_movie_tmdb_id] # questo deve essere l'ID TMDB del film
+  
+    if tmdb_id.blank? || position < 1 || position > 3
+      render json: { error: "Parametri mancanti o non validi" }, status: :bad_request
+      return
+    end
+  
+    begin
       case position
       when 1
-        @user.update(tmdb_id_1: movie_id)
+        @user.update!(tmdb_fav1: tmdb_id)
       when 2
-        @user.update(tmdb_id_2: movie_id)
+        @user.update!(tmdb_fav2: tmdb_id)
       when 3
-        @user.update(tmdb_id_3: movie_id)
+        @user.update!(tmdb_fav3: tmdb_id)
       end
-      
-      render json: { success: true, message: "Film salvato!" }
-    else
-      render json: { error: "Parametri non validi" }, status: 400
+  
+      render json: { message: "Film aggiornato con successo!" }, status: :ok
+    rescue => e
+      Rails.logger.error "Errore nell'aggiornamento: #{e.message}"
+      render json: { error: "Errore nell'aggiornamento del film" }, status: :unprocessable_entity
     end
   end
 
+  def movie_search
+   query = params[:q].to_s.strip
+  
+   if query.blank? || query.length < 2
+     return render json: { results: [], message: "Inserisci almeno 2 caratteri" }
+   end
+
+   begin
+     results = fetch_movies_from_tmdb(query)
+     render json: { results: results, message: results.empty? ? "Nessun film trovato" : nil }
+   rescue => e
+     Rails.logger.error "Errore ricerca TMDB: #{e.message}"
+     render json: { results: [], message: "Errore durante la ricerca" }
+   end
+  end
+  def fetch_movies_from_tmdb(query)
+   require "net/http"
+   require "json"
+  
+   api_key = ENV["TMDB_API_KEY"]
+   return [] unless api_key
+  
+   encoded_query = URI.encode_www_form_component(query)
+   url = URI("https://api.themoviedb.org/3/search/movie?api_key=#{api_key}&language=it-IT&query=#{encoded_query}")
+  
+   response = Net::HTTP.get_response(url)
+  
+   if response.is_a?(Net::HTTPSuccess)
+     data = JSON.parse(response.body)
+     process_tmdb_results(data["results"] || [])
+   else
+     []
+   end
+  end
+
+  def process_tmdb_results(results)
+   results.first(10).map do |movie|
+     {
+       id: movie["id"],
+       title: movie["title"],
+       year: extract_year(movie["release_date"]),
+       poster_path: movie["poster_path"],
+       poster_url: movie["poster_path"] ? "https://image.tmdb.org/t/p/w185#{movie["poster_path"]}" : nil,
+       overview: movie["overview"]&.truncate(150)
+     }
+   end
+  end
+
+  def extract_year(date_string)
+   return nil unless date_string
+   Date.parse(date_string).year
+  rescue
+   nil
+  end
+  
   def update
     if params[:current_password].blank? || !@user.authenticate(params[:current_password])
       flash.now[:alert] = "Password attuale errata"
@@ -74,6 +137,7 @@ class ProfilePageController < ApplicationController
       render :profile_index, status: :unprocessable_entity
     end
   end
+
 
   private
 
