@@ -37,7 +37,7 @@
 
                 <hr style="margin-right: 2%, color: var(--color-4)">
 
-                <!-- user stats -->
+                <!-- user post -->
 
                 <div class="post_created">
                     <div class="container-fluid d-flex align-items-center">
@@ -45,7 +45,8 @@
                     <%= image_tag "homepage/forum.svg", class: "icon" %>
                     </div>
             
-                    <% @recent_posts = Post.includes(:user, :comments).order(created_at: :desc).limit(2) %>
+                    <% @recent_posts = current_user.posts.includes(:comments).order(created_at: :desc).limit(2) %>
+
 
                     <% @recent_posts.each do |post| %>
                     <div align="center">
@@ -105,7 +106,7 @@
             </div>
 
             <div class="slider-preferiti">
-                <button class="slider-btn left"><%= image_tag "homepage/freccia.svg", class: "slider_img", style: "transform: rotate(180deg)" %></button>
+                <button class="carosello-btn left"><%= image_tag "homepage/freccia.svg", class: "slider_img", style: "transform: rotate(180deg)" %></button>
                 <div class="box_3-2">
                     <div class="slider-track">
                         <% @preferiti.each do |movie| %>
@@ -117,11 +118,11 @@
                         <%end%>
                     </div>
                 </div>
-                <button class="slider-btn right"><%= image_tag "homepage/freccia.svg", class: "slider_img" %></button>
+                <button class="carosello-btn right"><%= image_tag "homepage/freccia.svg", class: "slider_img" %></button>
             </div> 
 
             <div class="box_3-3">
-                
+                <button class="favourite-btn open-favourite", style="margin-left:50%;"> Vedi Tutti </button>
             </div>        
         </div>
     
@@ -196,8 +197,7 @@
             </div>
         </div>
     </div>
-
-
+    <!-- popup ricerca film della top 3 -->
     <div id="poster-popup-overlay" class="poster-overlay" style="display: none;">
         <div class="poster-popup">
             <%= form_with model: @user, url: update_movie_path, method: :patch, local: true, html: { multipart: true, class: "movie-search-form" } do |f| %>
@@ -232,6 +232,26 @@
               <div id="movie-search-overlay" class="movie-search-overlay"></div>
         </div>
     </div>
+
+    <!-- popup tutti i film preferiti -->
+    <div id="fav-popup-overlay" class="fav-overlay" style="display: none;">
+        <div class="fav-popup">
+            <div>
+                <span class="fav-title" style="color: var(--color-4)">Lista dei Film preferiti</span> 
+                <button class="favourite-btn close-favourite", style="margin-left:4rem;"> Chiudi </button>
+            </div>
+            </br>
+            <div class="elenco-film", style="margin: 3rem;">
+                <% @preferiti.each do |movie| %>
+
+                    <div class="popup-film-container">
+                        <a href="/movies/<%= movie['id'] %>"><img class="locandina" src="https://image.tmdb.org/t/p/w500<%= movie['poster_path'] %>" alt="<%= movie['title'] %>" ></a>
+                    </div>
+
+                <%end%>  
+            </div>
+        </div>
+    </div>
     
 
     <!-- Script -->
@@ -245,6 +265,50 @@
             document.querySelectorAll(".close-popup").forEach(button => {
               button.addEventListener("click", function () {
                 document.getElementById("edit-popup-overlay").style.display = "none";
+              });
+            });
+        });
+
+        document.addEventListener('turbo:load', () => {
+          document.querySelectorAll('.slider-preferiti').forEach(slider => {
+            const track = slider.querySelector('.slider-track');
+            const btnLeft = slider.querySelector('.carosello-btn.left');
+            const btnRight = slider.querySelector('.carosello-btn.right');
+
+            if (!track || !btnLeft || !btnRight) return;
+
+            const updateButtons = () => {
+              const scrollLeft = track.scrollLeft;
+              const maxScroll = track.scrollWidth - track.clientWidth;
+
+              btnLeft.style.display = scrollLeft > 0 ? 'block' : 'none';
+
+              btnRight.style.display = scrollLeft < maxScroll ? 'block' : 'none';
+            };
+
+            track.addEventListener('scroll', updateButtons);
+            window.addEventListener('resize', updateButtons);
+            updateButtons();
+
+
+            btnRight.addEventListener('click', () => {
+              track.scrollBy({ left: 1000, behavior: 'smooth' });
+            });
+            btnLeft.addEventListener('click', () => {
+              track.scrollBy({ left: -1000, behavior: 'smooth' });
+            });
+          });
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelector(".open-favourite").addEventListener("click", function () {
+              document.getElementById("fav-popup-overlay").style.display = "flex";
+            });
+            
+            
+            document.querySelectorAll(".close-favourite").forEach(button => {
+              button.addEventListener("click", function () {
+                document.getElementById("fav-popup-overlay").style.display = "none";
               });
             });
         });
@@ -337,27 +401,17 @@
                 }
                 
                 const resultsHtml = results.map(movie => `
-                  <div class="movie-result-item" 
-                       data-title="${movie.title}" 
-                       data-poster="${movie.poster_path || ''}"
-                       data-tmdb-id="${movie.id}">
-                    <div class="movie-result-content">
-                      ${movie.poster_url ? `
-                        <img src="${movie.poster_url}" 
-                             alt="${movie.title}" 
-                             class="movie-poster-thumb">
-                      ` : `
-                        <div class="movie-poster-placeholder">
-                          <i class="fas fa-film"></i>
+                    <div class="movie-result-item" 
+                        data-title="${movie.title}" 
+                        data-poster="${movie.poster_path || ''}"
+                        data-tmdb-id="${movie.id}">
+                        <div class="movie-result-content">
+                            <div class="movie-info">
+                                <h4 class="movie-title">${movie.title}</h4>
+                                ${movie.year ? `<span class="movie-year">${movie.year}</span>` : ''}
+                            </div>
                         </div>
-                      `}
-                      <div class="movie-info">
-                        <h4 class="movie-title">${movie.title}</h4>
-                        ${movie.year ? `<span class="movie-year">${movie.year}</span>` : ''}
-                        ${movie.overview ? `<p class="movie-overview">${movie.overview}</p>` : ''}
-                      </div>
                     </div>
-                  </div>
                 `).join('');
                                 
                 resultsContainer.innerHTML = resultsHtml;
