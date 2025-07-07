@@ -16,9 +16,21 @@ require 'selenium/webdriver'
 Capybara.register_driver :firefox_headless do |app|
   options = Selenium::WebDriver::Firefox::Options.new
   options.add_argument('--headless')
-  
-  Capybara::Selenium::Driver.new(app, browser: :firefox, options: options)
+
+  profile = Selenium::WebDriver::Firefox::Profile.new
+  profile['geo.prompt.testing'] = true
+  profile['geo.prompt.testing.allow'] = true
+
+  options.profile = profile
+
+  Capybara::Selenium::Driver.new(
+    app,
+    browser: :firefox,
+    options: options
+  )
 end
+
+
 
 Capybara.javascript_driver = :firefox_headless
 Capybara.default_driver = :firefox_headless

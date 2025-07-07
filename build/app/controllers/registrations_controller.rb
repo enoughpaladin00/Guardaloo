@@ -4,7 +4,7 @@ class RegistrationsController < ApplicationController
 
     if user.save
       session[:user_id] = user.id
-      render json: { success: true, redirect_url: "#{request.base_url}/home/" }
+      render json: { success: true, redirect_url: home_path }
     else
       render json: { success: false, errors: user.errors.full_messages, redirect_url: root_path }, status: :unprocessable_entity
     end

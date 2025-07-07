@@ -2,32 +2,6 @@ class PostsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]  # Richiede login tranne per index/show
   before_action :set_post, only: [:show, :edit, :update, :destroy]
   before_action :authorize_user!, only: [:edit, :update, :destroy]  # Autorizza solo il proprietario
-  # before_action :set_post, only: [:show, :edit, :update, :destroy]
-
-  # SENZA FILTRO
-  # def index
-  #   @posts = Post.includes(:user).order(created_at: :desc)  # Caricamento eager degli user
-  #   if params[:filter] == "my_posts" && user_signed_in?
-  #     @posts = Post.where(user: current_user)
-  #   elsif params[:filter].present?
-  #     @posts = Post.where(user_id: params[:filter])
-  #   else
-  #     @posts = Post.all
-  #   end
-  # end
-
-  #FILTRO SOLO UTENTI
-  # def index
-  #   if params[:filter] == "my_posts" && user_signed_in?
-  #     @posts = Post.where(user: current_user)
-  #   elsif params[:filter].present?
-  #     @posts = Post.where(user_id: params[:filter])
-  #   else
-  #     @posts = Post.all
-  #   end
-
-  #   @posts = @posts.includes(:user).order(created_at: :desc)
-  # end
 
   #FILTRO COMPLETO
   def index
@@ -47,7 +21,7 @@ class PostsController < ApplicationController
       @posts = @posts.select do |post|
         post.title.downcase.include?(keyword) ||
         post.content.downcase.include?(keyword) ||
-        post.user.username.downcase.include?(keyword) ||    
+        post.user.username.downcase.include?(keyword) ||
         post.comments.any? { |c| c.content.downcase.include?(keyword) }
       end
     end

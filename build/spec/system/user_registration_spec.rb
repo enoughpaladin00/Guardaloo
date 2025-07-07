@@ -8,9 +8,9 @@ RSpec.describe "User registration", type: :system do
   it "permits a user to register successfully" do
     visit root_path
 
-    find('.register-button', match: :first).click
+    find('#register-popup-button', match: :first).click
 
-    within '#register-form-page' do
+    within '#register-form-popup' do
       fill_in 'Nome', with: 'Mario'
       fill_in 'Cognome', with: 'Rossi'
       fill_in 'Data di nascita', with: '1990-01-01'
@@ -18,7 +18,7 @@ RSpec.describe "User registration", type: :system do
       fill_in 'Email', with: 'mario.rossi@example.com'
       fill_in 'Password', with: 'password123'
       fill_in 'Conferma Password', with: 'password123'
-      click_button 'Registrati'
+      find("#register-button-popup").click
     end
 
     expect(page).to have_current_path('/home', wait:10)

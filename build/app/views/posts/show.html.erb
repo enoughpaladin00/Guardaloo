@@ -2,10 +2,10 @@
 <%= render 'layouts/navbar' %>
 
 <div class="posts-container">
-  <%= link_to 'Ritorna al Forum', posts_path, class:"btn forum-button2", style:"position:absolute; left:3em;" %>
+  <%= link_to 'Ritorna al Forum', posts_path, class:"btn forum-button2 mobile", style:"position:absolute; left:3em;" %>
   <div class="new-post-form-container-show">
     <%# immagine di sinistra %>
-    <%= image_tag "https://image.tmdb.org/t/p/w342#{@post.movie_poster_path}", style:"overflow: hidden; border-radius:0.5em; height:100%;" %>
+    <%= image_tag "https://image.tmdb.org/t/p/w342#{@post.movie_poster_path}", style:"overflow: hidden; border-radius:0.5em; height:100%;", class:"immagine" %>
      
     <%# dettagli post e contenuto %>
     <div class="post-card2"  style="height: 100%; min-height:24em">
@@ -37,12 +37,14 @@
 <%# commenti %>
 <div class="posts-container">
   <div class="filters-container">
-    <h2 class="post-title" style="font-size: 3em;">Commenti</h1> 
+    <h2 class="comment-title">Commenti</h1> 
 
     <%# modifica post %>
-    <div style="flex-shrink:0;">
+    <div style="flex-shrink:0;" class="modifica-commenta">
       <button class="btn"> <%= link_to 'Modifica il post', edit_post_path(@post), style:"text-decoration:none;", class:"btn forum-button2"%> </button>
-      <button id="show-new-comment-form", class="btn forum-button2" style="margin-left: 0.5em;"> Commenta il Post</button>
+      <% if user_signed_in? %>
+        <button id="show-new-comment-form", class="btn forum-button2" style="margin-left: 0.5em;"> Commenta il Post</button>
+      <% end %>
     </div>
   </div>
 
@@ -52,6 +54,7 @@
         <%= render 'comments/form', post: @post %> 
       </div>
   </div>
+  <%# commenti %>
   <div id="comments" class="posts-container">
   <% valid_comments = @post.comments.select { |c| c.content.present? } %>
   <% if valid_comments.empty? %>
@@ -64,7 +67,6 @@
 </div>
 
 </div> 
-
 
 
 

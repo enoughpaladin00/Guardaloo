@@ -45,22 +45,32 @@
                     <%= image_tag "homepage/forum.svg", class: "icon" %>
                     </div>
             
+                    <% @recent_posts = Post.includes(:user, :comments).order(created_at: :desc).limit(2) %>
+
+                    <% @recent_posts.each do |post| %>
                     <div align="center">
-                        <a href="#" class="link-underline link-underline-opacity-0">
+                        <%= link_to post_path(post), class: "link-underline link-underline-opacity-0" do %>
                         <div class="forum-item">
-                            <div class="forum-title-homepage" style="color: #004466; text-align: left;">Best Movie 2024</div>
-                                <div class="forum-meta mb-1 text-muted">
-                                    <span>MovieBuff</span>
-                                    <span>45 replies</span>
-                                </div>
+                            <div class="forum-title-homepage" style="color: #004466; text-align: left;">
+                            <%= truncate(post.title, length: 60) %>
                             </div>
-                        </a>
+                            <div class="forum-meta mb-1 text-muted">
+                            <span><%= post.user.username %></span>
+                            <span><%= pluralize(post.comments.count, 'commento') %></span>
+                            </div>
+                            <div class="forum-excerpt text-muted" style="font-size: 0.9em; text-align: left;">
+                            <%= truncate(strip_tags(post.content), length: 120) %>
+                            </div>
+                        </div>
+                        <% end %>
                     </div>
+                    <% end %>
+
             
                     <div align="center">
-                        <a href="#">
+                        <%= link_to posts_path do %>
                             <button class="forum-button">Vedi tutti</button>
-                        </a>
+                        <% end %>
                     </div>
             
                 </div>

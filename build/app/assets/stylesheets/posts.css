@@ -73,6 +73,16 @@
   text-decoration: none;
 }
 
+.comment-title{
+  font-size: 3em;
+  font-family: 'Bodoni Moda', serif;
+  color: #004466;
+  font-weight: bold;
+  margin-bottom: 0.5em;
+  text-align: center;
+  text-decoration: none;
+}
+
 .post-title a {
   text-decoration: none;
   color: inherit;
@@ -451,6 +461,17 @@
   position: relative;
 }
 
+.crea-post-header{
+  display: flex; flex-direction: column-reverse; justify-content: center;
+}
+
+.crea-nuovo-post{
+  display: flex;
+  flex-direction: row;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 
 @media screen and (max-width: 768px) {
   body.posts.index .posts-container,
@@ -593,7 +614,7 @@
   body.posts.show .enhanced-post-card,
   body.posts.show .comment-card {
     width: 100%;
-    margin: 1em auto;
+    margin: 0em auto;
     flex-direction: column !important;
     align-items: center;
   }
@@ -622,7 +643,6 @@
 
   body.posts.show .filters-container {
     flex-direction: column;
-    padding: 1em;
     gap: 1em;
   }
 
@@ -647,12 +667,13 @@
   }
 
   body.posts.show .new-post-card {
-    width: 90%;
+    width: 100%;
   }
 
   body.posts.show .comment-body {
     font-size: 1em;
     padding: 0.5em;
+    text-align: center;
   }
 
   body.posts.show .post-title {
@@ -726,4 +747,232 @@
     align-items:center; 
     border-bottom: 2px solid #FD7474;
   }
+
+  body.posts.show .new-post-form-container-show{
+    flex-direction: column;
+    width: 100%;
+  }
+
+  body.posts.show .comment-title{
+    font-size: 2.5em;
+  }  
+
+  body.posts.show .post-content{
+    text-align: center;
+  }
+
+  body.posts.show .btn{
+    text-align: center;
+    margin-left: 0em !important;
+  }
+
+  body.posts.show .mobile{
+    position: relative !important;
+    left: auto !important;
+  }
+  
+  body.posts.show .modifica-commenta{
+    display: flex;
+    flex-direction: column;
+  }
+
+  body.posts.show .new-comment{
+    height: auto !important;  
+  }
+
+  body.posts.show .field{
+    width: 95% !important;  
+  }
+
+  body.posts.show .comment-header{
+    justify-content: center !important;
+  }
 }
+
+@media screen and (max-width: 768px) {
+  body.posts.edit .posts-container {
+    margin-top: 1em;
+    margin-bottom: 2em;
+    padding: 1em;
+    width: 100%;
+  }
+
+  body.posts.edit .post-title {
+    font-size: 2em !important;
+    text-align: center;
+  }
+
+  body.posts.edit .new-post-form-container {
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 1em !important;
+    align-items: center;
+    margin: 0 auto;
+  }
+
+  body.posts.edit .new-post-card {
+    width: 95% !important;
+    padding: 1em;
+    box-sizing: border-box;
+    margin-left: auto;
+    margin-right: auto;
+    height: 35em;
+  }
+
+  body.posts.edit .new-post-card form .field {
+    width: 100% !important;
+    padding: 0;
+  }
+
+  body.posts.edit .limited-width {
+    width: 85% !important;
+  }
+
+  body.posts.edit .post-actions {
+    justify-content: center;
+    flex-wrap: wrap;
+    right: auto !important;
+  }
+
+  body.posts.edit .post-actions .btn {
+    font-size: 1em;
+    padding: 0.5em 1.2em;
+  }
+
+  body.posts.edit .forum-button2 {
+    font-size: 1em;
+    width: auto;
+  }
+
+  body.posts.edit .posts-container a.btn {
+    position: static !important;
+    display: block;
+    width: fit-content;
+    text-align: center;
+  }
+
+  body.posts.edit .new-post-form-container > div:first-child {
+    width: 100%;
+    text-align: center;
+  }
+
+  body.posts.edit .new-post-form-container img {
+    width: 60%;
+    max-width: 300px;
+    height: auto !important;
+    border-radius: 1em;
+    object-fit: cover;
+    margin-bottom: 1em;
+  }
+
+  body.posts.edit .new-post-card form label{
+    font-size: 0.9em;
+  }
+
+  body.posts.edit .ritorna{
+    margin-right: auto;
+    margin-left: auto;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  body.posts.new .posts-container {
+    margin-top: 1em;
+    margin-bottom: 2em;
+    padding: 1em;
+    width: 100%;
+  }
+
+  body.posts.new .post-title {
+    font-size: 2em !important;
+    text-align: center;
+  }
+
+  body.posts.new .new-post-form-container {
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 1em !important;
+    align-items: center;
+    margin: 0 auto;
+  }
+
+  body.posts.new .new-post-card {
+    width: 95% !important;
+    padding: 1em;
+    box-sizing: border-box;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  body.posts.new .new-post-card form .field {
+    width: 100% !important;
+    padding: 0;
+  }
+
+  body.posts.new .limited-width {
+    width: 85% !important;
+  }
+
+  body.posts.new .post-actions {
+    justify-content: center;
+    flex-wrap: wrap;
+    right: auto !important;
+  }
+
+  body.posts.new .post-actions .btn {
+    font-size: 1em;
+    padding: 0.5em 1.2em;
+  }
+
+  body.posts.new .forum-button2 {
+    font-size: 1em;
+    width: auto;
+  }
+
+  body.posts.new .posts-container a.btn {
+    position: static !important;
+    display: block;
+    width: fit-content;
+    text-align: center;
+  }
+
+  body.posts.new .new-post-form-container > div:first-child {
+    width: 100%;
+    text-align: center;
+  }
+
+  body.posts.new #movie-poster-preview img {
+    width: 60%;
+    max-width: 300px;
+    height: auto !important;
+    border-radius: 1em;
+    object-fit: cover;
+    margin-bottom: 1em;
+  }
+
+  body.posts.new .new-post-card form label {
+    font-size: 0.9em;
+  }
+
+  body.posts.new .title-icon {
+    width: 2em;
+    height: 2em;
+    margin-left: 0.5em;
+    margin-top: 0.3em;
+  }
+
+  body.posts.new .movie-suggestion {
+    max-width: 100%;
+  }
+
+  body.posts.new .field {
+    width: 95% !important;
+  }
+
+  body.posts.new .ritorna{
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: 1.5em;
+  }
+}
+
