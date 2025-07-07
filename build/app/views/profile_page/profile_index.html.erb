@@ -190,8 +190,6 @@
 
     <div id="poster-popup-overlay" class="poster-overlay" style="display: none;">
         <div class="poster-popup">
-            <h2>Scegli il tuo film preferito</h2>
-            </br>
             <%= form_with model: @user, url: update_movie_path, method: :patch, local: true, html: { multipart: true, class: "movie-search-form" } do |f| %>
                 <%= hidden_field_tag :position, nil, id: "popup-position" %>
                 
@@ -224,7 +222,7 @@
               <div id="movie-search-overlay" class="movie-search-overlay"></div>
         </div>
     </div>
-
+    
 
     <!-- Script -->
     <script>
