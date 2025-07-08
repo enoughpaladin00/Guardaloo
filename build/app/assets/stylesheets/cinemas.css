@@ -63,7 +63,7 @@ html, body {
   height: 100%;
   margin: 0;
   padding: 0;
-  overflow-x: hidden; 
+  overflow-x: hidden;
 }
 
 :root {
@@ -72,39 +72,39 @@ html, body {
   --color-text-light: #00446695;      /* Testo grigio-blu */
   --color-border-default: #cccccc;    /* Bordo grigio */
   --color-background-card: #fffce8;   /* Sfondo crema per card */
-  --color-2: var(--color-accent);     
+  --color-2: var(--color-accent);
 }
 
 
 .titolo-pagina {
-  max-width: 1200px; 
+  max-width: 1200px;
   margin: 2rem auto 2.5rem auto;
-  padding: 0 2rem; 
+  padding: 0 2rem;
   text-align: center;
 }
 
 .titolo-pagina h1 {
   font-family: 'Inter', sans-serif;
-  font-size: 3rem; 
+  font-size: 3rem;
   color: var(--color-primary);
   position: relative;
   padding-bottom: 0.8rem;
-  display: inline-block; 
+  display: inline-block;
 }
 
 .titolo-pagina h1::after {
   content: '';
   display: block;
   width: 0;
-  height: 5px; 
+  height: 5px;
   background-color: var(--color-accent);
-  margin: 8px auto 0 auto; 
+  margin: 8px auto 0 auto;
   border-radius: 3px;
-  transition: width 0.6s ease-out; 
+  transition: width 0.6s ease-out;
 }
 
 .titolo-pagina h1:hover::after {
-  width: 100%; 
+  width: 100%;
 }
 
 
@@ -112,19 +112,19 @@ html, body {
 .status-message {
   text-align: center;
   width: 100%;
-  margin: 2rem auto; 
+  margin: 2rem auto;
   font-family: 'Inter', sans-serif;
-  font-size: 1.3rem; 
-  color: var(--color-primary); 
+  font-size: 1.3rem;
+  color: var(--color-primary);
   padding: 2rem;
-  border: 1px solid var(--color-accent); 
-  border-radius: 10px; 
-  background-color: #fff8e1; 
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08); 
+  border: 1px solid var(--color-accent);
+  border-radius: 10px;
+  background-color: #fff8e1;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
 }
 
 .caricamento-iniziale {
-  animation: pulse 1.5s infinite ease-in-out; 
+  animation: pulse 1.5s infinite ease-in-out;
 }
 
 @keyframes pulse {
@@ -144,7 +144,7 @@ html, body {
 /* Griglia Cinema  */
 #cinema-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); 
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
   gap: 2rem;
   padding: 2rem;
   max-width: 1200px;
@@ -159,14 +159,14 @@ html, body {
   border-radius: 20px;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
   font-family: 'Inter', sans-serif;
-  transition: transform 0.2s ease, box-shadow 0.2s ease; 
-  cursor: pointer; 
-  display: flex; 
-  flex-direction: column; 
-  justify-content: space-between; 
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   position: relative;
   overflow: hidden;
-  height: 100%; 
+  height: 100%;
 }
 
 .cinema-card:hover {
@@ -190,12 +190,12 @@ html, body {
 /* Mappa */
 .cinema-card iframe {
   border-radius: 12px;
-  width: 100%; 
-  height: 200px; 
+  width: 100%;
+  height: 200px;
   border: 0;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
-  margin-top: 1.5rem; 
-  flex-shrink: 0; 
+  margin-top: 1.5rem;
+  flex-shrink: 0;
 }
 
 /* Modal */
@@ -207,11 +207,11 @@ html, body {
   top: 0;
   width: 100%; /* Larghezza */
   height: 100%; /* Altezza */
-  overflow: auto; 
+  overflow: auto;
   background-color: rgba(0,0,0,0.6);
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px); /* Per compatibilità Safari */
-  animation: fadeInBackground 0.3s ease-out; 
+  animation: fadeInBackground 0.3s ease-out;
 }
 
 @keyframes fadeInBackground {
@@ -221,15 +221,15 @@ html, body {
 
 .modal-content {
   background-color: #fefefe;
-  margin: 10% auto; 
+  margin: 10% auto;
   padding: 30px;
   border: none;
-  border-radius: 15px; 
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3); 
-  width: 90%; 
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  width: 90%;
   max-width: 750px;
-  position: relative; 
-  animation: fadeInContent 0.3s ease-out; 
+  position: relative;
+  animation: fadeInContent 0.3s ease-out;
 }
 
 @keyframes fadeInContent {
@@ -310,13 +310,13 @@ html, body {
   position: absolute;
   top: 15px;
   right: 15px;
-  font-size: 1.6rem; 
+  font-size: 1.6rem;
   cursor: pointer;
   transition: transform 0.2s ease, color 0.2s ease;
   z-index: 10;
 }
 .favorite-icon:hover {
-  transform: scale(1.1); 
+  transform: scale(1.1);
 }
 
 .favorite-icon .fas.fa-bookmark {
@@ -328,14 +328,14 @@ html, body {
 }
 
 .filters-container {
-  display: flex;
-  flex-wrap: wrap; 
-  gap: 1.5rem; 
+  display: flex; /* Manteniamo flexbox per il container principale */
+  flex-wrap: wrap;
+  gap: 1.5rem;
   justify-content: center;
-  align-items: flex-end; 
+  align-items: flex-start;
   padding: 1.5rem 2rem;
   max-width: 1200px;
-  margin: 0 auto 2rem auto;
+  margin: -1.5rem auto 2rem auto;
   background-color: var(--color-background-card);
   border-radius: 15px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
@@ -344,10 +344,11 @@ html, body {
 
 .filter-group {
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem; 
-  min-width: 200px; 
+  flex-direction: column; /* Impila gli elementi verticalmente all'interno del gruppo */
+  gap: 0.5rem;
+  min-width: 200px;
 }
+
 
 .filters-container label {
   font-size: 0.95rem;
@@ -365,13 +366,13 @@ html, body {
   color: #333;
   background-color: #fff;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  flex-grow: 1; 
+  flex-grow: 1;
 }
 
 .filters-container .form-select:focus,
 .filters-container .form-control:focus {
   border-color: var(--color-accent);
-  box-shadow: 0 0 0 3px rgba(0, 150, 255, 0.2); 
+  box-shadow: 0 0 0 3px rgba(0, 150, 255, 0.2);
   outline: none;
 }
 
@@ -385,15 +386,15 @@ html, body {
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.2s ease, transform 0.2s ease;
-  flex-shrink: 0; 
-  margin-top: 0; 
-  flex-grow: 1; 
-  max-width: 200px; 
-  white-space: nowrap; 
+  flex-shrink: 0;
+  margin-top: 0;
+  flex-grow: 1;
+  max-width: 200px;
+  white-space: nowrap;
 }
 
 .filters-container .yellow-button:hover {
-  background-color: #e6a21e; 
+  background-color: #e6a21e;
   transform: translateY(-1px);
 }
 
@@ -401,12 +402,12 @@ html, body {
   display: flex;
   gap: 10px; /* Spazio tra i bottoni */
   margin-top: 0.5rem;
-  flex-wrap: wrap; 
+  flex-wrap: wrap;
   justify-content: flex-start;
 }
 
 .clear-button {
-  background-color: #f0f0f0; 
+  background-color: #f0f0f0;
   color: #555;
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -415,9 +416,9 @@ html, body {
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.2s ease, border-color 0.2s ease;
-  display: flex; 
+  display: flex;
   align-items: center;
-  gap: 8px; 
+  gap: 8px;
   flex-shrink: 0;
   flex-grow: 0;
   max-width: 250px;
@@ -431,19 +432,61 @@ html, body {
 
 .filters-container .form-select:disabled,
 .filters-container .form-control:disabled {
-  background-color: #e9ecef; 
+  background-color: #e9ecef;
   opacity: 0.6;
   cursor: not-allowed;
 }
 
+/* Per "Mostra solo preferiti" */
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Spazio tra checkbox e testo */
+  font-size: 1rem;
+  color: var(--color-primary);
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.8rem 0;
+  margin-top: 0; 
+}
 
-/* Per schermi fino a 767px */
+.checkbox-label input[type="checkbox"] {
+  appearance: none; 
+  -webkit-appearance: none; /* Per compatibilità Safari */
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--color-primary);
+  border-radius: 4px;
+  background-color: #fff;
+  cursor: pointer;
+  position: relative;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.checkbox-label input[type="checkbox"]:checked {
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.checkbox-label input[type="checkbox"]:checked::after {
+  content: '\2713'; /* Simbolo di spunta Unicode */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--color-primary); 
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* Media Queries per la Responsiveness */
 @media (max-width: 767px) {
-  filters-container .yellow-button,
+  .filters-container .yellow-button,
   .filters-container .clear-button {
-    width: 100%; 
-    max-width: unset; 
-    margin-top: 0.5rem; }
+    width: 100%;
+    max-width: unset;
+    margin-top: 0.5rem;
+  }
 
   #cinema-list {
     padding: 1rem;
@@ -451,43 +494,43 @@ html, body {
   }
 
   .cinema-card {
-    padding: 1.2rem; 
-    border-radius: 15px; 
+    padding: 1.2rem;
+    border-radius: 15px;
   }
 
   .cinema-card h2 {
-    font-size: 1.5rem; 
+    font-size: 1.5rem;
   }
   .cinema-card p {
-    font-size: 0.9rem; 
+    font-size: 0.9rem;
   }
   .cinema-card iframe {
-    height: 150px; 
-    margin-top: 1rem; 
+    height: 150px;
+    margin-top: 1rem;
   }
   .favorite-icon {
-    font-size: 1.4rem; 
+    font-size: 1.4rem;
     top: 10px;
     right: 10px;
   }
 
   .titolo-pagina h1 {
-    font-size: 2rem; 
+    font-size: 2rem;
   }
 
   .filters-container {
-    flex-direction: column; 
-    align-items: stretch; 
+    flex-direction: column;
+    align-items: stretch;
     padding: 1rem;
     margin: 0 auto 1.5rem auto;
   }
   .filter-group {
-    min-width: unset; 
+    min-width: unset;
     width: 100%;
   }
   .filters-container .yellow-button,
   .filters-container .clear-button {
-    margin-top: 1rem; 
+    margin-top: 1rem;
     flex-basis: auto;
     flex-grow: 1;
     max-width: none;
@@ -495,28 +538,27 @@ html, body {
     white-space: normal;
   }
   .city-search-buttons {
-    flex-direction: column; /* Per mettere i bottoni uno sopra l'altro su schermi piccoli */
+    flex-direction: column;
     gap: 0.5rem;
   }
-}
 
-/* Per schermi da 768px a 991px */
+
 @media (min-width: 768px) and (max-width: 991px) {
   #cinema-list {
     padding: 2rem;
     gap: 2rem;
   }
   .titolo-pagina h1 {
-    font-size: 2.5rem; 
+    font-size: 2.5rem;
   }
   .modal-content {
-    margin: 5% auto; 
-    padding: 40px; 
+    margin: 5% auto;
+    padding: 40px;
   }
 }
-/* Per schermi oltre 992px */
+
 @media (min-width: 992px) {
   .titolo-pagina h1 {
-    font-size: 3rem; 
+    font-size: 3rem;
   }
-}
+}}

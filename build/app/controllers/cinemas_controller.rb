@@ -8,10 +8,26 @@ class CinemasController < ApplicationController
     search_range = params[:range].present? ? params[:range].to_f : 10.0
     search_range = 10.0 if search_range <= 0 
 
-    if params[:city].present?
-      # per la ricerca per città
+    if params[:favorites_only].present? && params[:favorites_only] == 'true'
+      if current_user
+        favorited_cinema_ids = current_user.favorite_cinemas_list.pluck(:id)
+        cinemas_to_render = all_cinemas.select { |cinema| favorited_cinema_ids.include?(cinema.id) }.map do |cinema|
+          {
+            id: cinema.id,
+            name: cinema.name,
+            address: cinema.address,
+            town: cinema.town,
+            province: cinema.province,
+            phone: cinema.phone,
+            distance: nil, 
+            is_favorited: true 
+          }
+        end.compact.sort_by { |c| c[:name] } 
+      else
+        cinemas_to_render = [] 
+      end
+    elsif params[:city].present?
       city_name = params[:city].strip
-      # Per trovare i cinema nella città inserita 
       filtered_cinemas_by_city = all_cinemas.where("lower(town) = ?", city_name.downcase)
       cinemas_to_render = filtered_cinemas_by_city.map do |cinema|
         is_favorited = current_user ? current_user.favorite_cinemas_list.include?(cinema) : false
@@ -30,7 +46,6 @@ class CinemasController < ApplicationController
     elsif params[:lat].present? && params[:lon].present?
       user_lat = params[:lat].to_f
       user_lon = params[:lon].to_f
-      
       
       user_city = "Sconosciuta" 
       user_province = "Sconosciuta" 
