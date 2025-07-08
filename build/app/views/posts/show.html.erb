@@ -11,8 +11,8 @@
     <div class="post-card2"  style="height: 100%; min-height:24em">
       <div class="foto-titolo-creatore" id="foto-titolo-creatore" style="" >
         <div class="avatar-container">  <%# avatar %>
-          <% if @post.user.avatar.attached? %>
-            <%= image_tag url_for(@post.user.avatar) + "?#{@post.user.avatar.blob.created_at.to_i}", class: "post-avatar" %>
+          <% if @post.user.avatar_filename? %>
+            <%= image_tag "/uploads/avatars/#{@post.user.avatar_filename}", class: "post-avatar" %>
           <% else %>
             <%= image_tag "Profile_page/default_avatar.svg", alt: "Immagine di default", class: "post-avatar" %>
           <% end %>

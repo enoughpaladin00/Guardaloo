@@ -4,7 +4,6 @@ class ProfilePageController < ApplicationController
   before_action :set_user
 
   def profile_index
-
     # Prendi gli ultimi 10 tmdb_id dai preferiti dell'utente
     bookmark_tmdb_ids = @user.bookmarks.order(created_at: :desc).limit(10).pluck(:tmdb_id)
 
@@ -18,7 +17,7 @@ class ProfilePageController < ApplicationController
 
     # Film scelti dall'utente (fissi sul profilo) - usa TmdbService.get_movie
     @chosen_movies = []
-    [@user.tmdb_fav1, @user.tmdb_fav2, @user.tmdb_fav3].each do |tmdb_id|
+    [ @user.tmdb_fav1, @user.tmdb_fav2, @user.tmdb_fav3 ].each do |tmdb_id|
       if tmdb_id.present?
         movie = TmdbService.get_movie(tmdb_id)
         @chosen_movies << movie
@@ -130,7 +129,43 @@ class ProfilePageController < ApplicationController
       return
     end
 
-    if @user.update(user_params)
+    if params[:user][:avatar]
+      uploaded_io = params[:user][:avatar]
+
+      directory = Rails.root.join("public", "uploads", "avatars")
+      FileUtils.mkdir_p(directory) unless Dir.exist?(directory)
+
+      # Estensione e nome
+      username = params[:user][:username] || @user.username
+      ext = File.extname(uploaded_io.original_filename).downcase
+
+      # Estensioni ammesse
+      allowed_extensions = [ ".jpg", ".jpeg", ".png", ".gif", ".svg", ".webp" ]
+      unless allowed_extensions.include?(ext)
+        flash.now[:alert] = "Tipo di file non supportato: #{ext}"
+        render :profile_index, status: :unprocessable_entity
+        return
+      end
+
+      # Elimina eventuali file esistenti con stesso nome utente e diversa estensione
+      Dir.glob(directory.join("#{username}.*")).each do |existing_file|
+        File.delete(existing_file) if File.file?(existing_file)
+        Rails.logger.debug "Eliminato avatar precedente: #{existing_file}"
+      end
+
+      # Nuovo file
+      filename = "#{username}#{ext}"
+      filepath = directory.join(filename)
+
+      File.open(filepath, "wb") do |file|
+        file.write(uploaded_io.read)
+      end
+
+      # Salva info nel model
+      @user.avatar_filename = filename
+    end
+
+    if @user.update(user_params.except(:avatar)) # Escludi avatar perché lo gestisci a parte
       redirect_to profile_path, notice: "Profilo aggiornato con successo"
     else
       flash.now[:alert] = "Errore nell'aggiornamento del profilo"

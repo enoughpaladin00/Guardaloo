@@ -170,12 +170,14 @@ function sendRegister(data) {
   })
   .then(response => response.json())
   .then(data => {
-    if (data.success) {
-      window.location.href = data.redirect_url;
-    } else {
-      alert("Errore: " + (data.errors?.join(", ") || "Errore generico."));
-    }
-  })
+  if (data.success) {
+    window.location.href = data.redirect_url;
+  } else {
+    console.error("Errore registrazione:", data.errors);
+    alert("Errore: " + (data.errors?.join(", ") || "Errore generico."));
+  }
+})
+
   .catch(error => {
     console.error("Errore durante la registrazione:", error);
     alert("Errore imprevisto.");

@@ -19,8 +19,8 @@
                 <div class="user_info">
                     <!--User avatar -->
                     <div class="user_img">
-                        <% if @user.persisted? && @user.avatar.attached? %>
-                            <%= image_tag url_for(@user.avatar) + "?#{@user.avatar.blob.created_at.to_i}", alt: "Avatar", class: "Avatar", width: 200 %>
+                        <% if @user.persisted? && @user.avatar_filename? %>
+                            <%= image_tag "/uploads/avatars/#{@user.avatar_filename}", alt: "Avatar", class: "Avatar", width: 200 %>
                         <% else %>
                             <%= image_tag "Profile_page/default_avatar.svg", alt: "Immagine di default", width: 200, class: "Avatar" %>
                         <% end %>

@@ -1,26 +1,33 @@
-require 'rails_helper'
+require "rails_helper"
 
-RSpec.describe "Registrations", type: :request do
-  it "creates a user and returns a redirect_url" do
-    post "/register", params: {
-      user: {
-        first_name: "Mario",
-        last_name: "Rossi",
-        birth_date: "1990-01-01",
-        username: "mariorossi",
-        email: "mario@example.com",
-        password: "password123",
-        password_confirmation: "password123"
-      }
-    }.to_json,
-    headers: {
-      "Content-Type" => "application/json",
-      "ACCEPT" => "application/json"
-    }
+RSpec.describe "Registrazione utente", type: :system, js: true do
+  include Rails.application.routes.url_helpers
+  include Capybara::DSL
+  include ActionView::Helpers::TranslationHelper # se usi I18n
 
-    expect(response).to have_http_status(:ok)
-    json = JSON.parse(response.body)
-    expect(json["success"]).to eq(true)
-    expect(json["redirect_url"]).to eq("/home")
+  it "permette a un utente di registrarsi con successo" do
+    visit root_path
+    find(".auth-tab.register-button").click
+    expect(page).to have_selector("#register-form-page", visible: true)
+
+    email = "utente_#{SecureRandom.hex(4)}@example.com"
+
+    within "#register-form-page" do
+      all("input[placeholder='Nome']").first.fill_in(with: "Mario")
+      all("input[placeholder='Cognome']").first.fill_in(with: "Rossi")
+      fill_in "Data di nascita", with: "1990-01-01"
+      fill_in "Username", with: "mariorossi#{rand(1000)}"
+      fill_in "Email", with: email
+      fill_in "Password", with: "password123"
+      fill_in "Conferma Password", with: "password123"
+      click_button "Registrati"
+    end
+
+    # In caso di errore, mostra la pagina per il debug
+    if page.current_path == root_path
+      save_and_open_page
+    end
+
+    expect(page).to have_current_path(home_path, wait: 10)
   end
 end

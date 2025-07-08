@@ -23,8 +23,12 @@
     
     <!-- profile icon -->
     <div class="col profile_container">
-    
-        <%= image_tag "navbar/user.svg", class:"profile-svg", alt: "user", class: "profile_logo", id: "hamburgerMenuTrigger" %>
+        <% if @user.avatar_filename? %>
+            <%= image_tag "/uploads/avatars/#{@user.avatar_filename}", alt: "Avatar", class: "profile_logo", id: "hamburgerMenuTrigger", width: 200 %>
+        <% else %>
+            <%= image_tag "navbar/user.svg", class:"profile_logo", alt: "user", id: "hamburgerMenuTrigger" %>
+        <% end %>
+        
         <div id="hamburgerMenu" style="display: none">
             <div>
                 <%= image_tag "navbar/freccia.svg", class: "arrow_menu" %>

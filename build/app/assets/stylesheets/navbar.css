@@ -138,6 +138,9 @@
 .profile_logo{
     width: 2em;
     height: 2em;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #FD7474;
 }
 
 .lente_img{
@@ -192,13 +195,10 @@
         height: 1.5em;
     }
 
-<<<<<<< HEAD
-=======
     .margin-lente{
         margin-top: -0.05em;
     }
 
->>>>>>> 54b359f55508afaa81497308fb0717b4ba0f966c
     .container-navbar{
         display: flex;
     }
