@@ -239,20 +239,12 @@
     }
 
     .row > * {
-<<<<<<< HEAD
       padding-right: 1.1em !important;
-=======
-      padding-right: 0 !important;
->>>>>>> 54b359f55508afaa81497308fb0717b4ba0f966c
     }
 
     .hamburger-popup {
         width: 8em;
-<<<<<<< HEAD
         right: 2em;
-=======
-        right: 1em;
->>>>>>> 54b359f55508afaa81497308fb0717b4ba0f966c
         top: 2.4em;
     }
     
@@ -269,7 +261,6 @@
     .hamburger-link {
         font-size: 0.8em;
     }
-<<<<<<< HEAD
 }
 
 
@@ -277,6 +268,4 @@
     .margin-lente{
         margin-top: -0.05em;
     }
-=======
->>>>>>> 54b359f55508afaa81497308fb0717b4ba0f966c
 }

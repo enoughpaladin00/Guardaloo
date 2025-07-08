@@ -304,15 +304,12 @@
     height: 30rem;
     font-size: small;
   }
-<<<<<<< HEAD
 
   .netflix-slider:hover .slider-btn, .slider-btn, .slider-btn.left, .slider-btn.right {
     display: none !important;
   }
 
 
-=======
->>>>>>> 54b359f55508afaa81497308fb0717b4ba0f966c
 }
 
 
