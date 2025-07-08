@@ -1,26 +1,22 @@
-require 'rails_helper'
+require "rails_helper"
 
-RSpec.describe "Registrations", type: :request do
-  it "creates a user and returns a redirect_url" do
-    post "/register", params: {
-      user: {
-        first_name: "Mario",
-        last_name: "Rossi",
-        birth_date: "1990-01-01",
-        username: "mariorossi",
-        email: "mario@example.com",
-        password: "password123",
-        password_confirmation: "password123"
-      }
-    }.to_json,
-    headers: {
-      "Content-Type" => "application/json",
-      "ACCEPT" => "application/json"
-    }
+RSpec.describe "User registration", type: :system do
+  it "registra un nuovo utente con successo dalla homepage" do
+    visit "/"
+    find('#register-popup-button').click
 
-    expect(response).to have_http_status(:ok)
-    json = JSON.parse(response.body)
-    expect(json["success"]).to eq(true)
-    expect(json["redirect_url"]).to eq("/home")
+    within('#register-form-popup') do
+      fill_in "user[first_name]", with: "Luca"
+      fill_in "user[last_name]", with: "Bianchi"
+      fill_in "user[birth_date]", with: "1995-05-01"
+      fill_in "user[username]", with: "lucab"
+      fill_in "user[email]", with: "luca@example.com"
+      fill_in "user[password]", with: "password123"
+      fill_in "user[password_confirmation]", with: "password123"
+      click_button "Registrati"
+    end
+
+    expect(page).to have_current_path("/home", wait: 5)
+    expect(page).to have_content(/prossimamente al cinema/i)
   end
 end

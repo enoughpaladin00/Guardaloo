@@ -16,7 +16,7 @@
             <button id="logout-button" class="yellow-button logout-button">Logout</button>
           <% else %>
             <button id="register-popup-button" class="sign-up popup-button auth-button">Registrati</button>
-            <button class="yellow-button popup-button auth-button">Accedi</button>
+            <button id="login-popup-button" class="yellow-button popup-button auth-button">Accedi</button>
           <% end %>
         </div>
       </div>
@@ -137,17 +137,17 @@
 -->
                 <% end %> 
 
-                <%= form_with url: register_path, method: :post, data: {turbo: false}, html: { id: "register-form-page", style: "display: none;" } do |f| %>
-                    <div class="d-flex gap-2 mb-3">
-                        <%= f.text_field :first_name, class: "form-control", placeholder: "Nome", required: true %>
-                        <%= f.text_field :last_name, class: "form-control", placeholder: "Cognome", required: true %>
-                    </div>
-                    <%= f.date_field :birth_date, class: "form-control mb-3", placeholder: "Data di nascita", required: true %>
-                    <%= f.text_field :username, class: "form-control mb-3", placeholder: "Username", required: true %>
-                    <%= f.email_field :email, class: "form-control mb-3", placeholder: "Email", required: true %>
-                    <%= f.password_field :password, class: "form-control mb-3", placeholder: "Password", required: true %>
-                    <%= f.password_field :password_confirmation, class: "form-control mb-3", placeholder: "Conferma Password", required: true %>
-                    <%= f.submit "Registrati", class: "btn btn-light w-100 mb-1 font-weight-bold", style: "color: #272727" %>
+                <%= form_with url: register_path, method: :post, data: { turbo: false }, html: { id: "register-form-page" } do %>
+                  <div class="d-flex gap-2 mb-3">
+                    <%= text_field_tag "user[first_name]", nil, class: "form-control", placeholder: "Nome", required: true %>
+                    <%= text_field_tag "user[last_name]", nil, class: "form-control", placeholder: "Cognome", required: true %>
+                  </div>
+                  <%= date_field_tag "user[birth_date]", nil, class: "form-control mb-3", placeholder: "Data di nascita", required: true %>
+                  <%= text_field_tag "user[username]", nil, class: "form-control mb-3", placeholder: "Username", required: true %>
+                  <%= email_field_tag "user[email]", nil, class: "form-control mb-3", placeholder: "Email", required: true %>
+                  <%= password_field_tag "user[password]", nil, class: "form-control mb-3", placeholder: "Password", required: true %>
+                  <%= password_field_tag "user[password_confirmation]", nil, class: "form-control mb-3", placeholder: "Conferma Password", required: true %>
+                  <%= submit_tag "Registrati", class: "btn btn-light w-100 mb-1 font-weight-bold", style: "color: #272727" %>
 
                     <div class="text-center my-2" style="color: #FFFAEF !important">OPPURE</div>
                     <%= link_to '/auth/google_oauth2', class: 'btn btn-outline-secondary w-100 mb-2 d-flex align-items-center justify-content-center' do %>
@@ -164,6 +164,11 @@
                 <div class="form-feedback text-center my-2" style="display: none;">
                     Stiamo controllando le informazioni. Attendi...
                 </div>
+                <% if flash[:alert] %>
+                  <div class="alert alert-danger text-center">
+                    <%= flash[:alert] %>
+                  </div>
+                <% end %>
             </div>
         </div>
     </div>
@@ -202,17 +207,17 @@
 -->
                 <% end %>
   
-                <%= form_with url: register_path, method: :post, data: {turbo: false}, html: { id: "register-form-popup", style: "display: none;" } do |f| %>
+                <%= form_with url: register_path, method: :post, data: { turbo: false }, html: { id: "register-form-popup" } do %>
                     <div class="d-flex gap-2 mb-3">
-                        <%= f.text_field :first_name, class: "form-control", placeholder: "Nome", required: true %>
-                        <%= f.text_field :last_name, class: "form-control", placeholder: "Cognome", required: true %>
+                      <%= text_field_tag "user[first_name]", nil, class: "form-control", placeholder: "Nome", required: true %>
+                      <%= text_field_tag "user[last_name]", nil, class: "form-control", placeholder: "Cognome", required: true %>
                     </div>
-                    <%= f.date_field :birth_date, class: "form-control mb-3", placeholder: "Data di nascita", required: true %>
-                    <%= f.text_field :username, class: "form-control mb-3", placeholder: "Username", required: true %>
-                    <%= f.email_field :email, class: "form-control mb-3", placeholder: "Email", required: true %>
-                    <%= f.password_field :password, class: "form-control mb-3", placeholder: "Password", required: true %>
-                    <%= f.password_field :password_confirmation, class: "form-control mb-3", placeholder: "Conferma Password", required: true %>
-                    <%= f.submit "Registrati", id: "register-button-popup", class: "btn btn-light w-100 mb-1 font-weight-bold", style: "color: #272727" %>
+                    <%= date_field_tag "user[birth_date]", nil, class: "form-control mb-3", placeholder: "Data di nascita", required: true %>
+                    <%= text_field_tag "user[username]", nil, class: "form-control mb-3", placeholder: "Username", required: true %>
+                    <%= email_field_tag "user[email]", nil, class: "form-control mb-3", placeholder: "Email", required: true %>
+                    <%= password_field_tag "user[password]", nil, class: "form-control mb-3", placeholder: "Password", required: true %>
+                    <%= password_field_tag "user[password_confirmation]", nil, class: "form-control mb-3", placeholder: "Conferma Password", required: true %>
+                    <%= submit_tag "Registrati", class: "btn btn-light w-100 mb-1 font-weight-bold", style: "color: #272727" %>
 
                     <div class="text-center my-2" style="color: #FFFAEF !important">OPPURE</div>
                     <%= link_to '/auth/google_oauth2', class: 'btn btn-outline-secondary w-100 mb-2 d-flex align-items-center justify-content-center' do %>
@@ -230,6 +235,11 @@
                     Stiamo controllando le informazioni. Attendi...
                 </div>
                 <div class="form-error text-center my-2 text-danger font-weight-bold" style="display: none;"></div>
+                <% if flash[:alert] %>
+                  <div class="alert alert-danger text-center">
+                    <%= flash[:alert] %>
+                  </div>
+                <% end %>
 
                 <button class="close-popup mt-4 btn btn-link text-light w-100">Chiudi</button>
             </div>
