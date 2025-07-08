@@ -183,6 +183,46 @@
                         <p>Nessun trailer disponibile.</p>
                     <% end %>
                 </section>
+
+                <%# work in progress %>
+                <div class="post_created">
+                  <div class="container-fluid d-flex align-items-center">
+                    <h1 class="px-2 py-2 mb-0 titolo"><b>Recensioni</b></h1>
+                    <%= image_tag "homepage/forum.svg", class: "icon" %>
+                  </div>
+
+                  <% if @posts.any? %>
+                    <% @posts.first(2).each do |post| %>
+                      <div align="center">
+                        <%= link_to post_path(post), class: "link-underline link-underline-opacity-0" do %>
+                          <div class="forum-item">
+                            <div class="forum-title-homepage" style="color: #004466; text-align: left;">
+                              <%= truncate(post.title, length: 60) %>
+                            </div>
+                            <div class="forum-meta mb-1 text-muted">
+                              <span><%= post.user.username %></span>
+                              <span>
+                                <%= post.comments.count %> 
+                                <%= post.comments.count == 1 ? 'commento' : 'commenti' %>
+                              </span>
+                            </div>
+                            <div class="forum-excerpt text-muted" style="font-size: 0.9em; text-align: left;">
+                              <%= truncate(strip_tags(post.content), length: 120) %>
+                            </div>
+                          </div>
+                        <% end %>
+                      </div>
+                    <% end %>
+                  <% else %>
+                    <p class="text-center py-2 text-muted" style="margin-bottom: 1em;">Nessuna recensione per questo film.</p>
+                  <% end %>
+
+                  <div align="center">
+                    <%= link_to posts_path(tmdb_id: params[:tmdb_id]) do %>
+                      <button class="forum-button">Vedi tutte</button>
+                    <% end %>
+                  </div>
+                </div>
             </main>
         </div>
 

@@ -16,10 +16,12 @@ class MoviesController < ApplicationController
     "NOW TV" => "https://nowtv.it/search?query="
     # aggiungi se vuoi
   }.freeze
-  
+
   def show
     tmdb_id = params[:tmdb_id]
     tmdb_type = params[:type] || "movie"
+    @posts = Post.includes(:user, :comments).where(movie_id: params[:tmdb_id])
+    @posts = @posts.sort_by(&:created_at).reverse
 
     api_key = ENV["TMDB_API_KEY"]
     @map_id = ENV["GOOGLE_MAPS_ID"]
@@ -40,7 +42,7 @@ class MoviesController < ApplicationController
     @providers = service.fetch_movie_watch_providers(tmdb_id, tmdb_type)
     @italian_providers = @providers["results"]["IT"] || {}
     @shown_providers = (@italian_providers["flatrate"] || []).select { |p| ALLOWED_PROVIDERS.include?(p["provider_name"]) }
-    
+
     @all_italian_providers = service.fetch_italian_movie_providers(tmdb_type)["results"]
     @cleaned_providers = @all_italian_providers.map do |provider|
       provider.reject { |key, _| key == "display_priorities" }

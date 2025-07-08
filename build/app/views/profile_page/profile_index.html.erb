@@ -57,7 +57,10 @@
                             </div>
                             <div class="forum-meta mb-1 text-muted">
                             <span><%= post.user.username %></span>
-                            <span><%= pluralize(post.comments.count, 'commento') %></span>
+                            <span>
+                                <%= post.comments.count %> 
+                                <%= post.comments.count == 1 ? 'commento' : 'commenti' %>
+                            </span>
                             </div>
                             <div class="forum-excerpt text-muted" style="font-size: 0.9em; text-align: left;">
                             <%= truncate(strip_tags(post.content), length: 120) %>
