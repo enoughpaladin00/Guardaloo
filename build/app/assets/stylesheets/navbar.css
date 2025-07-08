@@ -151,6 +151,10 @@
 
 @media screen and (max-width: 992px){
 
+    .margin-lente{
+        margin-top: 0;
+    }
+
     .logo_container{
         align-items: start !important;
     }
@@ -188,6 +192,13 @@
         height: 1.5em;
     }
 
+<<<<<<< HEAD
+=======
+    .margin-lente{
+        margin-top: -0.05em;
+    }
+
+>>>>>>> 54b359f55508afaa81497308fb0717b4ba0f966c
     .container-navbar{
         display: flex;
     }
@@ -228,12 +239,12 @@
     }
 
     .row > * {
-      padding-right: 0 !important;
+      padding-right: 1.1em !important;
     }
 
     .hamburger-popup {
         width: 8em;
-        right: 1em;
+        right: 2em;
         top: 2.4em;
     }
     
@@ -249,5 +260,12 @@
 
     .hamburger-link {
         font-size: 0.8em;
+    }
+}
+
+
+@media screen and (max-width: 767px) {
+    .margin-lente{
+        margin-top: -0.05em;
     }
 }
