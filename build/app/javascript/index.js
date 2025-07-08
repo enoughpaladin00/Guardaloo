@@ -79,6 +79,10 @@ function showLoginTab() {
   document.querySelectorAll("#login-form-page").forEach(f => f.style.display = "block");
   document.querySelectorAll("#register-form-popup").forEach(f => f.style.display = "none");
   document.querySelectorAll("#register-form-page").forEach(f => f.style.display = "none");
+  document.querySelectorAll(".form-error").forEach(el => {
+    el.style.display = "none";
+    el.innerText = "";
+  });
   tabLoginElems.forEach(t => {
     t.classList.add("active-tab");
     t.classList.remove("inactive-tab");
@@ -94,6 +98,10 @@ function showRegisterTab() {
   document.querySelectorAll("#login-form-page").forEach(f => f.style.display = "none");
   document.querySelectorAll("#register-form-popup").forEach(f => f.style.display = "block");
   document.querySelectorAll("#register-form-page").forEach(f => f.style.display = "block");
+  document.querySelectorAll(".form-error").forEach(el => {
+    el.style.display = "none";
+    el.innerText = "";
+  });
   tabRegisterElems.forEach(t => {
     t.classList.add("active-tab");
     t.classList.remove("inactive-tab");
@@ -118,6 +126,10 @@ popupButtons.forEach(button => {
 closePopupButtons.forEach(button => {
   button.addEventListener("click", () => {
     authPopupOverlay.style.display = "none";
+    document.querySelectorAll(".form-error").forEach(el => {
+    el.style.display = "none";
+    el.innerText = "";
+  });
   });
 });
 
@@ -175,7 +187,11 @@ function sendRegister(data) {
     if (data.success) {
       window.location.href = data.redirect_url;
     } else {
-      alert("Errore: " + (data.errors?.join(", ") || "Errore generico."));
+      document.querySelectorAll(".form-feedback").forEach(el => el.style.display = "none");
+      document.querySelectorAll(".form-error").forEach(el => {
+        el.innerText = data.errors?.join(", ") || "Registrazione fallita.";
+        el.style.display = "block";
+      });
     }
   })
   .catch(error => {
@@ -220,6 +236,12 @@ document.querySelectorAll('#login-form-popup, #login-form-page').forEach(form =>
 });
 
 function sendLogin(data) {
+  
+  document.querySelectorAll(".form-error").forEach(el => {
+    el.style.display = "none";
+    el.innerText = "";
+  });
+
   fetch("/login", {
     method: "POST",
     headers: {
@@ -234,12 +256,19 @@ function sendLogin(data) {
     if (data.success) {
       window.location.href = data.redirect_url;
     } else {
-      alert(data.error || "Email o password errati.");
+      document.querySelectorAll(".form-feedback").forEach(el => el.style.display = "none");
+      document.querySelectorAll(".form-error").forEach(el => {
+        el.innerText = data.error || "Email o password non validi.";
+        el.style.display = "block";
+      });
     }
   })
   .catch(error => {
     console.error("Errore durante il login:", error);
-    alert("Errore di rete.");
+    document.querySelectorAll(".form-error").forEach(el => {
+      el.innerText = "Errore di rete. Riprova.";
+      el.style.display = "block";
+    });
   });
 }
 

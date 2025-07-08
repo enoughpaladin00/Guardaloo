@@ -136,9 +136,6 @@
                     <%# end %>
 -->
                 <% end %> 
-                <div class="form-feedback text-center my-2 text-light" style="display: none;">
-                    Stiamo controllando le informazioni. Attendi...
-                </div>
 
                 <%= form_with url: register_path, method: :post, data: {turbo: false}, html: { id: "register-form-page", style: "display: none;" } do |f| %>
                     <div class="d-flex gap-2 mb-3">
@@ -164,7 +161,7 @@
                     <%# end %>
 -->
                 <% end %>
-                <div class="form-feedback text-center my-2 text-light" style="display: none;">
+                <div class="form-feedback text-center my-2" style="display: none;">
                     Stiamo controllando le informazioni. Attendi...
                 </div>
             </div>
@@ -204,9 +201,6 @@
                     <%# end %>
 -->
                 <% end %>
-                <div class="form-feedback text-center my-2 text-light" style="display: none;">
-                    Stiamo controllando le informazioni. Attendi...
-                </div>
   
                 <%= form_with url: register_path, method: :post, data: {turbo: false}, html: { id: "register-form-popup", style: "display: none;" } do |f| %>
                     <div class="d-flex gap-2 mb-3">
@@ -232,10 +226,11 @@
                     <%# end %>
 -->
                 <% end %>
-                <div class="form-feedback text-center my-2 text-light" style="display: none;">
+                <div class="form-feedback text-center my-2" style="display: none;">
                     Stiamo controllando le informazioni. Attendi...
                 </div>
-                
+                <div class="form-error text-center my-2 text-danger font-weight-bold" style="display: none;"></div>
+
                 <button class="close-popup mt-4 btn btn-link text-light w-100">Chiudi</button>
             </div>
         </div>
