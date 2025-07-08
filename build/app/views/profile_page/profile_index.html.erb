@@ -122,10 +122,12 @@
             </div> 
 
             <div class="box_3-3">
-                <button class="favourite-btn open-favourite", style="margin-left:50%;"> Vedi Tutti </button>
+                <button class="favourite-btn open-favourite", style="margin-left:47%; margin-top:1rem;"> Vedi Tutti </button>
             </div>        
         </div>
     
+
+        <%= render 'layouts/footer' %>
     </div>
 
     <!-- PopUp Edit -->
@@ -236,12 +238,12 @@
     <!-- popup tutti i film preferiti -->
     <div id="fav-popup-overlay" class="fav-overlay" style="display: none;">
         <div class="fav-popup">
-            <div>
-                <span class="fav-title" style="color: var(--color-4)">Lista dei Film preferiti</span> 
+            <div style="align-item: center;">
+                <span class="fav-title">Lista dei Film preferiti</span> 
                 <button class="favourite-btn close-favourite", style="margin-left:4rem;"> Chiudi </button>
             </div>
             </br>
-            <div class="elenco-film", style="margin: 3rem;">
+            <div class="elenco-film">
                 <% @preferiti.each do |movie| %>
 
                     <div class="popup-film-container">
@@ -274,26 +276,24 @@
             const track = slider.querySelector('.slider-track');
             const btnLeft = slider.querySelector('.carosello-btn.left');
             const btnRight = slider.querySelector('.carosello-btn.right');
-
+                        
             if (!track || !btnLeft || !btnRight) return;
-
+                        
             const updateButtons = () => {
               const scrollLeft = track.scrollLeft;
               const maxScroll = track.scrollWidth - track.clientWidth;
-
               btnLeft.style.display = scrollLeft > 0 ? 'block' : 'none';
-
               btnRight.style.display = scrollLeft < maxScroll ? 'block' : 'none';
             };
-
+                        
             track.addEventListener('scroll', updateButtons);
             window.addEventListener('resize', updateButtons);
             updateButtons();
-
-
+                        
             btnRight.addEventListener('click', () => {
               track.scrollBy({ left: 1000, behavior: 'smooth' });
             });
+                        
             btnLeft.addEventListener('click', () => {
               track.scrollBy({ left: -1000, behavior: 'smooth' });
             });
