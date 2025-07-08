@@ -43,11 +43,11 @@
 }
   
 .search-results-dropdown {
-  transform: translateX(-0.55em);
+  transform: translateX(-0.6em);
   z-index: 1000;
   display: none;
   width: 36em;
-  top: 2.2em;
+  top: 2.1em;
   max-height: 500px;
   overflow-y: auto;
   background-color: #ffece2;
@@ -71,8 +71,8 @@
 
 .hamburger-popup {
     position: absolute;
-    top: 3.5em;
-    right: 1.5em;
+    top: 4em;
+    right: 1.75em;
     background-color: #ffece2;
     border: 2px solid #FD7474;
     border-radius: 1em;
@@ -111,8 +111,8 @@
     position:absolute;
     width: 1.1em;
     height: 1.1em;
-    top: 2.8em;
-    right: 2.23em;
+    top: 3.25em;
+    right: 2.7em;
 }
 
 .search_form{
@@ -136,8 +136,8 @@
 }
 
 .profile_logo{
-    width: 2em;
-    height: 2em;
+    width: 3em;
+    height: 3em;
     object-fit: cover;
     border-radius: 50%;
     border: 2px solid #FD7474;
@@ -182,7 +182,7 @@
     }
     
     .logo{
-        width: 6em; 
+        width: 7em; 
     }
 
     .lente_img{
@@ -191,8 +191,8 @@
     }
 
     .profile_logo{
-        width: 1.5em; 
-        height: 1.5em;
+        width: 1.9em; 
+        height: 1.9em;
     }
 
     .margin-lente{
@@ -204,7 +204,7 @@
     }
 
     .search-results-dropdown {
-      transform: translateX(-0.5em);
+      transform: translateX(-0.45em);
       border: 1px solid #FD7474;
       border-top: none;
       width: 20em;
@@ -243,14 +243,14 @@
     }
 
     .hamburger-popup {
-        width: 8em;
+        width: 10em;
         right: 2em;
-        top: 2.4em;
+        top: 2.7em;
     }
     
     .icon-hamburger{
-        width: 0.8em;
-        height: 0.8em;
+        width: 1em;
+        height: 1em;
         
     }
 
@@ -259,7 +259,7 @@
     }
 
     .hamburger-link {
-        font-size: 0.8em;
+        font-size: 0.85em;
     }
 }
 
@@ -267,5 +267,33 @@
 @media screen and (max-width: 767px) {
     .margin-lente{
         margin-top: -0.05em;
+    }
+
+    .search-results-dropdown {
+      transform: translateX(-0.5em);
+    }
+
+    .row > * {
+      padding-right: 0.5em !important;
+    }
+
+    .logo_container{
+        margin-left: 0.3em;
+    }
+
+    .hamburger-popup {
+        width: 8em;
+        right: 1.1em;
+        top: 2.7em;
+    }
+    
+    .icon-hamburger{
+        width: 0.8em;
+        height: 0.8em;
+        
+    }
+
+    .hamburger-link {
+        font-size: 0.8em;
     }
 }

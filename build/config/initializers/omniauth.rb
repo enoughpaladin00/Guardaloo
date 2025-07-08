@@ -18,6 +18,9 @@ Rails.application.config.middleware.use OmniAuth::Builder do
             ENV['FACEBOOK_APP_SECRET'],
             {
               scope: 'email',
-              info_fields: 'email, first_name, last_name'
+              info_fields: 'email,first_name,last_name',
+              callback_path: '/auth/facebook/callback',
+              display: 'popup'
             }
+
 end

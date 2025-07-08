@@ -1,33 +1,22 @@
 require "rails_helper"
 
-RSpec.describe "Registrazione utente", type: :system, js: true do
-  include Rails.application.routes.url_helpers
-  include Capybara::DSL
-  include ActionView::Helpers::TranslationHelper # se usi I18n
+RSpec.describe "User registration", type: :system do
+  it "registra un nuovo utente con successo dalla homepage" do
+    visit "/"
+    find('#register-popup-button').click
 
-  it "permette a un utente di registrarsi con successo" do
-    visit root_path
-    find(".auth-tab.register-button").click
-    expect(page).to have_selector("#register-form-page", visible: true)
-
-    email = "utente_#{SecureRandom.hex(4)}@example.com"
-
-    within "#register-form-page" do
-      all("input[placeholder='Nome']").first.fill_in(with: "Mario")
-      all("input[placeholder='Cognome']").first.fill_in(with: "Rossi")
-      fill_in "Data di nascita", with: "1990-01-01"
-      fill_in "Username", with: "mariorossi#{rand(1000)}"
-      fill_in "Email", with: email
-      fill_in "Password", with: "password123"
-      fill_in "Conferma Password", with: "password123"
+    within('#register-form-popup') do
+      fill_in "user[first_name]", with: "Luca"
+      fill_in "user[last_name]", with: "Bianchi"
+      fill_in "user[birth_date]", with: "1995-05-01"
+      fill_in "user[username]", with: "lucab"
+      fill_in "user[email]", with: "luca@example.com"
+      fill_in "user[password]", with: "password123"
+      fill_in "user[password_confirmation]", with: "password123"
       click_button "Registrati"
     end
 
-    # In caso di errore, mostra la pagina per il debug
-    if page.current_path == root_path
-      save_and_open_page
-    end
-
-    expect(page).to have_current_path(home_path, wait: 10)
+    expect(page).to have_current_path("/home", wait: 5)
+    expect(page).to have_content(/prossimamente al cinema/i)
   end
 end

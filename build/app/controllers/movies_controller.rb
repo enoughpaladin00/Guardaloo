@@ -58,22 +58,28 @@ class MoviesController < ApplicationController
       end
     end
 
-    location_str = ""
     location = session[:user_location]&.symbolize_keys
-    Rails.logger.info "SESSION LOCATION: #{location.inspect}"
+    location_str = "Rome, Italy"
 
     if location.present? && location[:lat].present? && location[:lng].present?
       city_data = Geocoder.search([ location[:lat], location[:lng] ]).first
+    
       if city_data
-        location_str = city_data.city || city_data.data["address"]["city"] || city_data.data["address"]["town"] || "Rome, Italy"
-        Rails.logger.info "LOCATION SET (city): #{location_str}"
+        location_str = city_data.city ||
+                       city_data.data.dig("address", "city") ||
+                       city_data.data.dig("address", "town") ||
+                       city_data.data.dig("address", "county") ||
+                       city_data.state ||
+                       city_data.data.dig("address", "state") ||
+                       city_data.country ||
+                       "Rome, Italy"
+      
+        Rails.logger.info "Location risolta: #{location_str}"
       else
-        location_str = "Rome, Italy"
-        Rails.logger.warn "FALLBACK: Geocoder non ha trovato città"
+        Rails.logger.warn "Geocoder non ha trovato location. Fallback su Roma."
       end
     else
-      location_str = "Rome, Italy"
-      Rails.logger.warn "LOCATION FALLBACK TO DEFAULT: #{location_str}"
+      Rails.logger.warn "Location assente in sessione. Fallback su Roma."
     end
 
     @showtimes_array = SerpApiClient.search_cinema_programs("#{@movie_details['title']} showtimes", location_str).map(&:deep_symbolize_keys)

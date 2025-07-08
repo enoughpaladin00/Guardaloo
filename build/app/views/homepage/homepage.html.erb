@@ -181,7 +181,7 @@
 
 <div class="posts-container">
   <% if @posts.any? %>
-    <% @posts.last(3).each do |post| %>
+    <% @posts.last(3).reverse().each do |post| %>
       <div class="enhanced-post-card post-card">
         <div class="post-left">
           <% if post.movie_poster_path.present? %>
@@ -221,6 +221,12 @@
   </div>
   <% else %>
     <p class="post-title">Non ci sono risultati per la tua ricerca.</p>
+  <% end %>
+</div>
+
+<div align="center">
+  <%= link_to posts_path(tmdb_id: params[:tmdb_id]) do %>
+    <button class="forum-button">Vedi tutte</button>
   <% end %>
 </div>
 

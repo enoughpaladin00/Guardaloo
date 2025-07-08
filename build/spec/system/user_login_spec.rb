@@ -1,45 +1,43 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe "User login", type: :system do
-  let!(:user) do
+  before do
     User.create!(
-      first_name: 'Mario',
-      last_name: 'Rossi',
-      birth_date: '1990-01-01',
-      username: 'mariorossi',
-      email: 'mario.rossi@example.com',
-      password: 'password123',
-      password_confirmation: 'password123'
+      first_name: "Mario",
+      last_name: "Rossi",
+      birth_date: "1990-01-01",
+      username: "mariorossi",
+      email: "mario@example.com",
+      password: "password123",
+      password_confirmation: "password123"
     )
   end
 
-  before do
-    driven_by(:firefox_headless)
-  end
+  it "permette il login dalla homepage" do
+    visit "/"
+    find('#login-popup-button').click
 
-  it "permits a user to log in successfully" do
-    visit root_path
-
-    within '#login-form-page' do
-      fill_in 'Email', with: 'mario.rossi@example.com'
-      fill_in 'Password', with: 'password123'
-      click_button 'Accedi'
+    within('#login-form-popup') do
+      fill_in "email", with: "mario@example.com"
+      fill_in "password", with: "password123"
+      click_button "Accedi"
     end
 
-    expect(page).to have_current_path('/home', wait:10)
-    expect(page).to have_content('Prossimamente al cinema')
+    expect(page).to have_current_path("/home", wait: 5)
+    expect(page).to have_content(/prossimamente al cinema/i)
   end
 
-  it "shows an error with incorrect credentials" do
-    visit root_path
+  it "mostra un errore se le credenziali sono errate" do
+    visit "/"
+    find('#login-popup-button').click
 
-    within '#login-form-page' do
-      fill_in 'Email', with: 'mario.rossi@example.com'
-      fill_in 'Password', with: 'wrongpassword'
-      click_button 'Accedi'
+    within('#login-form-popup') do
+      fill_in "email", with: "mario@example.com"
+      fill_in "password", with: "password123"
+      click_button "Accedi"
     end
 
-    expect(page).to have_current_path(root_path)
-    expect(page).to have_content('Email o password errati', wait:5)
+    expect(page).to have_current_path("/", wait: 5)
+    expect(page).to have_content(/email o password errati/i)
   end
 end

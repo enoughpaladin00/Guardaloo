@@ -436,6 +436,14 @@ html, body{
   align-items: center;
 }
 
+.form-feedback{
+    width:100%;
+    color: #F9BD24;
+    border-radius: 0.5rem;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+}
+
 @media (max-width: 768px) {
 
     .homepage-navbar .container-fluid {

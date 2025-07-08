@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_02_155834) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_08_143401) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -56,26 +56,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_02_155834) do
   create_table "cinema_favorites", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "cinemasdef_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["cinemasdef_id"], name: "index_cinema_favorites_on_cinemasdef_id"
-    t.index ["user_id"], name: "index_cinema_favorites_on_user_id"
-  end
-
-  create_table "cinema_programmings", force: :cascade do |t|
-    t.string "name"
-    t.string "location"
-    t.string "movie_title"
-    t.text "showtimes"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "cinema_showtimes", force: :cascade do |t|
-    t.string "day"
-    t.string "movie"
-    t.string "show_type"
-    t.text "show_times"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["cinemasdef_id"], name: "index_cinema_favorites_on_cinemasdef_id"
@@ -140,6 +120,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_02_155834) do
     t.integer "tmdb_fav2"
     t.integer "tmdb_fav3"
     t.string "role", default: "user"
+    t.text "avatar_data"
+    t.string "avatar_content_type"
+    t.string "avatar_filename"
+    t.string "avatar"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"

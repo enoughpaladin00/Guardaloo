@@ -65,20 +65,22 @@ document.addEventListener("turbo:load", function () {
 
 
 
-// Popup Auth Toggle
+// === Popup Auth Toggle ===
 const authPopupOverlay = document.getElementById("auth-popup-overlay");
 const popupButtons = document.querySelectorAll(".popup-button.auth-button");
 const closePopupButtons = document.querySelectorAll(".close-popup");
 
-// Tab switch login/register
+// === Tab switch login/register ===
 const tabLoginElems = document.querySelectorAll(".login-button");
 const tabRegisterElems = document.querySelectorAll(".register-button");
 
 function showLoginTab() {
   document.querySelectorAll("#login-form-popup").forEach(f => f.style.display = "block");
-  document.querySelectorAll("#login-form-page").forEach(f => f.style.display = "block");
   document.querySelectorAll("#register-form-popup").forEach(f => f.style.display = "none");
-  document.querySelectorAll("#register-form-page").forEach(f => f.style.display = "none");
+  document.querySelectorAll(".form-error").forEach(el => {
+    el.style.display = "none";
+    el.innerText = "";
+  });
   tabLoginElems.forEach(t => {
     t.classList.add("active-tab");
     t.classList.remove("inactive-tab");
@@ -91,9 +93,11 @@ function showLoginTab() {
 
 function showRegisterTab() {
   document.querySelectorAll("#login-form-popup").forEach(f => f.style.display = "none");
-  document.querySelectorAll("#login-form-page").forEach(f => f.style.display = "none");
   document.querySelectorAll("#register-form-popup").forEach(f => f.style.display = "block");
-  document.querySelectorAll("#register-form-page").forEach(f => f.style.display = "block");
+  document.querySelectorAll(".form-error").forEach(el => {
+    el.style.display = "none";
+    el.innerText = "";
+  });
   tabRegisterElems.forEach(t => {
     t.classList.add("active-tab");
     t.classList.remove("inactive-tab");
@@ -104,6 +108,7 @@ function showRegisterTab() {
   });
 }
 
+// === Popup open/close ===
 popupButtons.forEach(button => {
   button.addEventListener("click", () => {
     if (button.classList.contains("sign-up")) {
@@ -118,168 +123,48 @@ popupButtons.forEach(button => {
 closePopupButtons.forEach(button => {
   button.addEventListener("click", () => {
     authPopupOverlay.style.display = "none";
-  });
-});
-
-
-tabLoginElems.forEach(tab =>
-  tab.addEventListener("click", showLoginTab)
-);
-tabRegisterElems.forEach(tab =>
-  tab.addEventListener("click", showRegisterTab)
-);
-
-// Register
-document.querySelectorAll("#register-form-popup, #register-form-page").forEach(form => {
-  form.addEventListener("submit", function (e) {
-    e.preventDefault();
-
-    const formElement = e.target;
-    const formData = new FormData(formElement);
-    const baseData = Object.fromEntries(formData.entries());
-
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        const data = {
-          user: {
-            ...baseData,
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
-          }
-        };
-        sendRegister(data);
-      }, () => {
-        console.warn("Geolocalizzazione negata. Procedo senza.");
-        sendRegister({ user: baseData });
-      });
-    } else {
-      console.warn("Geolocalizzazione non supportata. Procedo senza.");
-      sendRegister({ user: baseData });
-    }
-  });
-});
-
-function sendRegister(data) {
-  fetch("/register", {
-    method: "POST",
-    headers: {
-      "X-CSRF-Token": document.querySelector("[name='csrf-token']").content,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(data)
-  })
-  .then(response => response.json())
-  .then(data => {
-  if (data.success) {
-    window.location.href = data.redirect_url;
-  } else {
-    console.error("Errore registrazione:", data.errors);
-    alert("Errore: " + (data.errors?.join(", ") || "Errore generico."));
-  }
-})
-
-  .catch(error => {
-    console.error("Errore durante la registrazione:", error);
-    alert("Errore imprevisto.");
-  });
-}
-
-
-
-// Login
-document.querySelectorAll('#login-form-popup, #login-form-page').forEach(form => {
-  form.addEventListener("submit", function (e) {
-    e.preventDefault();
-
-    const formData = new FormData(e.target);
-    const baseData = {
-      email: formData.get("email"),
-      password: formData.get("password")
-    };
-
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        const data = {
-          ...baseData,
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        };
-
-        sendLogin(data);
-      }, () => {
-        console.warn("Geolocalizzazione negata. Procedo senza.");
-        sendLogin(baseData);
-      });
-    } else {
-      console.warn("Geolocalizzazione non supportata. Procedo senza.");
-      sendLogin(baseData);
-    }
-  });
-});
-
-function sendLogin(data) {
-  fetch("/login", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Accept": "application/json",
-      "X-CSRF-Token": document.querySelector("[name='csrf-token']").content
-    },
-    body: JSON.stringify(data)
-  })
-  .then(response => response.json())
-  .then(data => {
-    if (data.success) {
-      window.location.href = data.redirect_url;
-    } else {
-      alert(data.error || "Email o password errati.");
-    }
-  })
-  .catch(error => {
-    console.error("Errore durante il login:", error);
-    alert("Errore di rete.");
-  });
-}
-
-
-//Logout
-if(document.querySelector("#logout-button")){
-    document.querySelector("#logout-button").addEventListener("click", function (e) {
-        e.preventDefault();
-
-        fetch("/logout", {
-            method: "DELETE",
-            headers: {
-                "X-CSRF-Token": document.querySelector("[name='csrf-token']").content,
-                "Accept": "application/json"
-            }
-        })
-        .then(response => {
-            if (response.ok) {
-                window.location.href = "/";
-            } else {
-                return response.json().then(data => {
-                    alert("Errore durante il logout: " + (data.error || "Errore generico"));
-                });
-            }
-        })
-        .catch(error => {
-                console.error("Errore di rete durante il logout:", error);
-                alert("Errore di rete.");
-        });
+    document.querySelectorAll(".form-error").forEach(el => {
+      el.style.display = "none";
+      el.innerText = "";
     });
-}
+  });
+});
 
-// Redirezione a Movies/:id
+tabLoginElems.forEach(tab => tab.addEventListener("click", showLoginTab));
+tabRegisterElems.forEach(tab => tab.addEventListener("click", showRegisterTab));
+
+// === Redirect su click film ===
 document.querySelectorAll('.trend-card').forEach(card => {
   card.addEventListener('click', function(e) {
     const movieId = this.dataset.movieId;
-
-/*    if (window.userSignedIn) {*/
-      window.location.href = `/movies/${movieId}`;
-/*    } else {
-      e.preventDefault();
-      alert('Non hai fatto l\'accesso');
-    }*/
+    window.location.href = `/movies/${movieId}`;
   });
 });
+
+// === Logout ===
+if (document.querySelector("#logout-button")) {
+  document.querySelector("#logout-button").addEventListener("click", function (e) {
+    e.preventDefault();
+
+    fetch("/logout", {
+      method: "DELETE",
+      headers: {
+        "X-CSRF-Token": document.querySelector("[name='csrf-token']").content,
+        "Accept": "application/json"
+      }
+    })
+    .then(response => {
+      if (response.ok) {
+        window.location.href = "/";
+      } else {
+        return response.json().then(data => {
+          alert("Errore durante il logout: " + (data.error || "Errore generico"));
+        });
+      }
+    })
+    .catch(error => {
+      console.error("Errore di rete durante il logout:", error);
+      alert("Errore di rete.");
+    });
+  });
+}
