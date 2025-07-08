@@ -20,23 +20,21 @@ Rails.application.routes.draw do
   # Omniauth (Google, Facebook)
   get "/auth/:provider/callback", to: "sessions#omniauth"
   get "/auth/failure", to: redirect("/")
-  match "/auth/:provider", to: "sessions#passthru", via: [:get, :post]
+  match "/auth/:provider", to: "sessions#passthru", via: [ :get, :post ]
 
   # User Profile
   get "/profile", to: "profile_page#profile_index", as: "profile"
   get "/profile/edit", to: "profile_page#edit", as: "edit_profile"
   patch "/profile", to: "profile_page#update"
 
-<<<<<<< HEAD
-  get '/movie_search', to: 'profile_page#movie_search'
-  post '/profile/update_movie', to: 'profile_page#update_movie', as: "update_movie"
+  get "/movie_search", to: "profile_page#movie_search"
+  post "/profile/update_movie", to: "profile_page#update_movie", as: "update_movie"
 
-=======
+
   # Location
   post "/set_location", to: "sessions#set_location"
   # Update favourite film ids for User Profile
-  patch '/users/update_tmdb_id', to: 'users#update_tmdb_id'
->>>>>>> origin/cinemas
+  patch "/users/update_tmdb_id", to: "users#update_tmdb_id"
 
   # Google and Facebook Auth
   get "/auth/:provider/callback", to: "sessions#omniauth"
@@ -51,22 +49,17 @@ Rails.application.routes.draw do
 
   # Posts and Comments
   resources :posts do
-<<<<<<< HEAD
     resources :comments, only: [ :create, :update, :destroy ]
-=======
-    resources :comments, only: [:create, :destroy]
->>>>>>> origin/cinemas
   end
 
   # Cinema
-  resources :cinemas, only: [:index] do
+  resources :cinemas, only: [ :index ] do
     member do
-      get 'programmazione'
+      get "programmazione"
     end
   end
 
   # Favorite Cinemas
-  resources :cinema_favorites, only: [:create, :destroy] 
-  post '/bookmarks/toggle', to: 'bookmarks#toggle', as: 'bookmarks_toggle'
-
+  resources :cinema_favorites, only: [ :create, :destroy ]
+  post "/bookmarks/toggle", to: "bookmarks#toggle", as: "bookmarks_toggle"
 end

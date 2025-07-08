@@ -18,6 +18,7 @@ class MoviesController < ApplicationController
   }.freeze
 
   def show
+    @user = current_user
     tmdb_id = params[:tmdb_id]
     tmdb_type = params[:type] || "movie"
     @posts = Post.includes(:user, :comments).where(movie_id: params[:tmdb_id])

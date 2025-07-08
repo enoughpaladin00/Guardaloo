@@ -13,18 +13,6 @@ Capybara.register_driver :chrome_headless do |app|
   options = Selenium::WebDriver::Chrome::Options.new
 
   options.add_argument('--headless')
-<<<<<<< HEAD
-
-  profile = Selenium::WebDriver::Firefox::Profile.new
-  profile['geo.prompt.testing'] = true
-  profile['geo.prompt.testing.allow'] = true
-
-  options.profile = profile
-
-  Capybara::Selenium::Driver.new(
-    app,
-    browser: :firefox,
-=======
   options.add_argument('--disable-gpu')
   options.add_argument('--window-size=1400,900')
   options.add_argument('--no-sandbox')
@@ -34,22 +22,13 @@ Capybara.register_driver :chrome_headless do |app|
   Capybara::Selenium::Driver.new(
     app,
     browser: :chrome,
->>>>>>> origin/cinemas
     options: options
   )
 end
 
-<<<<<<< HEAD
-
-
-Capybara.javascript_driver = :firefox_headless
-Capybara.default_driver = :firefox_headless
-Capybara.default_max_wait_time = 5
-=======
 Capybara.javascript_driver = :chrome_headless
 Capybara.default_driver = :chrome_headless
 Capybara.default_max_wait_time = 15
->>>>>>> origin/cinemas
 
 # === Per Firefox, eventualmente ===
 # Capybara.register_driver :firefox_headless do |app|

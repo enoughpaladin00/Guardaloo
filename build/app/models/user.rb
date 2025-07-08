@@ -6,16 +6,12 @@ class User < ApplicationRecord
     has_many :posts, dependent: :destroy
     has_many :comments, dependent: :destroy
 
-    #Per i cinema preferiti
+    # Per i cinema preferiti
     has_many :cinema_favorites, dependent: :destroy
-    has_many :favorite_cinemas_list, through: :cinema_favorites, source: :cinemasdef 
+    has_many :favorite_cinemas_list, through: :cinema_favorites, source: :cinemasdef
 
-   
+
     has_many :bookmarks, dependent: :destroy
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/cinemas
     validates :email, presence: true, uniqueness: true
     validates :username, presence: true, uniqueness: true
     validates :first_name, :last_name, presence: true
@@ -33,20 +29,20 @@ class User < ApplicationRecord
     end
 
     def self.from_omniauth(auth)
-      user = find_by(provider: auth['provider'], uid: auth['uid'])
-      user ||= find_by(email: auth['info']['email'])
+      user = find_by(provider: auth["provider"], uid: auth["uid"])
+      user ||= find_by(email: auth["info"]["email"])
 
       if user.nil?
         user = User.new(
-          email: auth['info']['email'],
-          first_name: auth['info']['first_name'],
-          last_name: auth['info']['last_name'],
-          username: auth['info']['email'].split('@').first,
+          email: auth["info"]["email"],
+          first_name: auth["info"]["first_name"],
+          last_name: auth["info"]["last_name"],
+          username: auth["info"]["email"].split("@").first,
           password: SecureRandom.hex(15)
         )
       end
-      user.provider = auth['provider']
-      user.uid = auth['uid']
+      user.provider = auth["provider"]
+      user.uid = auth["uid"]
       user.save!
       user
     end
@@ -57,14 +53,14 @@ class User < ApplicationRecord
     validates :role, inclusion: { in: ROLES }, allow_nil: true
 
     def admin?
-      role == 'admin'
+      role == "admin"
     end
 
     def moderator?
-      role == 'moderator'
+      role == "moderator"
     end
 
     def user?
-      role == 'user'
+      role == "user"
     end
 end

@@ -10,11 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema[8.0].define(version: 2025_07_05_155309) do
-=======
 ActiveRecord::Schema[8.0].define(version: 2025_07_02_155834) do
->>>>>>> origin/cinemas
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -60,8 +56,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_02_155834) do
   create_table "cinema_favorites", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "cinemasdef_id", null: false
-<<<<<<< HEAD
-=======
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["cinemasdef_id"], name: "index_cinema_favorites_on_cinemasdef_id"
@@ -82,7 +76,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_02_155834) do
     t.string "movie"
     t.string "show_type"
     t.text "show_times"
->>>>>>> origin/cinemas
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["cinemasdef_id"], name: "index_cinema_favorites_on_cinemasdef_id"
