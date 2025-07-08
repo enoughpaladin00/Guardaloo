@@ -30,8 +30,6 @@ Capybara.register_driver :firefox_headless do |app|
   )
 end
 
-
-
 Capybara.javascript_driver = :firefox_headless
 Capybara.default_driver = :firefox_headless
 Capybara.default_max_wait_time = 5

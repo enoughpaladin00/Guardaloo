@@ -134,6 +134,8 @@ document.querySelectorAll("#register-form-popup, #register-form-page").forEach(f
   form.addEventListener("submit", function (e) {
     e.preventDefault();
 
+    document.querySelectorAll(".form-feedback").forEach(el => el.style.display = "block");
+
     const formElement = e.target;
     const formData = new FormData(formElement);
     const baseData = Object.fromEntries(formData.entries());
@@ -188,6 +190,8 @@ function sendRegister(data) {
 document.querySelectorAll('#login-form-popup, #login-form-page').forEach(form => {
   form.addEventListener("submit", function (e) {
     e.preventDefault();
+
+    document.querySelectorAll(".form-feedback").forEach(el => el.style.display = "block");
 
     const formData = new FormData(e.target);
     const baseData = {
