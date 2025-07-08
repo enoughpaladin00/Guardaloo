@@ -292,6 +292,12 @@
     height: 30rem;
     font-size: small;
   }
+
+  .netflix-slider:hover .slider-btn, .slider-btn, .slider-btn.left, .slider-btn.right {
+    display: none !important;
+  }
+
+
 }
 
 

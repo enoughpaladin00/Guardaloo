@@ -1,27 +1,26 @@
 require 'rails_helper'
 
-RSpec.describe "User registration", type: :system do
-  before do
-    driven_by(:firefox_headless)
-  end
+RSpec.describe "Registrations", type: :request do
+  it "creates a user and returns a redirect_url" do
+    post "/register", params: {
+      user: {
+        first_name: "Mario",
+        last_name: "Rossi",
+        birth_date: "1990-01-01",
+        username: "mariorossi",
+        email: "mario@example.com",
+        password: "password123",
+        password_confirmation: "password123"
+      }
+    }.to_json,
+    headers: {
+      "Content-Type" => "application/json",
+      "ACCEPT" => "application/json"
+    }
 
-  it "permits a user to register successfully" do
-    visit root_path
-
-    find('#register-popup-button', match: :first).click
-
-    within '#register-form-popup' do
-      fill_in 'Nome', with: 'Mario'
-      fill_in 'Cognome', with: 'Rossi'
-      fill_in 'Data di nascita', with: '1990-01-01'
-      fill_in 'Username', with: 'mariorossi'
-      fill_in 'Email', with: 'mario.rossi@example.com'
-      fill_in 'Password', with: 'password123'
-      fill_in 'Conferma Password', with: 'password123'
-      find("#register-button-popup").click
-    end
-
-    expect(page).to have_current_path('/home', wait:10)
-    expect(page).to have_content('Prossimamente al cinema')
+    expect(response).to have_http_status(:ok)
+    json = JSON.parse(response.body)
+    expect(json["success"]).to eq(true)
+    expect(json["redirect_url"]).to eq("/home")
   end
 end

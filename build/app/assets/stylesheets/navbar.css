@@ -151,6 +151,10 @@
 
 @media screen and (max-width: 992px){
 
+    .margin-lente{
+        margin-top: 0;
+    }
+
     .logo_container{
         align-items: start !important;
     }
@@ -249,5 +253,12 @@
 
     .hamburger-link {
         font-size: 0.8em;
+    }
+}
+
+
+@media screen and (max-width: 767px) {
+    .margin-lente{
+        margin-top: -0.05em;
     }
 }
