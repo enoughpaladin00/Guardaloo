@@ -2,8 +2,36 @@
 <div class="titolo-pagina">
   <h1>Lista Cinema Vicini</h1>
 </div>
+
+<div class="filters-container">
+  <div class="filter-group">
+    <label for="range-filter">Raggio (km):</label>
+    <select id="range-filter" class="form-select">
+      <option value="1">1 km</option>
+      <option value="2">2 km</option>
+      <option value="5">5 km</option>
+      <option value="10" selected>10 km</option>
+      <option value="20">20 km</option>
+      <option value="40">40 km</option>
+      <option value="50">50 km</option>
+      <option value="75">75 km</option>
+      <option value="100">100 km</option>
+    </select>
+  </div>
+  <div class="filter-group">
+    <label for="city-search">Cerca per Città:</label>
+    <input type="text" id="city-search" placeholder="Inserisci una città..." class="form-control">
+    <div class="city-search-buttons">
+      <button id="search-by-city-btn" class="yellow-button">Cerca Cinema</button>
+      <button id="clear-city-search-btn" class="clear-button">
+        <i class="fas fa-undo"></i> Torna alla mia posizione
+      </button>
+    </div>
+  </div>
+</div>
+
 <div id="cinema-list">
-  <p class="caricamento-iniziale">Caricamento in corso...</p>
+  <p class="status-message">Caricamento in corso...</p>
 </div>
 
 
@@ -25,6 +53,15 @@
     const modalCinemaName = document.getElementById("modal-cinema-name");
     const modalProgrammazioneContent = document.getElementById("modal-programmazione-content");
 
+    const rangeFilter = document.getElementById("range-filter");
+    const citySearchInput = document.getElementById("city-search");
+    const searchByCityBtn = document.getElementById("search-by-city-btn");
+    const clearCitySearchBtn = document.getElementById("clear-city-search-btn");
+
+
+    let userLat = null;
+    let userLon = null;
+
     closeButton.onclick = function() {
       modal.style.display = "none";
     }
@@ -40,155 +77,189 @@
       return tokenMeta ? tokenMeta.getAttribute('content') : '';
     }
 
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(async (position) => {
-        const lat = position.coords.latitude;
-        const lon = position.coords.longitude;
+ 
+    function updateRangeFilterState() {
+      if (citySearchInput.value.trim() !== "") {
+        rangeFilter.disabled = true; 
+      } else {
+        rangeFilter.disabled = false; 
+      }
+    }
+
+    // Per il caricamento dei cinema
+    async function loadCinemas(lat, lon, range, city) {
+      cinemaListContainer.innerHTML = "<p class='status-message'>Caricamento in corso...</p>"; 
+
+      let url = `/cinemas.json?`;
+      const params = new URLSearchParams();
+
+      if (lat && lon && !city) { // Se non c'è una città specificata carica i cinema nelle vicinanze
+        params.append('lat', lat);
+        params.append('lon', lon);
+      }
+      if (range) {
+        params.append('range', range);
+      }
+      if (city && city.trim() !== "") {
+        params.append('city', city.trim());
+      }
+
+      url += params.toString();
+
+      try {
+        const response = await fetch(url);
         
-        try {
-          // Richiesta dei cinema vicini (passando solo lat/lon)
-          const response = await fetch(`/cinemas.json?lat=${lat}&lon=${lon}`);
+        if (!response.ok) {
+          const errorData = await response.json(); 
+          throw new Error(errorData.error || `Errore HTTP nel caricamento dei cinema: ${response.status}`);
+        }
+
+        const cinemas = await response.json();
+        cinemaListContainer.innerHTML = ""; 
+
+        if (cinemas.length === 0) {
+          cinemaListContainer.innerHTML = "<p class='status-message'>Nessun cinema trovato con i criteri specificati.</p>";
+          return;
+        }
+
+        cinemas.forEach(cinema => {
+          const div = document.createElement("div");
+          div.classList.add("cinema-card");
+
+          const mapAddress = encodeURIComponent(`${cinema.address || ''}, ${cinema.town || ''}, ${cinema.province || ''}, Italy`);
+          const map = cinema.address
+            ? `<iframe width="300" height="200" frameborder="0" style="border:0"
+                  src="http://maps.google.com/maps?q=$${mapAddress}&output=embed"
+                  allowfullscreen></iframe>`
+            : "";
+
           
-          if (!response.ok) {
-            const errorData = await response.json(); 
-            throw new Error(errorData.error || `Errore HTTP nel caricamento dei cinema: ${response.status}`);
-          }
+          const initialBookmarkIcon = cinema.is_favorited ? 'fas fa-bookmark' : 'far fa-bookmark';
 
-          const cinemas = await response.json();
-          cinemaListContainer.innerHTML = ""; 
+          div.innerHTML = `
+            <div class="cinema-header">
+              <h2>${cinema.name} ${cinema.distance ? `(${cinema.distance.toFixed(2)} km)` : ""}</h2>
+              <span class="favorite-icon" data-cinema-id="${cinema.id}" data-favorited="${cinema.is_favorited}">
+                <i class="${initialBookmarkIcon}"></i> 
+              </span>
+            </div>
+            <p>${cinema.address || 'Indirizzo non disponibile'}, ${cinema.town || '-'} (${cinema.province || '-'})</p>
+            <p>Telefono: ${cinema.phone || 'N/A'}</p>
+            ${map}
+          `;
+          
+          div.dataset.cinemaId = cinema.id; 
+          div.dataset.cinemaName = cinema.name;
+          div.dataset.cinemaTown = cinema.town; 
+          div.dataset.cinemaProvince = cinema.province; 
+          div.dataset.cinemaCountry = "Italy"; 
 
-          if (cinemas.length === 0) {
-            cinemaListContainer.innerHTML = "<p>Nessun cinema trovato nelle vicinanze.</p>";
-            return;
-          }
-
-          cinemas.forEach(cinema => {
-            const div = document.createElement("div");
-            div.classList.add("cinema-card");
-
-            const mapAddress = encodeURIComponent(`${cinema.address || ''}, ${cinema.town || ''}, ${cinema.province || ''}, Italy`);
-            const map = cinema.address
-              ? `<iframe width="300" height="200" frameborder="0" style="border:0"
-                    src="http://maps.google.com/maps?q=$${mapAddress}&output=embed"
-                    allowfullscreen></iframe>`
-              : "";
-
-            
-            const initialBookmarkIcon = cinema.is_favorited ? 'fas fa-bookmark' : 'far fa-bookmark';
-
-            div.innerHTML = `
-              <div class="cinema-header">
-                <h2>${cinema.name} (${cinema.distance ? cinema.distance.toFixed(2) : "?"} km)</h2>
-                <span class="favorite-icon" data-cinema-id="${cinema.id}" data-favorited="${cinema.is_favorited}">
-                  <i class="${initialBookmarkIcon}"></i> 
-                </span>
-              </div>
-              <p>${cinema.address || 'Indirizzo non disponibile'}, ${cinema.town || '-'} (${cinema.province || '-'})</p>
-              <p>Telefono: ${cinema.phone || 'N/A'}</p>
-              ${map}
-            `;
-            
-            div.dataset.cinemaId = cinema.id; 
-            div.dataset.cinemaName = cinema.name;
-            div.dataset.cinemaTown = cinema.town; 
-            div.dataset.cinemaProvince = cinema.province; 
-            div.dataset.cinemaCountry = "Italy"; 
-
-            div.addEventListener("click", async (event) => {
-             
-              if (event.target.closest('.favorite-icon')) {
-                return; 
-              }
-
-              modal.style.display = "block";
-              modalCinemaName.textContent = cinema.name;
-              modalProgrammazioneContent.innerHTML = "<p class='loading-message'>Caricamento programmazione...</p>"; 
-
-              try {
-                const programmazioneResponse = await fetch(
-                  `/cinemas/${cinema.id}/programmazione?` + 
-                  `cinema_name=${encodeURIComponent(cinema.name)}&` +
-                  `cinema_town=${encodeURIComponent(cinema.town || '')}&` +
-                  `cinema_province=${encodeURIComponent(cinema.province || '')}&` +
-                  `cinema_country=${encodeURIComponent("Italy")}` 
-                );
-                
-                if (!programmazioneResponse.ok) {
-                  throw new Error(`HTTP error! status: ${programmazioneResponse.status}`);
-                }
-                const programmazioneData = await programmazioneResponse.json();
-                
-                if (programmazioneData && programmazioneData.length > 0) {
-                  let programmazioneHtml = '';
-                  programmazioneData.forEach(film => {
-                    programmazioneHtml += `
-                      <div class="movie-listing">
-                        <h4>${film.title}</h4>
-                        <p>Orari: ${film.showtimes.join(', ')}</p>
-                      </div>
-                    `;
-                  });
-                  modalProgrammazioneContent.innerHTML = programmazioneHtml;
-                } else {
-                  modalProgrammazioneContent.innerHTML = "<p>Nessuna programmazione trovata per questo cinema.</p>";
-                }
-              } catch (error) {
-                console.error("Errore nel recupero della programmazione:", error);
-                modalProgrammazioneContent.innerHTML = "<p>Errore nel caricamento della programmazione. Riprova più tardi.</p>";
-              }
-            });
-
+          div.addEventListener("click", async (event) => {
            
-            const favoriteIconSpan = div.querySelector('.favorite-icon'); 
-            if (favoriteIconSpan) { 
-              favoriteIconSpan.addEventListener("click", async (event) => {
-                event.stopPropagation(); 
-                const cinemaId = favoriteIconSpan.dataset.cinemaId;
-                let isFavorited = favoriteIconSpan.dataset.favorited === 'true'; 
-
-                const method = isFavorited ? 'DELETE' : 'POST';
-                let url; 
-
-                if (method === 'POST') {
-                  url = `/cinema_favorites`; 
-                } else {
-                  url = `/cinema_favorites/${cinemaId}`; 
-                }
-                
-                try {
-                  const response = await fetch(url, {
-                    method: method,
-                    headers: {
-                      'X-CSRF-Token': getCSRFToken(), 
-                      'Content-Type': 'application/json'
-                    },
-                    body: method === 'POST' ? JSON.stringify({ cinema_id: cinemaId }) : undefined
-                  });
-
-                  const data = await response.json();
-
-                  if (response.ok) {
-                    isFavorited = !isFavorited; 
-                    favoriteIconSpan.dataset.favorited = isFavorited;
-                    // Aggiorna l'icona
-                    favoriteIconSpan.querySelector('i').className = isFavorited ? 'fas fa-bookmark' : 'far fa-bookmark';
-                    alert(data.message); 
-                  } else {
-                    alert(`Errore: ${data.message || 'Si è verificato un errore.'}`);
-                  }
-                } catch (error) {
-                  console.error("Errore AJAX per i preferiti:", error);
-                  alert("Errore di rete durante l'aggiornamento dei preferiti.");
-                }
-              });
+            if (event.target.closest('.favorite-icon')) {
+              return; 
             }
 
-            cinemaListContainer.appendChild(div);
+            modal.style.display = "block";
+            modalCinemaName.textContent = cinema.name;
+            modalProgrammazioneContent.innerHTML = "<p class='loading-message'>Caricamento programmazione...</p>"; 
+
+            try {
+              const programmazioneResponse = await fetch(
+                `/cinemas/${cinema.id}/programmazione?` + 
+                `cinema_name=${encodeURIComponent(cinema.name)}&` +
+                `cinema_town=${encodeURIComponent(cinema.town || '')}&` +
+                `cinema_province=${encodeURIComponent(cinema.province || '')}&` +
+                `cinema_country=${encodeURIComponent("Italy")}` 
+              );
+              
+              if (!programmazioneResponse.ok) {
+                throw new Error(`HTTP error! status: ${programmazioneResponse.status}`);
+              }
+              const programmazioneData = await programmazioneResponse.json();
+              
+              if (programmazioneData && programmazioneData.length > 0) {
+                let programmazioneHtml = '';
+                programmazioneData.forEach(film => {
+                  programmazioneHtml += `
+                    <div class="movie-listing">
+                      <h4>${film.title}</h4>
+                      <p>Orari: ${film.showtimes.join(', ')}</p>
+                    </div>
+                  `;
+                });
+                modalProgrammazioneContent.innerHTML = programmazioneHtml;
+              } else {
+                modalProgrammazioneContent.innerHTML = "<p>Nessuna programmazione trovata per questo cinema.</p>";
+              }
+            } catch (error) {
+              console.error("Errore nel recupero della programmazione:", error);
+              modalProgrammazioneContent.innerHTML = "<p>Errore nel caricamento della programmazione. Riprova più tardi.</p>";
+            }
           });
-        } catch (error) {
-          console.error("Errore nel caricamento dei cinema:", error);
-          cinemaListContainer.innerHTML = `<p>Errore nel caricamento dei cinema: ${error.message}. Riprova più tardi.</p>`;
-        }
+
+         
+          const favoriteIconSpan = div.querySelector('.favorite-icon'); 
+          if (favoriteIconSpan) { 
+            favoriteIconSpan.addEventListener("click", async (event) => {
+              event.stopPropagation(); 
+              const cinemaId = favoriteIconSpan.dataset.cinemaId;
+              let isFavorited = favoriteIconSpan.dataset.favorited === 'true'; 
+
+              const method = isFavorited ? 'DELETE' : 'POST';
+              let url; 
+
+              if (method === 'POST') {
+                url = `/cinema_favorites`; 
+              } else {
+                url = `/cinema_favorites/${cinemaId}`; 
+              }
+              
+              try {
+                const response = await fetch(url, {
+                  method: method,
+                  headers: {
+                    'X-CSRF-Token': getCSRFToken(), 
+                    'Content-Type': 'application/json'
+                  },
+                  body: method === 'POST' ? JSON.stringify({ cinema_id: cinemaId }) : undefined
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                  isFavorited = !isFavorited; 
+                  favoriteIconSpan.dataset.favorited = isFavorited;
+                  
+                  favoriteIconSpan.querySelector('i').className = isFavorited ? 'fas fa-bookmark' : 'far fa-bookmark';
+                  alert(data.message); 
+                } else {
+                  alert(`Errore: ${data.message || 'Si è verificato un errore.'}`);
+                }
+              } catch (error) {
+                console.error("Errore AJAX per i preferiti:", error);
+                alert("Errore di rete durante l'aggiornamento dei preferiti.");
+              }
+            });
+          }
+
+          cinemaListContainer.appendChild(div);
+        });
+      } catch (error) {
+        console.error("Errore nel caricamento dei cinema:", error);
+        cinemaListContainer.innerHTML = `<p class='status-message'>Errore nel caricamento dei cinema: ${error.message}. Riprova più tardi.</p>`;
+      }
+      updateRangeFilterState(); 
+    }
+
+    // Per gestire la geolocalizzazione iniziale
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(async (position) => {
+        userLat = position.coords.latitude;
+        userLon = position.coords.longitude;
+        // Caricamento dei cinema con la posizione dell'utente e il raggio predefinito
+        await loadCinemas(userLat, userLon, rangeFilter.value, null);
+        updateRangeFilterState(); 
       }, (error) => {
         console.error("Errore di geolocalizzazione:", error);
         let errorMessage = "Impossibile ottenere la tua posizione. Assicurati che la geolocalizzazione sia abilitata nel tuo browser.";
@@ -199,14 +270,59 @@
         } else if (error.code === error.TIMEOUT) {
           errorMessage = "Timeout nel tentativo di ottenere la posizione. Controlla la tua connessione.";
         }
-        cinemaListContainer.innerHTML = `<p>${errorMessage}</p>`;
+        cinemaListContainer.innerHTML = `<p class='status-message'>${errorMessage}</p>`;
+        rangeFilter.disabled = true;
       });
     } else {
-      cinemaListContainer.innerHTML = "<p>Geolocalizzazione non supportata dal browser. Non è possibile mostrare i cinema vicini.</p>";
+      cinemaListContainer.innerHTML = "<p class='status-message'>Geolocalizzazione non supportata dal browser. Puoi cercare solo per città.</p>";
+      rangeFilter.disabled = true;
     }
+
+    // Per il cambio del raggio
+    rangeFilter.addEventListener('change', async () => {
+      if (!rangeFilter.disabled && (userLat !== null && userLon !== null || citySearchInput.value.trim() !== "")) {
+        await loadCinemas(userLat, userLon, rangeFilter.value, citySearchInput.value);
+      }
+    });
+
+    // Per ricercare per città
+    searchByCityBtn.addEventListener('click', async () => {
+      const city = citySearchInput.value;
+      if (city.trim() !== "") {
+        // Non bisogna più usare lat/lon per la ricerca se si ricerca per città
+        await loadCinemas(null, null, rangeFilter.value, city);
+      } else if (userLat !== null && userLon !== null) {
+        await loadCinemas(userLat, userLon, rangeFilter.value, null);
+      } else {
+        cinemaListContainer.innerHTML = "<p class='status-message'>Inserisci una città o abilita la geolocalizzazione per trovare i cinema.</p>";
+      }
+      updateRangeFilterState();
+    });
+
+    // Ricerca per città anche con Invio
+    citySearchInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        searchByCityBtn.click();
+      }
+    });
+
+
+    clearCitySearchBtn.addEventListener('click', async () => {
+      citySearchInput.value = ""; // Svuota il campo città
+      if (userLat !== null && userLon !== null) {
+        await loadCinemas(userLat, userLon, rangeFilter.value, null); 
+      } else {
+        cinemaListContainer.innerHTML = "<p class='status-message'>Geolocalizzazione non disponibile. Inserisci una città per cercare.</p>";
+      }
+      updateRangeFilterState(); 
+    });
+
+    // Quando l'utente digita nel campo città il raggio va riabilitato
+    citySearchInput.addEventListener('input', () => {
+      updateRangeFilterState();
+    });
   });
 </script>
-
 <!--
 <script>
   document.addEventListener("DOMContentLoaded", () => {

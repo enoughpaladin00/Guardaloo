@@ -58,7 +58,6 @@
 }
 
 */
-
 html, body {
   width: 100%;
   height: 100%;
@@ -70,7 +69,7 @@ html, body {
 :root {
   --color-primary: #004466;           /* Blu */
   --color-accent: #f7b32b;            /* Giallo */
-  --color-text-light: #00446695;      /* Testo grigio-bluastro */
+  --color-text-light: #00446695;      /* Testo grigio-blu */
   --color-border-default: #cccccc;    /* Bordo grigio */
   --color-background-card: #fffce8;   /* Sfondo crema per card */
   --color-2: var(--color-accent);     
@@ -109,25 +108,30 @@ html, body {
 }
 
 
-.caricamento-iniziale {
-  text-align: center; 
-  width: 100%; 
-  margin: 0 auto; 
+/* Per il caricamento, nessun risultato, errori, ecc. */
+.status-message {
+  text-align: center;
+  width: 100%;
+  margin: 2rem auto; 
   font-family: 'Inter', sans-serif;
-  font-size: 1.2rem;
-  color: #888;
+  font-size: 1.3rem; 
+  color: var(--color-primary); 
   padding: 2rem;
-  margin-top: 1rem;
-  animation: pulse 1.5s infinite ease-in-out; 
+  border: 1px solid var(--color-accent); 
+  border-radius: 10px; 
+  background-color: #fff8e1; 
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08); 
 }
 
+.caricamento-iniziale {
+  animation: pulse 1.5s infinite ease-in-out; 
+}
 
 @keyframes pulse {
   0% { opacity: 0.7; }
   50% { opacity: 1; }
   100% { opacity: 0.7; }
 }
-
 
 #modal-programmazione-content .loading-message {
   text-align: center;
@@ -137,17 +141,17 @@ html, body {
   animation: pulse 1.5s infinite ease-in-out;
 }
 
-/*  Griglia Cinema  */
+/* Griglia Cinema  */
 #cinema-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); /* Questa regola gestisce già il cambio da 3 a 2 a 1 colonna */
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); 
   gap: 2rem;
   padding: 2rem;
   max-width: 1200px;
   margin: 0 auto;
 }
 
-/*  Cinema */
+/* Cinema */
 .cinema-card {
   padding: 2rem;
   background-color: var(--color-background-card);
@@ -203,7 +207,7 @@ html, body {
   top: 0;
   width: 100%; /* Larghezza */
   height: 100%; /* Altezza */
-  overflow: auto; /* Scroll se il contenuto supera l'altezza del viewport */
+  overflow: auto; 
   background-color: rgba(0,0,0,0.6);
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px); /* Per compatibilità Safari */
@@ -220,7 +224,7 @@ html, body {
   margin: 10% auto; 
   padding: 30px;
   border: none;
-  border-radius: 15px; /* Bordi arrotondati */
+  border-radius: 15px; 
   box-shadow: 0 10px 30px rgba(0,0,0,0.3); 
   width: 90%; 
   max-width: 750px;
@@ -244,13 +248,12 @@ html, body {
   cursor: pointer;
   transition: color 0.2s ease;
 }
-
 .close-button:hover,
 .close-button:focus {
   color: #333;
 }
 
-/* Titolo del cinema nel popup */
+/* Titolo cinema nel popup */
 #modal-cinema-name {
   font-size: 2.2rem;
   margin-bottom: 1.5rem;
@@ -263,7 +266,6 @@ html, body {
 #modal-programmazione-content {
   margin-top: 1rem;
 }
-
 
 .movie-listing {
   margin-bottom: 15px;
@@ -289,7 +291,6 @@ html, body {
   margin: 0;
 }
 
-
 .cinema-header {
   display: flex;
   justify-content: flex-start;
@@ -314,7 +315,6 @@ html, body {
   transition: transform 0.2s ease, color 0.2s ease;
   z-index: 10;
 }
-
 .favorite-icon:hover {
   transform: scale(1.1); 
 }
@@ -327,14 +327,128 @@ html, body {
   color: var(--color-border-default);
 }
 
+.filters-container {
+  display: flex;
+  flex-wrap: wrap; 
+  gap: 1.5rem; 
+  justify-content: center;
+  align-items: flex-end; 
+  padding: 1.5rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto 2rem auto;
+  background-color: var(--color-background-card);
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  font-family: 'Inter', sans-serif;
+}
 
-/* Schermi molto piccoli (fino a 767px) */
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem; 
+  min-width: 200px; 
+}
+
+.filters-container label {
+  font-size: 0.95rem;
+  color: var(--color-primary);
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.filters-container .form-select,
+.filters-container .form-control {
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--color-border-default);
+  border-radius: 8px;
+  font-size: 1rem;
+  color: #333;
+  background-color: #fff;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  flex-grow: 1; 
+}
+
+.filters-container .form-select:focus,
+.filters-container .form-control:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(0, 150, 255, 0.2); 
+  outline: none;
+}
+
+.filters-container .yellow-button {
+  background-color: var(--color-accent);
+  color: var(--color-primary);
+  border: none;
+  border-radius: 8px;
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  flex-shrink: 0; 
+  margin-top: 0; 
+  flex-grow: 1; 
+  max-width: 200px; 
+  white-space: nowrap; 
+}
+
+.filters-container .yellow-button:hover {
+  background-color: #e6a21e; 
+  transform: translateY(-1px);
+}
+
+.city-search-buttons {
+  display: flex;
+  gap: 10px; /* Spazio tra i bottoni */
+  margin-top: 0.5rem;
+  flex-wrap: wrap; 
+  justify-content: flex-start;
+}
+
+.clear-button {
+  background-color: #f0f0f0; 
+  color: #555;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+  display: flex; 
+  align-items: center;
+  gap: 8px; 
+  flex-shrink: 0;
+  flex-grow: 0;
+  max-width: 250px;
+  margin-top: 0;
+}
+
+.clear-button:hover {
+  background-color: #e0e0e0;
+  border-color: #bbb;
+}
+
+.filters-container .form-select:disabled,
+.filters-container .form-control:disabled {
+  background-color: #e9ecef; 
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+
+/* Per schermi fino a 767px */
 @media (max-width: 767px) {
+  filters-container .yellow-button,
+  .filters-container .clear-button {
+    width: 100%; 
+    max-width: unset; 
+    margin-top: 0.5rem; }
+
   #cinema-list {
     padding: 1rem;
     gap: 1rem;
   }
-
 
   .cinema-card {
     padding: 1.2rem; 
@@ -344,16 +458,13 @@ html, body {
   .cinema-card h2 {
     font-size: 1.5rem; 
   }
-
   .cinema-card p {
     font-size: 0.9rem; 
   }
-
   .cinema-card iframe {
     height: 150px; 
     margin-top: 1rem; 
   }
-
   .favorite-icon {
     font-size: 1.4rem; 
     top: 10px;
@@ -363,27 +474,47 @@ html, body {
   .titolo-pagina h1 {
     font-size: 2rem; 
   }
+
+  .filters-container {
+    flex-direction: column; 
+    align-items: stretch; 
+    padding: 1rem;
+    margin: 0 auto 1.5rem auto;
+  }
+  .filter-group {
+    min-width: unset; 
+    width: 100%;
+  }
+  .filters-container .yellow-button,
+  .filters-container .clear-button {
+    margin-top: 1rem; 
+    flex-basis: auto;
+    flex-grow: 1;
+    max-width: none;
+    margin-top: 0.5rem;
+    white-space: normal;
+  }
+  .city-search-buttons {
+    flex-direction: column; /* Per mettere i bottoni uno sopra l'altro su schermi piccoli */
+    gap: 0.5rem;
+  }
 }
 
-/* Schermi medi (da 768px a 991px) */
+/* Per schermi da 768px a 991px */
 @media (min-width: 768px) and (max-width: 991px) {
   #cinema-list {
     padding: 2rem;
     gap: 2rem;
   }
-
   .titolo-pagina h1 {
     font-size: 2.5rem; 
   }
-
-  
   .modal-content {
     margin: 5% auto; 
     padding: 40px; 
   }
 }
-
-/* Schermi grandi (da 992px) */
+/* Per schermi oltre 992px */
 @media (min-width: 992px) {
   .titolo-pagina h1 {
     font-size: 3rem; 
