@@ -5,8 +5,17 @@ class User < ApplicationRecord
 
     has_many :posts, dependent: :destroy
     has_many :comments, dependent: :destroy
-    has_many :bookmarks, dependent: :destroy
 
+    #Per i cinema preferiti
+    has_many :cinema_favorites, dependent: :destroy
+    has_many :favorite_cinemas_list, through: :cinema_favorites, source: :cinemasdef 
+
+   
+    has_many :bookmarks, dependent: :destroy
+<<<<<<< HEAD
+
+=======
+>>>>>>> origin/cinemas
     validates :email, presence: true, uniqueness: true
     validates :username, presence: true, uniqueness: true
     validates :first_name, :last_name, presence: true
