@@ -1,10 +1,11 @@
 class PostsController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show]  # Richiede login tranne per index/show
-  before_action :set_post, only: [:show, :edit, :update, :destroy]
-  before_action :authorize_user!, only: [:edit, :update, :destroy]  # Autorizza solo il proprietario
+  before_action :authenticate_user!, except: [ :index, :show ]  # Richiede login tranne per index/show
+  before_action :set_post, only: [ :show, :edit, :update, :destroy ]
+  before_action :authorize_user!, only: [ :edit, :update, :destroy ]  # Autorizza solo il proprietario
 
-  #FILTRO COMPLETO
+  # FILTRO COMPLETO
   def index
+    @user = current_user
     @posts = Post.includes(:user, :comments)
     @user = current_user
     @top_movies = TmdbService.top_10_streaming_movies
@@ -41,6 +42,7 @@ class PostsController < ApplicationController
 
 
   def new
+    @user = current_user
     @top_movies = TmdbService.top_10_streaming_movies
     if user_signed_in?
       @post = current_user.posts.build
@@ -50,9 +52,11 @@ class PostsController < ApplicationController
   end
 
   def edit
+    @user = current_user
   end
 
   def create
+    @user = current_user
     @post = current_user.posts.build(post_params)
 
     if @post.movie_title.present?
@@ -66,29 +70,31 @@ class PostsController < ApplicationController
     end
 
     if @post.save
-      redirect_to @post, notice: 'Post was successfully created.'
+      redirect_to @post, notice: "Post was successfully created."
     else
       render :new
     end
   end
 
 
-def update
-  if @post.update(post_params)
-    if @post.movie_title.present?
-      movie = TmdbService.search_movie_by_title(@post.movie_title).first
-      if movie
-        @post.update_columns(movie_id: movie["id"], movie_poster_path: movie["poster_path"])
+  def update
+    @user = current_user
+    if @post.update(post_params)
+      if @post.movie_title.present?
+        movie = TmdbService.search_movie_by_title(@post.movie_title).first
+        if movie
+          @post.update_columns(movie_id: movie["id"], movie_poster_path: movie["poster_path"])
+        end
       end
+      redirect_to @post, notice: "Post was successfully updated."
+    else
+      render :edit
     end
-    redirect_to @post, notice: 'Post was successfully updated.'
-  else
-    render :edit
   end
-end
 
 
   def destroy
+    @user = current_user
     @post = Post.find(params[:id])
     if @post.user == current_user
       @post.destroy
@@ -106,5 +112,4 @@ end
     def post_params
       params.require(:post).permit(:title, :content, :movie_title, :movie_id, :movie_poster_path)
     end
-
 end
