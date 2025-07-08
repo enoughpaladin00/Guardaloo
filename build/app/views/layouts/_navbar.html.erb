@@ -26,7 +26,7 @@
         <% if @user.avatar_filename? %>
             <%= image_tag "/uploads/avatars/#{@user.avatar_filename}", alt: "Avatar", class: "profile_logo", id: "hamburgerMenuTrigger", width: 200 %>
         <% else %>
-            <%= image_tag "navbar/user.svg", class:"profile_logo", alt: "user", id: "hamburgerMenuTrigger" %>
+            <%= image_tag "navbar/user.svg", class:"profile_logo", alt: "user", id: "hamburgerMenuTrigger", style: "border: 0" %>
         <% end %>
         
         <div id="hamburgerMenu" style="display: none">

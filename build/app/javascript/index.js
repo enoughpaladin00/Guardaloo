@@ -1,3 +1,4 @@
+
 document.addEventListener("turbo:load", function () {
   const gliderEl = document.querySelector(".glider");
   if (!gliderEl) return;
