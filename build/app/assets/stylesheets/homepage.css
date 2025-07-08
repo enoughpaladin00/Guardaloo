@@ -88,6 +88,18 @@
     z-index: 1;
 }
 
+.virgolette{
+  position: absolute; 
+  left: 32%; 
+  width: 3em;
+}
+
+.reverse{
+  transform: rotate(180deg);
+  left: auto !important;
+  right: 32%;
+}
+
 .citazione {
     font-weight: bold;
     font-size: 2em;
@@ -292,12 +304,15 @@
     height: 30rem;
     font-size: small;
   }
+<<<<<<< HEAD
 
   .netflix-slider:hover .slider-btn, .slider-btn, .slider-btn.left, .slider-btn.right {
     display: none !important;
   }
 
 
+=======
+>>>>>>> 54b359f55508afaa81497308fb0717b4ba0f966c
 }
 
 
