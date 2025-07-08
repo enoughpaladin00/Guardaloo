@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe "User registration", type: :system do
   it "registra un nuovo utente con successo dalla homepage" do
-    visit "/"
+    visit root_path
     find('#register-popup-button').click
 
     within('#register-form-popup') do

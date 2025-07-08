@@ -14,7 +14,7 @@ RSpec.describe "User login", type: :system do
   end
 
   it "permette il login dalla homepage" do
-    visit "/"
+    visit root_path
     find('#login-popup-button').click
 
     within('#login-form-popup') do
@@ -28,12 +28,12 @@ RSpec.describe "User login", type: :system do
   end
 
   it "mostra un errore se le credenziali sono errate" do
-    visit "/"
+    visit root_path
     find('#login-popup-button').click
 
     within('#login-form-popup') do
-      fill_in "email", with: "mario@example.com"
-      fill_in "password", with: "password123"
+      fill_in "email", with: "wrong@wrong.com"
+      fill_in "password", with: "wrong123"
       click_button "Accedi"
     end
 
