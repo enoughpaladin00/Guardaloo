@@ -62,24 +62,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_05_155309) do
     t.index ["user_id"], name: "index_cinema_favorites_on_user_id"
   end
 
-  create_table "cinema_programmings", force: :cascade do |t|
-    t.string "name"
-    t.string "location"
-    t.string "movie_title"
-    t.text "showtimes"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "cinema_showtimes", force: :cascade do |t|
-    t.string "day"
-    t.string "movie"
-    t.string "show_type"
-    t.text "show_times"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "cinemas", force: :cascade do |t|
     t.string "name", null: false
     t.string "address", null: false

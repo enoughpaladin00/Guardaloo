@@ -134,32 +134,54 @@ document.querySelectorAll("#register-form-popup, #register-form-page").forEach(f
   form.addEventListener("submit", function (e) {
     e.preventDefault();
 
-    const form = e.target;
-    const formData = new FormData(form);
-    const data = Object.fromEntries(formData.entries());
+    const formElement = e.target;
+    const formData = new FormData(formElement);
+    const baseData = Object.fromEntries(formData.entries());
 
-    fetch("/register", {
-      method: "POST",
-      headers: {
-        "X-CSRF-Token": document.querySelector("[name='csrf-token']").content,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ user: data })
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.success) {
-        window.location.href = data.redirect_url;
-      } else {
-        alert("Errore: " + data.errors.join(", "));
-      }
-    })
-    .catch(error => {
-      console.error("Errore durante la registrazione:", error);
-      alert("Errore imprevisto.");
-    });
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        const data = {
+          user: {
+            ...baseData,
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          }
+        };
+        sendRegister(data);
+      }, () => {
+        console.warn("Geolocalizzazione negata. Procedo senza.");
+        sendRegister({ user: baseData });
+      });
+    } else {
+      console.warn("Geolocalizzazione non supportata. Procedo senza.");
+      sendRegister({ user: baseData });
+    }
   });
 });
+
+function sendRegister(data) {
+  fetch("/register", {
+    method: "POST",
+    headers: {
+      "X-CSRF-Token": document.querySelector("[name='csrf-token']").content,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      window.location.href = data.redirect_url;
+    } else {
+      alert("Errore: " + (data.errors?.join(", ") || "Errore generico."));
+    }
+  })
+  .catch(error => {
+    console.error("Errore durante la registrazione:", error);
+    alert("Errore imprevisto.");
+  });
+}
+
 
 
 // Login

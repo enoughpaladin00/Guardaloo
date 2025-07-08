@@ -13,6 +13,12 @@ html, body{
     background-color: #FFFAEF;
 }
 
+.welcome-bar{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .navbar-logo{
     height: 40px;
     display: block;
@@ -26,6 +32,34 @@ html, body{
     font-family: 'Inter', sans-serif;
     font-weight: 600;
     font-size: 20px;
+}
+
+.logout-button{
+    border-radius: 50px;
+    display: inline-block;
+    border: none;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 20px;
+}
+
+.logout-text {
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+}
+
+.logout-text{
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 20px;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    line-height: 1;
+    display: flex;
 }
 
 .popup-overlay {
@@ -396,6 +430,12 @@ html, body{
   color: red;
 }
 
+#hp-navbar .container-fluid {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 @media (max-width: 768px) {
 
     .homepage-navbar .container-fluid {
@@ -407,6 +447,22 @@ html, body{
         flex-direction: row !important;
         gap: 10px;
         padding-top: 10px;
+    }
+
+    .welcome-bar {
+      gap: 5px;
+    }
+
+    .logout-text,
+    .popup-button,
+    .logout-button {
+      font-size: 14px;
+      padding: 3px 8px;
+      white-space: nowrap;
+    }
+
+    .navbar-logo img {
+      height: 32px;
     }
 
     .popup-button {
@@ -440,7 +496,6 @@ html, body{
         width: 100% !important;
         max-width: 100% !important;
     }
-
 
     .movie-card, .movie2-card {
         width: 150px !important;
