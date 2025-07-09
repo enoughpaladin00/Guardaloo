@@ -1,9 +1,10 @@
 class CommentsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_comment, only: [:destroy, :update]
-  before_action :authorize_comment_action!, only: [:destroy, :update]
+  before_action :set_comment, only: [ :destroy, :update ]
+  before_action :authorize_comment_action!, only: [ :destroy, :update ]
 
   def create
+    @user = current_user
     @post = Post.find(params[:post_id])
     @comment = @post.comments.build(comment_params)
     @comment.user = current_user
@@ -19,9 +20,9 @@ class CommentsController < ApplicationController
     @comment = Comment.find(params[:id])
     if current_user == @comment.user || current_user == @comment.post.user || current_user.admin? || current_user.moderator?
       @comment.destroy
-      redirect_to @comment.post, notice: 'Commento eliminato con successo.'
+      redirect_to @comment.post, notice: "Commento eliminato con successo."
     else
-      redirect_to @comment.post, alert: 'Non sei autorizzato a eliminare questo commento.'
+      redirect_to @comment.post, alert: "Non sei autorizzato a eliminare questo commento."
     end
   end
 
