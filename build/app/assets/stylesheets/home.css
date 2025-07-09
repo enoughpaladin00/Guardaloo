@@ -444,6 +444,10 @@ html, body{
     font-weight: 500;
 }
 
+#register-form-page{
+    display: none;
+}
+
 @media (max-width: 768px) {
 
     .homepage-navbar .container-fluid {

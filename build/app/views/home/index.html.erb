@@ -210,7 +210,7 @@
 -->
                 <% end %>
   
-                <%= form_with url: register_path, method: :post, data: { turbo: false }, html: { id: "register-form-popup" } do %>
+                <%= form_with url: register_path, method: :post, data: { turbo: false }, html: { id: "register-form-popup"} do %>
                     <div class="d-flex gap-2 mb-3">
                       <%= text_field_tag "user[first_name]", nil, class: "form-control", placeholder: "Nome", required: true %>
                       <%= text_field_tag "user[last_name]", nil, class: "form-control", placeholder: "Cognome", required: true %>
