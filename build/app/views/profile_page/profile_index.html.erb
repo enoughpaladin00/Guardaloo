@@ -28,7 +28,14 @@
 
                     <div class="user_name">
                         <h2> <%= current_user.username%> </h2>
+                        <p>(<%= case current_user.role
+                    when "user" then "Utente"
+                    when "moderator" then "Moderatore"
+                    when "admin" then "Amministratore"
+                    end %>)</p>
                     </div>
+
+                        
                     
                     <div class="user_edit">
                         <button class="edit-button open-popup"> Edit profile </button>
