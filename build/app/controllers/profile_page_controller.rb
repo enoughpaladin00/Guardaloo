@@ -43,7 +43,7 @@ class ProfilePageController < ApplicationController
   # Metodo per aggiornare un film della Top 3
   def update_movie
     position = params[:position].to_i
-    tmdb_id = params[:selected_movie_tmdb_id] # questo deve essere l'ID TMDB del film
+    tmdb_id = params[:selected_movie_tmdb_id]
 
     if tmdb_id.blank? || position < 1 || position > 3
       render json: { error: "Parametri mancanti o non validi" }, status: :bad_request
@@ -165,7 +165,7 @@ class ProfilePageController < ApplicationController
       @user.avatar_filename = filename
     end
 
-    if @user.update(user_params.except(:avatar)) # Escludi avatar perché lo gestisci a parte
+    if @user.update(user_params.except(:avatar))
       redirect_to profile_path, notice: "Profilo aggiornato con successo"
     else
       flash.now[:alert] = "Errore nell'aggiornamento del profilo"

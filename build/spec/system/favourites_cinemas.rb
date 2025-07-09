@@ -41,24 +41,16 @@ RSpec.describe "Favorite Cinemas", type: :system, js: true do
     expect(page).to have_current_path("/home", wait: 5)
     expect(page).to have_content("Prossimamente al Cinema")
 
-    # Mock geolocation PRIMA del caricamento della pagina
-    # page.execute_script(<<~JS)
-    #  navigator.geolocation.getCurrentPosition = function(success) {
-    #    success({ coords: { latitude: 41.9, longitude: 12.5 } });
-    #  };
-    # JS
-
     visit cinemas_path
     fill_in 'city-search', with: 'Roma'
     sleep 1
     click_button 'search-by-city-btn'
 
-    # Attendi che il cinema sia visibile
+
     expect(page).to have_content(cinema_to_favorite.name, wait: 5)
 
 
     within first('div.cinema-card') do
-      # Inizialmente non nei preferiti
       expect(page).to have_css 'span.favorite-icon i.far.fa-bookmark'
       accept_alert do
         find('span.favorite-icon').click
