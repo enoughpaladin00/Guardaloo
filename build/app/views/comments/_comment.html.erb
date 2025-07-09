@@ -1,11 +1,10 @@
 <div id="comment-<%= comment.id %>" class="comment-card">
   <div class="comment-header">
-    <%= image_tag(
-      comment.user.avatar.attached? ? url_for(comment.user.avatar) + "?#{comment.user.avatar.blob.created_at.to_i}" : asset_path('Profile_page/default_avatar.svg'),
-      class: "comment-avatar",
-      alt: "Avatar",
-      onerror: "this.onerror=null; this.src='#{asset_path('Profile_page/default_avatar.svg')}';"
-    ) %>
+    <% if comment.user.avatar_filename? %>
+      <%= image_tag "/uploads/avatars/#{comment.user.avatar_filename}", class: "comment-avatar" %>
+    <% else %>
+      <%= image_tag "Profile_page/default_avatar.svg", alt: "Immagine di default", class: "comment-avatar" %>
+    <% end %>
 
 
     <div class="comment-info">
@@ -15,7 +14,15 @@
       </p>
     </div>
 
-    <% if current_user == comment.user || current_user == comment.post.user || current_user&.admin? || current_user&.moderator? %>
+  <%# DEBUG: stampa info in HTML %>
+  <%# <div style="font-size: 0.7em; color: red;"> %>
+    <%# current_user: <%= current_user&.id %><br>
+    <%# comment.user.id: <%= comment.user.id %><br>
+    <%# post owner id: <%= comment.post.user.id %> 
+  <%# </div> %>
+
+
+    <% if user_signed_in? && (current_user == comment.user || current_user == comment.post.user || current_user.admin? || current_user.moderator?) %>
       <div class="comment-actions">
         <button class="btn forum-button2 edit-comment-button"
           data-comment-id="<%= comment.id %>"

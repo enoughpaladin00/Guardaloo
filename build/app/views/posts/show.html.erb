@@ -1,7 +1,7 @@
 <!-- Navbar -->
 <%= render 'layouts/navbar' %>
 
-<div class="posts-container">
+<div class="posts-container",  style="position: relative;">
   <%= link_to 'Ritorna al Forum', posts_path, class:"btn forum-button2 mobile", style:"position:absolute; left:3em;" %>
   <div class="new-post-form-container-show">
     <%# immagine di sinistra %>
@@ -41,11 +41,15 @@
 
     <%# modifica post %>
     <div style="flex-shrink:0;" class="modifica-commenta">
-      <button class="btn"> <%= link_to 'Modifica il post', edit_post_path(@post), style:"text-decoration:none;", class:"btn forum-button2"%> </button>
+      <% if user_signed_in? && current_user == @post.user %>
+        <%= link_to 'Modifica il post', edit_post_path(@post), class: "btn forum-button2", style: "text-decoration:none;" %>
+      <% end %>
+
       <% if user_signed_in? %>
-        <button id="show-new-comment-form", class="btn forum-button2" style="margin-left: 0.5em;"> Commenta il Post</button>
+        <button id="show-new-comment-form" class="btn forum-button2" style="margin-left: 0.5em;">Commenta il Post</button>
       <% end %>
     </div>
+
   </div>
 
   <%# crea commento %>
