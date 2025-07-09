@@ -239,30 +239,7 @@
 
 <%= render 'layouts/footer' %>
 
-<% if user_signed_in? && session[:user_location].blank? %>
-  <script>
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(function(position) {
-        fetch("/set_location", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "X-CSRF-Token": document.querySelector("[name='csrf-token']").content
-          },
-          body: JSON.stringify({
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
-          })
-        }).then(() => {
-          console.log("Posizione salvata");
-        }).catch(error => {
-          console.error("Errore salvataggio posizione:", error);
-        });
-      });
-      location.reload();
-    }
-  </script>
-<% end %>
+
 
 
 <script defer src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_MAPS_API_KEY'] %>&libraries=marker&map_ids=<%= ENV['GOOGLE_MAPS_ID'] %>&loading=async&callback=initMap"></script>
