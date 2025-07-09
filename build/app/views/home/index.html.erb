@@ -122,6 +122,8 @@
                 <%= form_with url: login_path, method: :post, local: true, html: { id: "login-form-page" } do %>
                     <%= email_field_tag :email, nil, class: "form-control mb-3", placeholder: "Email", required: true %>
                     <%= password_field_tag :password, nil, class: "form-control mb-3", placeholder: "Password", required: true %>
+                    <%= hidden_field_tag :lat, nil, class: "geo-lat" %>
+                    <%= hidden_field_tag :lng, nil, class: "geo-lng" %>
                     <%= submit_tag "Accedi", class: "btn btn-light w-100 mb-1 font-weight-bold", style: "color: #272727" %>
 
                     <div class="text-center my-2" style="color: #FFFAEF !important">OPPURE</div>
@@ -138,16 +140,18 @@
                 <% end %> 
 
                 <%= form_with url: register_path, method: :post, data: { turbo: false }, html: { id: "register-form-page" } do %>
-                  <div class="d-flex gap-2 mb-3">
-                    <%= text_field_tag "user[first_name]", nil, class: "form-control", placeholder: "Nome", required: true %>
-                    <%= text_field_tag "user[last_name]", nil, class: "form-control", placeholder: "Cognome", required: true %>
-                  </div>
-                  <%= date_field_tag "user[birth_date]", nil, class: "form-control mb-3", placeholder: "Data di nascita", required: true %>
-                  <%= text_field_tag "user[username]", nil, class: "form-control mb-3", placeholder: "Username", required: true %>
-                  <%= email_field_tag "user[email]", nil, class: "form-control mb-3", placeholder: "Email", required: true %>
-                  <%= password_field_tag "user[password]", nil, class: "form-control mb-3", placeholder: "Password", required: true %>
-                  <%= password_field_tag "user[password_confirmation]", nil, class: "form-control mb-3", placeholder: "Conferma Password", required: true %>
-                  <%= submit_tag "Registrati", class: "btn btn-light w-100 mb-1 font-weight-bold", style: "color: #272727" %>
+                    <div class="d-flex gap-2 mb-3">
+                        <%= text_field_tag "user[first_name]", nil, class: "form-control", placeholder: "Nome", required: true %>
+                        <%= text_field_tag "user[last_name]", nil, class: "form-control", placeholder: "Cognome", required: true %>
+                    </div>
+                    <%= date_field_tag "user[birth_date]", nil, class: "form-control mb-3", placeholder: "Data di nascita", required: true %>
+                    <%= text_field_tag "user[username]", nil, class: "form-control mb-3", placeholder: "Username", required: true %>
+                    <%= email_field_tag "user[email]", nil, class: "form-control mb-3", placeholder: "Email", required: true %>
+                    <%= password_field_tag "user[password]", nil, class: "form-control mb-3", placeholder: "Password", required: true %>
+                    <%= password_field_tag "user[password_confirmation]", nil, class: "form-control mb-3", placeholder: "Conferma Password", required: true %>
+                    <%= hidden_field_tag :lat, nil, class: "geo-lat" %>
+                    <%= hidden_field_tag :lng, nil, class: "geo-lng" %>
+                    <%= submit_tag "Registrati", class: "btn btn-light w-100 mb-1 font-weight-bold", style: "color: #272727" %>
 
                     <div class="text-center my-2" style="color: #FFFAEF !important">OPPURE</div>
                     <%= link_to '/auth/google_oauth2', class: 'btn btn-outline-secondary w-100 mb-2 d-flex align-items-center justify-content-center' do %>
@@ -161,9 +165,6 @@
                     <%# end %>
 -->
                 <% end %>
-                <div class="form-feedback text-center my-2" style="display: none;">
-                    Stiamo controllando le informazioni. Attendi...
-                </div>
                 <% if flash[:alert] %>
                   <div class="alert alert-danger text-center">
                     <%= flash[:alert] %>
@@ -192,6 +193,8 @@
                 <%= form_with url: login_path, method: :post, data: {turbo: false}, html: { id: "login-form-popup" } do %>
                     <%= email_field_tag :email, nil, class: "form-control mb-3", placeholder: "Email", required: true %>
                     <%= password_field_tag :password, nil, class: "form-control mb-3", placeholder: "Password", required: true %>
+                    <%= hidden_field_tag :lat, nil, class: "geo-lat" %>
+                    <%= hidden_field_tag :lng, nil, class: "geo-lng" %>
                     <%= submit_tag "Accedi", class: "btn btn-light w-100 mb-1 font-weight-bold", style: "color: #272727" %>
 
                     <div class="text-center my-2" style="color: #FFFAEF !important">OPPURE</div>
@@ -217,6 +220,8 @@
                     <%= email_field_tag "user[email]", nil, class: "form-control mb-3", placeholder: "Email", required: true %>
                     <%= password_field_tag "user[password]", nil, class: "form-control mb-3", placeholder: "Password", required: true %>
                     <%= password_field_tag "user[password_confirmation]", nil, class: "form-control mb-3", placeholder: "Conferma Password", required: true %>
+                    <%= hidden_field_tag :lat, nil, class: "geo-lat" %>
+                    <%= hidden_field_tag :lng, nil, class: "geo-lng" %>
                     <%= submit_tag "Registrati", class: "btn btn-light w-100 mb-1 font-weight-bold", style: "color: #272727" %>
 
                     <div class="text-center my-2" style="color: #FFFAEF !important">OPPURE</div>
@@ -231,10 +236,6 @@
                     <%# end %>
 -->
                 <% end %>
-                <div class="form-feedback text-center my-2" style="display: none;">
-                    Stiamo controllando le informazioni. Attendi...
-                </div>
-                <div class="form-error text-center my-2 text-danger font-weight-bold" style="display: none;"></div>
                 <% if flash[:alert] %>
                   <div class="alert alert-danger text-center">
                     <%= flash[:alert] %>
@@ -248,8 +249,22 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script>
-        window.isUserSignedIn = <%= user_signed_in? ? 'true' : 'false' %>;
+      document.addEventListener("DOMContentLoaded", function () {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function (position) {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+            document.querySelectorAll(".geo-lat").forEach(input => input.value = lat);
+            document.querySelectorAll(".geo-lng").forEach(input => input.value = lng);
+          }, function () {
+            console.warn("Geolocalizzazione non concessa.");
+          });
+        } else {
+          console.warn("Geolocalizzazione non supportata.");
+        }
+      });
     </script>
+    <script> window.isUserSignedIn = <%= user_signed_in? ? 'true' : 'false' %>; </script>
 </body>
 
 </html>
