@@ -65,19 +65,18 @@ document.addEventListener("turbo:load", function () {
 });
 
 
-
-// === Popup Auth Toggle ===
 const authPopupOverlay = document.getElementById("auth-popup-overlay");
 const popupButtons = document.querySelectorAll(".popup-button.auth-button");
 const closePopupButtons = document.querySelectorAll(".close-popup");
 
-// === Tab switch login/register ===
 const tabLoginElems = document.querySelectorAll(".login-button");
 const tabRegisterElems = document.querySelectorAll(".register-button");
 
 function showLoginTab() {
   document.querySelectorAll("#login-form-popup").forEach(f => f.style.display = "block");
   document.querySelectorAll("#register-form-popup").forEach(f => f.style.display = "none");
+  document.querySelectorAll("#login-form-page").forEach(f => f.style.display = "block");
+  document.querySelectorAll("#register-form-page").forEach(f => f.style.display = "none");
   document.querySelectorAll(".form-error").forEach(el => {
     el.style.display = "none";
     el.innerText = "";
@@ -95,6 +94,8 @@ function showLoginTab() {
 function showRegisterTab() {
   document.querySelectorAll("#login-form-popup").forEach(f => f.style.display = "none");
   document.querySelectorAll("#register-form-popup").forEach(f => f.style.display = "block");
+  document.querySelectorAll("#login-form-page").forEach(f => f.style.display = "none");
+  document.querySelectorAll("#register-form-page").forEach(f => f.style.display = "block");
   document.querySelectorAll(".form-error").forEach(el => {
     el.style.display = "none";
     el.innerText = "";
@@ -109,7 +110,6 @@ function showRegisterTab() {
   });
 }
 
-// === Popup open/close ===
 popupButtons.forEach(button => {
   button.addEventListener("click", () => {
     if (button.classList.contains("sign-up")) {
@@ -134,7 +134,6 @@ closePopupButtons.forEach(button => {
 tabLoginElems.forEach(tab => tab.addEventListener("click", showLoginTab));
 tabRegisterElems.forEach(tab => tab.addEventListener("click", showRegisterTab));
 
-// === Redirect su click film ===
 document.querySelectorAll('.trend-card').forEach(card => {
   card.addEventListener('click', function(e) {
     const movieId = this.dataset.movieId;
@@ -142,7 +141,7 @@ document.querySelectorAll('.trend-card').forEach(card => {
   });
 });
 
-// === Logout ===
+// Logout
 if (document.querySelector("#logout-button")) {
   document.querySelector("#logout-button").addEventListener("click", function (e) {
     e.preventDefault();
