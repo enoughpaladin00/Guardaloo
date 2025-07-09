@@ -17,6 +17,7 @@ class CommentsController < ApplicationController
   end
 
   def destroy
+    @user = current_user
     @comment = Comment.find(params[:id])
     if current_user == @comment.user || current_user == @comment.post.user || current_user.admin? || current_user.moderator?
       @comment.destroy
@@ -27,6 +28,7 @@ class CommentsController < ApplicationController
   end
 
   def update
+    @user = current_user
     @comment = Comment.find(params[:id])
     if current_user == @comment.user || current_user == @comment.post.user || current_user.admin? || current_user.moderator?
       if @comment.update(comment_params)
@@ -42,6 +44,7 @@ class CommentsController < ApplicationController
   private
 
   def set_comment
+    @user = current_user
     @comment = Comment.find(params[:id])
   end
 
