@@ -5,8 +5,7 @@ class RegistrationsController < ApplicationController
     if user.save
       session[:user_id] = user.id
       if params[:lat].present? && params[:lng].present?
-        session[:lat] = params[:lat]
-        session[:lng] = params[:lng]
+        session[:user_location] = { lat: params[:lat], lng: params[:lng] }
         Rails.logger.info "Location salvata (registrazione): #{session[:user_location]}"
       else
         Rails.logger.warn "Nessuna location fornita durante registrazione"
