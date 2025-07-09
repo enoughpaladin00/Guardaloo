@@ -62,4 +62,12 @@ Rails.application.routes.draw do
   # Favorite Cinemas
   resources :cinema_favorites, only: [ :create, :destroy ]
   post "/bookmarks/toggle", to: "bookmarks#toggle", as: "bookmarks_toggle"
+
+  # Role change
+  resources :users do
+    member do
+      patch :toggle_role
+    end
+  end
+
 end

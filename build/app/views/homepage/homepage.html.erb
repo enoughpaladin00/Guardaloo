@@ -181,7 +181,8 @@
 
 <div class="posts-container">
   <% if @posts.any? %>
-    <% @posts.each do |post| %>
+    <% @recent_posts = Post.includes(:comments).order(created_at: :desc).limit(2) %>
+    <% @recent_posts.each do |post| %>
       <div class="enhanced-post-card post-card">
         <div class="post-left">
           <% if post.movie_poster_path.present? %>
@@ -192,7 +193,7 @@
         </div>
 
         <div class="post-right">
-          <div class="post-title">
+          <div class="post-title" style="margin-right: 7em;">
             <h2><%= link_to post.title, post %></h2>
             Creato <%= time_ago_in_words(post.created_at) %> fa da 
             <span style="color: #FD7474;"><%= post.user.username %></span>

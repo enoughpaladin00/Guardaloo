@@ -1,7 +1,7 @@
 <!-- Navbar -->
 <%= render 'layouts/navbar' %>
 
-<div class="posts-container">
+<div class="posts-container",  style="position: relative;">
   <%= link_to 'Ritorna al Forum', posts_path, class:"btn forum-button2 mobile", style:"position:absolute; left:3em;" %>
   <div class="new-post-form-container-show">
     <%# immagine di sinistra %>
@@ -16,7 +16,31 @@
           <% else %>
             <%= image_tag "Profile_page/default_avatar.svg", alt: "Immagine di default", class: "post-avatar" %>
           <% end %>
-          <p class="post-title" style="font-size: 1.2em;">Creato <%= time_ago_in_words(@post.created_at) %> fa da <%= @post.user.username%> 
+          <p class="post-title" style="font-size: 1.2em;">
+            Creato <%= time_ago_in_words(@post.created_at) %> fa da 
+            <% if current_user&.admin? %>
+              <span class="clickable-username"
+                    data-user-id="<%= @post.user.id %>"
+                    data-username="<%= @post.user.username %>"
+                    data-role="<%= @post.user.role %>"
+                    style="cursor: pointer; color: #FD7474; font-weight: bold;">
+                <%= @post.user.username %>
+                (<%= case @post.user.role
+                    when "user" then "utente"
+                    when "moderator" then "mod"
+                    when "admin" then "admin"
+                    end %>)
+              </span>
+            <% else %>
+              <%= @post.user.username %>
+              (<%= case @post.user.role
+                  when "user" then "utente"
+                  when "moderator" then "mod"
+                  when "admin" then "admin"
+                  end %>)
+            <% end %>
+          </p>
+
         </div>
     
         <%# titolo post e info %>
@@ -34,6 +58,16 @@
   </div>
 </div>
 
+
+<div id="role-popup" class="popup-overlay-admin" style="display: none;">
+  <div class="popup-card-admin">
+    <p id="popup-username"></p>
+    <button id="promote-btn" class="btn forum-button2">Promuovi a Moderatore</button>
+    <button id="demote-btn" class="btn forum-button2">Retrocedi a Utente</button>
+    <button id="close-popup" class="btn">Chiudi</button>
+  </div>
+</div>
+
 <%# commenti %>
 <div class="posts-container">
   <div class="filters-container">
@@ -41,11 +75,15 @@
 
     <%# modifica post %>
     <div style="flex-shrink:0;" class="modifica-commenta">
-      <button class="btn"> <%= link_to 'Modifica il post', edit_post_path(@post), style:"text-decoration:none;", class:"btn forum-button2"%> </button>
+      <% if user_signed_in? && current_user == @post.user %>
+        <%= link_to 'Modifica il post', edit_post_path(@post), class: "btn forum-button2", style: "text-decoration:none;" %>
+      <% end %>
+
       <% if user_signed_in? %>
-        <button id="show-new-comment-form", class="btn forum-button2" style="margin-left: 0.5em;"> Commenta il Post</button>
+        <button id="show-new-comment-form" class="btn forum-button2" style="margin-left: 0.5em;">Commenta il Post</button>
       <% end %>
     </div>
+
   </div>
 
   <%# crea commento %>
@@ -68,6 +106,43 @@
 
 </div> 
 
+<script>
+document.addEventListener("turbo:load", () => {
+  document.querySelectorAll(".clickable-username").forEach(el => {
+    el.addEventListener("click", () => {
+      const userId = el.dataset.userId;
+      const username = el.dataset.username;
+      const role = el.dataset.role;
+
+      document.getElementById("role-popup").style.display = "flex";
+      document.getElementById("popup-username").textContent = `Gestisci ruolo per ${username}`;
+
+      const promoteBtn = document.getElementById("promote-btn");
+      const demoteBtn = document.getElementById("demote-btn");
+
+      promoteBtn.style.display = role === "user" ? "inline-block" : "none";
+      demoteBtn.style.display = role === "moderator" ? "inline-block" : "none";
+
+      promoteBtn.onclick = () => toggleRole(userId);
+      demoteBtn.onclick = () => toggleRole(userId);
+    });
+  });
+
+  document.getElementById("close-popup").addEventListener("click", () => {
+    document.getElementById("role-popup").style.display = "none";
+  });
+
+  function toggleRole(userId) {
+    fetch(`/users/${userId}/toggle_role`, {
+      method: "PATCH",
+      headers: {
+        "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').content,
+        "Content-Type": "application/json"
+      }
+    }).then(() => window.location.reload());
+  }
+});
+</script>
 
 
 <!-- Footer -->
