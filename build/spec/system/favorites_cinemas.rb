@@ -1,4 +1,3 @@
-# spec/system/favorite_cinemas_spec.rb
 require 'rails_helper'
 
 RSpec.describe "Favorite Cinemas", type: :system, js: true do

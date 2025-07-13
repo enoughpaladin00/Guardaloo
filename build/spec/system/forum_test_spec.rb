@@ -8,8 +8,8 @@ RSpec.describe "Forum system", type: :system, js: true do
       birth_date: "1990-01-01",
       username: "mariorossi",
       email: "mario@example.com",
-      password: "password123",
-      password_confirmation: "password123"
+      password: "pappapperop4ppa",
+      password_confirmation: "pappapperop4ppa"
     )
   end
 

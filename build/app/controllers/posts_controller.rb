@@ -23,6 +23,7 @@ class PostsController < ApplicationController
         post.title.downcase.include?(keyword) ||
         post.content.downcase.include?(keyword) ||
         post.user.username.downcase.include?(keyword) ||
+        post.movie_title.downcase.include?(keyword) ||
         post.comments.any? { |c| c.content.downcase.include?(keyword) }
       end
     end
