@@ -368,9 +368,9 @@
                             
             let searchTimeout = null;
                             
-            if (!searchInput) return; // Esci se non siamo nella pagina giusta
+            if (!searchInput) return;
             
-            //dropdown menu (apertura, chiusura, overlay, messaggi e loading)
+            
             function openDropdown() {
                 resultsContainer.style.display = "block";
                 overlay.style.display = "block";
@@ -427,7 +427,7 @@
                 resultsContainer.innerHTML = resultsHtml;
             }
               
-            //ricerca tmdb (chiamata AJAX lato client a /movie_search)
+            
             function performSearch(query) {
                 if (query.length < 2) {
                   showMessage("Inserisci almeno 2 caratteri");
@@ -436,7 +436,7 @@
                 
                 showLoading();
                 
-                // Chiama il metodo movie_search nel ProfileController
+                
                 fetch(`/movie_search?q=${encodeURIComponent(query)}`)
                   .then(response => response.json())
                   .then(data => {
@@ -452,7 +452,7 @@
                 });
             }
               
-            //Eventi per apertura dropdown e input ricerca
+            
             searchInput.addEventListener("focus", () => {
                 openDropdown();
                 const query = searchInput.value.trim();
@@ -478,7 +478,7 @@
                 }, 300);
             });
             
-            //Selezione di un film dai risultati (riempimento campi + chiusura dropdown)
+            
             resultsContainer.addEventListener("click", (e) => {
                 const movieItem = e.target.closest(".movie-result-item");
                 if (!movieItem) return;
@@ -487,23 +487,23 @@
                 const poster = movieItem.dataset.poster;
                 const tmdbId = movieItem.dataset.tmdbId;
                 
-                // Aggiorna il campo di input con il titolo selezionato
+                
                 searchInput.value = title;
                 
-                // Salva i dati nei campi nascosti per l'invio del form
+                
                 if (selectedTitleField) selectedTitleField.value = title;
                 if (selectedPosterField) selectedPosterField.value = poster;
                 if (selectedTmdbIdField) selectedTmdbIdField.value = tmdbId;
                 
-                // Feedback visivo di selezione
+                
                 movieItem.classList.add("selected");
                 
-                // Chiudi dropdown dopo un piccolo delay per mostrare la selezione
+                
                 setTimeout(() => {
                   closeDropdown();
                 }, 150);
                 
-                // Abilita il pulsante di salvataggio se disabilitato
+                
                 const saveBtn = form.querySelector('.movie-save-btn');
                 if (saveBtn) {
                   saveBtn.disabled = false;
@@ -512,14 +512,14 @@
                 
             });
             
-            // Chiudi dropdown cliccando sull'overlay
+            
             overlay.addEventListener("click", () => {
                 closeDropdown();
             });
             
-            //Invio dati film selezionato al backend (/profile/update_movie)
+            
             form.addEventListener("submit", (e) => {
-                e.preventDefault(); // Previeni il submit normale del form
+                e.preventDefault(); 
                 
                 const tmdbId = selectedTmdbIdField ? selectedTmdbIdField.value : null;
                 const title = selectedTitleField ? selectedTitleField.value : null;
@@ -530,7 +530,7 @@
                   return false;
                 }
                 
-                // Ottieni la posizione dal form (assumendo che ci sia un campo position)
+                
                 const position = form.querySelector('input[name="position"]')?.value;
                 
                 if (!position) {
@@ -538,17 +538,17 @@
                   return false;
                 }
                 
-                // Ottieni il titolo dal campo di ricerca (quello che l'utente ha digitato)
+                
                 const searchTitle = searchInput.value.trim();
                 
-                // Invia i dati via AJAX
+               
                 const formData = new FormData();
                 formData.append('selected_movie_tmdb_id', tmdbId);
-                formData.append('title', searchTitle);  // Titolo dal campo di ricerca
+                formData.append('title', searchTitle);  
                 formData.append('selected_movie_poster', posterPath);
                 formData.append('position', position);
                 
-                // Aggiungi il token CSRF
+                
                 const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
                 
                 fetch('/profile/update_movie', {
@@ -559,7 +559,7 @@
                   },
                   body: JSON.stringify({
                     selected_movie_tmdb_id: tmdbId,
-                    title: searchTitle,  // Titolo dal campo di ricerca
+                    title: searchTitle,  
                     selected_movie_poster: posterPath,
                     position: position
                   })
@@ -568,7 +568,7 @@
                 .then(data => {
                   if (data.message) {
                     alert(data.message);
-                    // Ricarica la pagina o aggiorna la UI
+                    
                     window.location.reload();
                   } else if (data.error) {
                     alert(data.error);
@@ -580,7 +580,7 @@
                 });
                 
                 console.log("Invio film:", {
-                  title: searchTitle,  // Titolo dal campo di ricerca
+                  title: searchTitle,  
                   poster: posterPath,
                   tmdbId: tmdbId,
                   position: position

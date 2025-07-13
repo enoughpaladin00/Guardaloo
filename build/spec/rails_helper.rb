@@ -13,26 +13,28 @@ require 'rspec/rails'
 require 'capybara/rspec'
 require 'selenium/webdriver'
 
-Capybara.register_driver :firefox_headless do |app|
-  options = Selenium::WebDriver::Firefox::Options.new
+Capybara.register_driver :headless_chrome do |app|
+  options = Selenium::WebDriver::Chrome::Options.new
   options.add_argument('--headless')
-
-  profile = Selenium::WebDriver::Firefox::Profile.new
-  profile['geo.prompt.testing'] = true
-  profile['geo.prompt.testing.allow'] = true
-
-  options.profile = profile
+  options.add_argument('--disable-gpu')
+  options.add_argument('--no-sandbox')
+  options.add_argument('--window-size=1400,900')
 
   Capybara::Selenium::Driver.new(
     app,
-    browser: :firefox,
+    browser: :chrome,
     options: options
   )
 end
 
-Capybara.javascript_driver = :firefox_headless
-Capybara.default_driver = :firefox_headless
-Capybara.default_max_wait_time = 5
+Capybara.register_driver :selenium_chrome_visible do |app|
+  Capybara::Selenium::Driver.new(app, browser: :chrome)
+end
+
+Capybara.javascript_driver = :selenium_chrome_visible
+Capybara.default_driver = :headless_chrome
+# Capybara.javascript_driver = :headless_chrome
+Capybara.default_max_wait_time = 10
 
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -97,8 +99,8 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
-   
-  config.before(:each, type: :system) do
-    driven_by :firefox_headless
+
+  config.before(:each, type: :system, js: true) do
+    driven_by :selenium_chrome_visible
   end
 end

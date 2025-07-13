@@ -6,7 +6,7 @@ class MoviesController < ApplicationController
     "Amazon Prime Video",
     "Disney Plus",
     "NOW TV"
-    # aggiungi qui tutti i nomi provider che vuoi mostrare
+
   ].freeze
 
   PROVIDER_SEARCH_URLS = {
@@ -14,7 +14,7 @@ class MoviesController < ApplicationController
     "Amazon Prime Video" => "https://www.primevideo.com/search/ref=atv_nb_sr?phrase=",
     "Disney Plus" => "https://www.disneyplus.com/search?q=",
     "NOW TV" => "https://nowtv.it/search?query="
-    # aggiungi se vuoi
+
   }.freeze
 
   def show
@@ -63,7 +63,7 @@ class MoviesController < ApplicationController
 
     if location.present? && location[:lat].present? && location[:lng].present?
       city_data = Geocoder.search([ location[:lat], location[:lng] ]).first
-    
+
       if city_data
         location_str = city_data.city ||
                        city_data.data.dig("address", "city") ||
@@ -73,7 +73,7 @@ class MoviesController < ApplicationController
                        city_data.data.dig("address", "state") ||
                        city_data.country ||
                        "Rome, Italy"
-      
+
         Rails.logger.info "Location risolta: #{location_str}"
       else
         Rails.logger.warn "Geocoder non ha trovato location. Fallback su Roma."

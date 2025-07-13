@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "User registration", type: :system do
+RSpec.describe "User registration", type: :system, js: true do
   it "registra un nuovo utente con successo dalla homepage" do
     visit root_path
     find('#register-popup-button').click

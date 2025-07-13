@@ -57,7 +57,6 @@
 }
 
 .post-content p::after {
-  content: '...';
   display: inline;
   color: #888;
 }
@@ -265,7 +264,7 @@
   object-fit: cover;
   border-radius: 0.3em;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  flex-shrink: 0;  /* evita che l'immagine venga ristretta */
+  flex-shrink: 0;  
 }
 
 .movie-suggestion-item span {
@@ -274,7 +273,7 @@
   color: #004466;
 }
 
-/* random */
+
 .comment-profile-icon{
   width: 40px;
   display: block;
@@ -577,6 +576,7 @@
   body.posts.index .post-title {
     font-size: 1.2em;
     text-align: center;
+    margin-right: 0em !important;
   }
 
   body.posts.index .forum-title {

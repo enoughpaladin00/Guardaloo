@@ -43,7 +43,7 @@
 }
   
 .search-results-dropdown {
-  transform: translateX(-0.6em);
+  transform: translateX(-0.55em);
   z-index: 1000;
   display: none;
   width: 36em;
@@ -182,7 +182,7 @@
     }
     
     .logo{
-        width: 7em; 
+        width: 5em; 
     }
 
     .lente_img{

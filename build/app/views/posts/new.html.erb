@@ -25,10 +25,10 @@
           <%# contenuto %>
           <div class="post-title field">
             <%= f.label :content, "Cosa ne pensi?" %>
-            <%= f.text_area :content, class: "limited-width", style:"font-family: 'Inter', sans-serif; height:140px; resize:none; border-radius:0.6em; border: 2px solid #FD7474", autocomplete:"off", required: true %>
+            <%= f.text_area :content, id: "Contenuto", class: "limited-width", style:"font-family: 'Inter', sans-serif; height:140px; resize:none; border-radius:0.6em; border: 2px solid #FD7474", autocomplete:"off", required: true %>
           </div>
 
-          <!-- CAMPPO FILM -->
+          <!-- CAMPO FILM -->
           <div class="post-title field", style="position: relative; margin-bottom: 3em">
             <%= f.label :movie_title, "Titolo del film" %>
             <%= f.text_field :movie_title, class: "limited-width", id: "movie_title_input", style:"font-family: 'Inter', sans-serif; width:350px;", autocomplete: "off", required: true %>
