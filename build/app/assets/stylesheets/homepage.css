@@ -116,7 +116,7 @@
   overflow-x: auto;
   display: flex;
   scrollbar-width: none;
-  
+  overflow-y: hidden;
 }
 
 .slider-btn {

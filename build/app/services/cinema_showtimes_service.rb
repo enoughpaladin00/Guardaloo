@@ -1,9 +1,6 @@
-# app/services/cinema_showtimes_service.rb
-require "google_search_results" # Questa gemma dovrebbe già essere nel tuo Gemfile
+require "google_search_results"
 require "json"
-require "uri" # Necessario per URI.encode_www_form
-
-# app/services/cinema_showtimes_service.rb
+require "uri"
 
 class CinemaShowtimesService
   API_KEY = ENV["SERP_API_KEY"]
@@ -13,7 +10,7 @@ class CinemaShowtimesService
 
     params = {
       engine: "google",           
-      q: "#{cinema_name} #{location} orari film", # Query più specifica per gli orari
+      q: "#{cinema_name} #{location} orari film",
       location: location,       
       hl: "it",                 
       gl: "it",                 
@@ -27,7 +24,6 @@ class CinemaShowtimesService
 
     programmazione = []
 
-    # --- NUOVA LOGICA DI PARSING BASATA SULL'OUTPUT FORNITO ---
     if results[:showtimes].present? # Se c'è la chiave "showtimes" principale
       results[:showtimes].each do |day_data| # Itera sui dati di ogni giorno (es. "Oggi")
         if day_data[:movies].present? # Se ci sono film per quel giorno
@@ -37,7 +33,7 @@ class CinemaShowtimesService
               times = movie[:showing].first[:time].compact.flatten.uniq.sort
               
               programmazione << {
-                title: movie[:name], # Qui è "name" non "title"
+                title: movie[:name],
                 showtimes: times
               }
             end

@@ -467,7 +467,10 @@
 }
 
 .crea-post-header{
-  display: flex; flex-direction: column-reverse; justify-content: center;
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: center;
+  position: relative;
 }
 
 .crea-nuovo-post{
