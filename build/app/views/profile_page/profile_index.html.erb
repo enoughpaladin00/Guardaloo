@@ -1,0 +1,592 @@
+<head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+</head>
+
+<body>
+    <div class="body-background">
+    <%= render 'layouts/navbar' %>
+
+    <!-- User_page -->
+
+    <div class="User_Page">
+
+        <div class="User_half">
+            <!-- information about user -->
+            <div class="Sezione_1">
+
+                <!-- user bio -->
+
+                <div class="user_info">
+                    <!--User avatar -->
+                    <div class="user_img">
+                        <% if @user.persisted? && @user.avatar_filename? %>
+                            <%= image_tag "/uploads/avatars/#{@user.avatar_filename}", alt: "Avatar", class: "Avatar", width: 200 %>
+                        <% else %>
+                            <%= image_tag "Profile_page/default_avatar.svg", alt: "Immagine di default", width: 200, class: "Avatar" %>
+                        <% end %>
+                    </div>
+
+                    <div class="user_name">
+                        <h2> <%= current_user.username%> </h2>
+                        <p>(<%= case current_user.role
+                    when "user" then "Utente"
+                    when "moderator" then "Moderatore"
+                    when "admin" then "Amministratore"
+                    end %>)</p>
+                    </div>
+
+                        
+                    
+                    <div class="user_edit">
+                        <button class="edit-button open-popup"> Edit profile </button>
+                    </div>
+                </div>
+
+                <hr style="margin-right: 2%, color: var(--color-4)">
+
+                <!-- user post -->
+
+                <div class="post_created">
+                    <div class="container-fluid d-flex align-items-center">
+                    <h1 class="px-2 py-2 mb-0 titolo"><b>Forum</b></h1>
+                    <%= image_tag "homepage/forum.svg", class: "icon" %>
+                    </div>
+            
+                    <% @recent_posts = current_user.posts.includes(:comments).order(created_at: :desc).limit(2) %>
+
+
+                    <% @recent_posts.each do |post| %>
+                    <div align="center">
+                        <%= link_to post_path(post), class: "link-underline link-underline-opacity-0" do %>
+                        <div class="forum-item">
+                            <div class="forum-title-homepage" style="color: #004466; text-align: left;">
+                            <%= truncate(post.title, length: 60) %>
+                            </div>
+                            <div class="forum-meta mb-1 text-muted">
+                            <span><%= post.user.username %></span>
+                            <span>
+                                <%= post.comments.count %> 
+                                <%= post.comments.count == 1 ? 'commento' : 'commenti' %>
+                            </span>
+                            </div>
+                            <div class="forum-excerpt text-muted" style="font-size: 0.9em; text-align: left;">
+                            <%= truncate(strip_tags(post.content), length: 120) %>
+                            </div>
+                        </div>
+                        <% end %>
+                    </div>
+                    <% end %>
+
+            
+                    <div align="center">
+                        <%= link_to posts_path do %>
+                            <button class="forum-button">Vedi tutti</button>
+                        <% end %>
+                    </div>
+            
+                </div>
+
+            </div>
+
+            <!-- top 3 film  -->
+
+            <div class="Sezione_2">
+
+                <div class="Sezione_2-1">
+                    <h2>Film Preferiti</h2>
+                </div>
+                <div class="Sezione_2-2">
+                    <% @chosen_movies.each_with_index do |movie, index| %>
+                        <% if movie && movie['poster_path'].present? %>
+                            <%= image_tag "https://image.tmdb.org/t/p/w500#{movie['poster_path']}", class: "Locandina Film#{index + 1} movie-poster", alt: movie['title'], data: { index: index } %>
+                        <% else %>
+                            <%= image_tag "Profile_page/film_default.png", class: "Locandina Film#{index + 1} default-poster", alt: "Immagine di default", data: { index: index } %>
+                        <% end %>
+                    <% end %>
+                </div>
+
+            </div>
+        </div>
+        
+        <!-- Carosello Film Preferiti -->
+
+        <div class="Sezione_3">
+            <div class="box_3-1">
+                <h1 class="titolo_3"><b>Ultimi film aggiunti</b></h1>
+            </div>
+
+            <div class="slider-preferiti">
+                <button class="carosello-btn left"><%= image_tag "homepage/freccia.svg", class: "slider_img", style: "transform: rotate(180deg)" %></button>
+                <div class="box_3-2">
+                    <div class="slider-track">
+                        <% @preferiti.each do |movie| %>
+                
+                            <div class="contenitore contenitore-film">
+                                <a href="/movies/<%= movie['id'] %>"><img class="locandina" src="https://image.tmdb.org/t/p/w500<%= movie['poster_path'] %>" alt="<%= movie['title'] %>" ></a>
+                            </div>
+        
+                        <%end%>
+                    </div>
+                </div>
+                <button class="carosello-btn right"><%= image_tag "homepage/freccia.svg", class: "slider_img" %></button>
+            </div> 
+
+            <div class="box_3-3">
+                <button class="favourite-btn open-favourite", style="margin-left:47%; margin-top:1rem;"> Vedi Tutti </button>
+            </div>        
+        </div>
+    
+
+        <%= render 'layouts/footer' %>
+    </div>
+
+    <!-- PopUp Edit -->
+    <div id="edit-popup-overlay" class="edit-overlay" style="display: none;">
+        <div class="edit-popup">
+            <div class="edit-bio">
+                <div>
+                    <span class="bio-title" style="color: var(--color-4)">Modifica il tuo profilo</span>
+                </div>
+                <br>
+                <div>
+                    <%= form_with model: @user, url: profile_path, method: :patch, local: true, html: { multipart: true } do |f| %>
+                        <div>
+                            <%= f.label :first_name, "Nome", style:"color: var(--color-4)" %><br>
+                            <%= f.text_field :first_name, required: true, class: "form-control mb-3", style:"color: var(--color-4)" %>
+                        </div>
+                        <div>
+                            <%= f.label :last_name, "Cognome", style:"color: var(--color-4)" %><br>
+                            <%= f.text_field :last_name, required: true, class: "form-control mb-3", style:"color: var(--color-4)"%>
+                        </div>
+                        <div>
+                            <%= f.label :birth_date, "Data di nascita", style:"color: var(--color-4)" %><br>
+                            <%= f.date_field :birth_date, required: true, class: "form-control mb-3", style:"color: var(--color-4)" %>
+                        </div>
+                        <div>
+                            <%= f.label :username, "Username", style:"color: var(--color-4)" %><br>
+                            <%= f.text_field :username, required: true, class: "form-control mb-3", style:"color: var(--color-4)" %>
+                        </div>
+                        <div>
+                            <%= f.label :email, "Email", style:"color: var(--color-4)" %><br>
+                            <%= f.email_field :email, required: true, class: "form-control mb-3", style:"color: var(--color-4)" %>
+                        </div>
+                        <div>
+                            <%= f.label :avatar, "Immagine del profilo", style:"color: var(--color-4)" %><br>
+                            <%= f.file_field :avatar, class: "form-control mb-3", style:"color: var(--color-4)" %>
+                        </div>
+                        <div>
+                            <%= label_tag :current_password, "Password attuale", style:"color: var(--color-4)" %><br>
+                            <%= password_field_tag :current_password, nil, required: true, class: "form-control" %>
+                        </div>
+                    
+                        <div>
+                            <br>
+                            <%= f.submit "Salva modifiche", class:"close-popup edit-button sumbit-button" %>
+                            <button class="edit-button close-popup"> Annulla </button>
+                        </div>
+                    <% end %>
+                </div>
+            </div>
+            <div class="edit-top">
+                <div>
+                    <span class="top-title" style="color: var(--color-4)">Modifica la tua Top 3</span>
+                </div>
+                <br>
+                <div>
+                    <div class="poster-bt">
+                        <% @chosen_movies.each_with_index do |movie, index| %>
+                            <% position = index + 1 %>
+                            <a href="#" class="film-popup" data-position="<%= position %>">
+                                <% if movie && movie['poster_path'].present? %>
+                                    <%= image_tag "https://image.tmdb.org/t/p/w500#{movie['poster_path']}", class: "Locandina Film#{position} movie-poster", alt: movie['title'], data: { index: index } %>
+                                <% else %>
+                                    <%= image_tag "Profile_page/film_default.png", class: "Locandina Film#{position} default-poster", alt: "Immagine di default", data: { index: index } %>
+                                <% end %>
+                            </a>
+                        <% end %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- popup ricerca film della top 3 -->
+    <div id="poster-popup-overlay" class="poster-overlay" style="display: none;">
+        <div class="poster-popup">
+            <%= form_with model: @user, url: update_movie_path, method: :patch, local: true, html: { multipart: true, class: "movie-search-form" } do |f| %>
+                <%= hidden_field_tag :position, nil, id: "popup-position" %>
+                
+                <!-- Campi nascosti per salvare i dati del film selezionato -->
+                <%= hidden_field_tag :selected_movie_title, nil, id: "selected-movie-title" %>
+                <%= hidden_field_tag :selected_movie_poster, nil, id: "selected-movie-poster" %>
+                <%= hidden_field_tag :selected_movie_tmdb_id, nil, id: "selected-movie-tmdb-id" %>
+                
+                <div class="movie-search-container">
+                  <%= label_tag :movie_search, "Cerca Film", class: "movie-search-label" %>
+                  <%= text_field_tag :movie_search, nil, 
+                      required: true, 
+                      class: "movie-search-input",
+                      placeholder: "Inserisci il titolo del film...",
+                      autocomplete: "off" %>
+                  
+                  <!-- Container per i risultati della ricerca -->
+                  <div id="movie-search-results" class="movie-search-results">
+                    <div class="search-message">
+                      <i class="fas fa-search"></i>
+                      Inizia a digitare per cercare un film
+                    </div>
+                  </div>
+                </div>
+                
+                <%= submit_tag "Salva Film", class: "movie-save-btn" %>
+            <% end %>
+              
+              <!-- Overlay per chiudere il dropdown -->
+              <div id="movie-search-overlay" class="movie-search-overlay"></div>
+        </div>
+    </div>
+
+    <!-- popup tutti i film preferiti -->
+    <div id="fav-popup-overlay" class="fav-overlay" style="display: none;">
+        <div class="fav-popup">
+            <div style="align-item: center;">
+                <span class="fav-title">Lista dei Film preferiti</span> 
+                <button class="favourite-btn close-favourite", style="margin-left:4rem;"> Chiudi </button>
+            </div>
+            </br>
+            <div class="elenco-film">
+                <% @preferiti.each do |movie| %>
+
+                    <div class="popup-film-container">
+                        <a href="/movies/<%= movie['id'] %>"><img class="locandina" src="https://image.tmdb.org/t/p/w500<%= movie['poster_path'] %>" alt="<%= movie['title'] %>" ></a>
+                    </div>
+
+                <%end%>  
+            </div>
+        </div>
+    </div>
+    
+
+    <!-- Script -->
+    <script>
+        document.addEventListener("turbo:load", function () {
+            document.querySelector(".open-popup").addEventListener("click", function () {
+              document.getElementById("edit-popup-overlay").style.display = "flex";
+            });
+            
+            
+            document.querySelectorAll(".close-popup").forEach(button => {
+              button.addEventListener("click", function () {
+                document.getElementById("edit-popup-overlay").style.display = "none";
+              });
+            });
+        });
+
+        document.addEventListener('turbo:load', () => {
+          document.querySelectorAll('.slider-preferiti').forEach(slider => {
+            const track = slider.querySelector('.slider-track');
+            const btnLeft = slider.querySelector('.carosello-btn.left');
+            const btnRight = slider.querySelector('.carosello-btn.right');
+                        
+            if (!track || !btnLeft || !btnRight) return;
+                        
+            const updateButtons = () => {
+              const scrollLeft = track.scrollLeft;
+              const maxScroll = track.scrollWidth - track.clientWidth;
+              btnLeft.style.display = scrollLeft > 0 ? 'block' : 'none';
+              btnRight.style.display = scrollLeft < maxScroll ? 'block' : 'none';
+            };
+                        
+            track.addEventListener('scroll', updateButtons);
+            window.addEventListener('resize', updateButtons);
+            updateButtons();
+                        
+            btnRight.addEventListener('click', () => {
+              track.scrollBy({ left: 1000, behavior: 'smooth' });
+            });
+                        
+            btnLeft.addEventListener('click', () => {
+              track.scrollBy({ left: -1000, behavior: 'smooth' });
+            });
+          });
+        });
+
+        document.addEventListener("turbo:load", function () {
+            document.querySelector(".open-favourite").addEventListener("click", function () {
+              document.getElementById("fav-popup-overlay").style.display = "flex";
+            });
+            
+            
+            document.querySelectorAll(".close-favourite").forEach(button => {
+              button.addEventListener("click", function () {
+                document.getElementById("fav-popup-overlay").style.display = "none";
+              });
+            });
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const popup = document.getElementById("poster-popup-overlay");
+            const openButtons = document.querySelectorAll(".film-popup");
+            const closeButton = popup.querySelector(".close-btn");
+            const positionInput = document.getElementById("popup-position");
+
+            openButtons.forEach(button => {
+                button.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    const position = this.dataset.position;
+                    positionInput.value = position;
+                    popup.style.display = "flex"; 
+                });
+            });
+
+            if (closeButton) {
+                closeButton.addEventListener("click", function () {
+                    popup.style.display = "none";
+                });
+            }
+        
+            window.addEventListener("click", function (e) {
+                if (e.target === popup) {
+                    popup.style.display = "none";
+                }
+            });
+        });
+
+
+        document.addEventListener("turbo:load", () => {
+
+            //variabili globali
+            const searchInput = document.querySelector(".movie-search-input");
+            const resultsContainer = document.getElementById("movie-search-results");
+            const overlay = document.getElementById("movie-search-overlay");
+            const container = document.querySelector(".movie-search-container");
+            const form = document.querySelector(".movie-search-form");
+                            
+            // Campi nascosti per salvare i dati del film selezionato
+            const selectedTitleField = document.getElementById("selected-movie-title");
+            const selectedPosterField = document.getElementById("selected-movie-poster");
+            const selectedTmdbIdField = document.getElementById("selected-movie-tmdb-id");
+                            
+            let searchTimeout = null;
+                            
+            if (!searchInput) return;
+            
+            
+            function openDropdown() {
+                resultsContainer.style.display = "block";
+                overlay.style.display = "block";
+                container.classList.add("search-active");
+                form.classList.add("search-active");
+            }
+              
+            function closeDropdown() {
+                resultsContainer.style.display = "none";
+                overlay.style.display = "none";
+                container.classList.remove("search-active");
+                form.classList.remove("search-active");
+            }
+              
+            function showMessage(message) {
+                resultsContainer.innerHTML = `
+                  <div class="search-message">
+                    <i class="fas fa-info-circle"></i>
+                    ${message}
+                  </div>
+                `;
+            }
+              
+            function showLoading() {
+                resultsContainer.innerHTML = `
+                  <div class="search-loading">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    Ricerca in corso...
+                  </div>
+                `;
+            }
+              
+            //rendering risultati tmdb
+            function renderResults(results) {
+                if (results.length === 0) {
+                  showMessage("Nessun film trovato");
+                  return;
+                }
+                
+                const resultsHtml = results.map(movie => `
+                    <div class="movie-result-item" 
+                        data-title="${movie.title}" 
+                        data-poster="${movie.poster_path || ''}"
+                        data-tmdb-id="${movie.id}">
+                        <div class="movie-result-content">
+                            <div class="movie-info">
+                                <h4 class="movie-title">${movie.title}</h4>
+                                ${movie.year ? `<span class="movie-year">${movie.year}</span>` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+                                
+                resultsContainer.innerHTML = resultsHtml;
+            }
+              
+            
+            function performSearch(query) {
+                if (query.length < 2) {
+                  showMessage("Inserisci almeno 2 caratteri");
+                  return;
+                }
+                
+                showLoading();
+                
+                
+                fetch(`/movie_search?q=${encodeURIComponent(query)}`)
+                  .then(response => response.json())
+                  .then(data => {
+                    if (data.message) {
+                      showMessage(data.message);
+                    } else {
+                      renderResults(data.results);
+                    }
+                })
+                .catch(error => {
+                    console.error('Errore ricerca:', error);
+                    showMessage("Errore durante la ricerca");
+                });
+            }
+              
+            
+            searchInput.addEventListener("focus", () => {
+                openDropdown();
+                const query = searchInput.value.trim();
+                if (query.length >= 2) {
+                  performSearch(query);
+                } else {
+                  showMessage("Inserisci almeno 2 caratteri");
+                }
+            });
+            
+            searchInput.addEventListener("input", (e) => {
+                const query = e.target.value.trim();
+                
+                clearTimeout(searchTimeout);
+                
+                if (query.length < 2) {
+                  showMessage("Inserisci almeno 2 caratteri");
+                  return;
+                }
+                
+                searchTimeout = setTimeout(() => {
+                  performSearch(query);
+                }, 300);
+            });
+            
+            
+            resultsContainer.addEventListener("click", (e) => {
+                const movieItem = e.target.closest(".movie-result-item");
+                if (!movieItem) return;
+                
+                const title = movieItem.dataset.title;
+                const poster = movieItem.dataset.poster;
+                const tmdbId = movieItem.dataset.tmdbId;
+                
+                
+                searchInput.value = title;
+                
+                
+                if (selectedTitleField) selectedTitleField.value = title;
+                if (selectedPosterField) selectedPosterField.value = poster;
+                if (selectedTmdbIdField) selectedTmdbIdField.value = tmdbId;
+                
+                
+                movieItem.classList.add("selected");
+                
+                
+                setTimeout(() => {
+                  closeDropdown();
+                }, 150);
+                
+                
+                const saveBtn = form.querySelector('.movie-save-btn');
+                if (saveBtn) {
+                  saveBtn.disabled = false;
+                  saveBtn.textContent = `Salva "${title}"`;
+                }
+                
+            });
+            
+            
+            overlay.addEventListener("click", () => {
+                closeDropdown();
+            });
+            
+            
+            form.addEventListener("submit", (e) => {
+                e.preventDefault(); 
+                
+                const tmdbId = selectedTmdbIdField ? selectedTmdbIdField.value : null;
+                const title = selectedTitleField ? selectedTitleField.value : null;
+                const posterPath = selectedPosterField ? selectedPosterField.value : null;
+                
+                if (!tmdbId) {
+                  alert("Seleziona un film prima di salvare!");
+                  return false;
+                }
+                
+                
+                const position = form.querySelector('input[name="position"]')?.value;
+                
+                if (!position) {
+                  alert("Posizione non specificata!");
+                  return false;
+                }
+                
+                
+                const searchTitle = searchInput.value.trim();
+                
+               
+                const formData = new FormData();
+                formData.append('selected_movie_tmdb_id', tmdbId);
+                formData.append('title', searchTitle);  
+                formData.append('selected_movie_poster', posterPath);
+                formData.append('position', position);
+                
+                
+                const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                
+                fetch('/profile/update_movie', {
+                  method: 'POST',
+                  headers: {
+                    'X-CSRF-Token': csrfToken,
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({
+                    selected_movie_tmdb_id: tmdbId,
+                    title: searchTitle,  
+                    selected_movie_poster: posterPath,
+                    position: position
+                  })
+                })
+                .then(response => response.json())
+                .then(data => {
+                  if (data.message) {
+                    alert(data.message);
+                    
+                    window.location.reload();
+                  } else if (data.error) {
+                    alert(data.error);
+                  }
+                })
+                .catch(error => {
+                  console.error('Errore nell\'invio:', error);
+                  alert("Errore durante il salvataggio del film");
+                });
+                
+                console.log("Invio film:", {
+                  title: searchTitle,  
+                  poster: posterPath,
+                  tmdbId: tmdbId,
+                  position: position
+                });
+            });
+        });
+    </script> 
+
+</body>

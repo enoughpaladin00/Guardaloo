@@ -1,33 +1,73 @@
 Rails.application.routes.draw do
-
-  # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
-  # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
-  # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
-
-  # Defines the root path route ("/")
+  # Root path
   root "home#index"
 
-  # Registrazione
+  # Static pages
+  get "home/index"
+  get "home", to: "homepage#homepage"
+
+  # Health check
+  get "up" => "rails/health#show", as: :rails_health_check
+
+  # Authentication
   get "signup", to: "registrations#new"
   post "/register", to: "registrations#create"
 
-  # Login / Logout
   get "login", to: "sessions#new"
   post "/login", to: "sessions#create"
   delete "/logout", to: "sessions#destroy"
 
-  #movie
-  get "movies/show"
-  resources :movies, only: [:show]
+  # Omniauth (Google, Facebook)
+  get "/auth/:provider/callback", to: "sessions#omniauth"
+  get "/auth/failure", to: redirect("/")
+  match "/auth/:provider", to: "sessions#passthru", via: [ :get, :post ]
 
-  #homepage
-  get "home", to: "homepage#homepage"
+  # User Profile
+  get "/profile", to: "profile_page#profile_index", as: "profile"
+  get "/profile/edit", to: "profile_page#edit", as: "edit_profile"
+  patch "/profile", to: "profile_page#update"
 
-  #Google Auth
-  get '/auth/:provider/callback', to: 'sessions#omniauth'
-  get '/auth/failure', to: redirect('/')
+  get "/movie_search", to: "profile_page#movie_search"
+  post "/profile/update_movie", to: "profile_page#update_movie", as: "update_movie"
 
-  match '/auth/:provider', to: 'sessions#passthru', via: [:get, :post]
 
+  # Location
+  post "/set_location", to: "sessions#set_location"
+  # Update favourite film ids for User Profile
+  patch "/users/update_tmdb_id", to: "users#update_tmdb_id"
+
+  # Google and Facebook Auth
+  get "/auth/:provider/callback", to: "sessions#omniauth"
+  get "/auth/failure", to: redirect("/")
+
+  # Movie Routes
+  get "movies/search", to: "movies#search"
+  get "movies/:tmdb_id", to: "movies#show", as: "movie_show"
+
+  # TMDB Search
+  get "/tmdb_search", to: "search#tmdb"
+
+  # Posts and Comments
+  resources :posts do
+    resources :comments, only: [ :create, :update, :destroy ]
+  end
+
+  # Cinema
+  resources :cinemas, only: [ :index ] do
+    member do
+      get "programmazione"
+    end
+  end
+
+  # Favorite Cinemas
+  resources :cinema_favorites, only: [ :create, :destroy ]
+  post "/bookmarks/toggle", to: "bookmarks#toggle", as: "bookmarks_toggle"
+
+  # Role change
+  resources :users do
+    member do
+      patch :toggle_role
+    end
+  end
 
 end

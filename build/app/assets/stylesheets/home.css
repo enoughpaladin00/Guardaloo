@@ -1,5 +1,6 @@
 html, body{
     overflow-x:hidden;
+    overscroll-behavior: none;
     background-color: #FFFAEF;
 }
 
@@ -10,6 +11,12 @@ html, body{
 .homepage-navbar{
     position:fixed;
     background-color: #FFFAEF;
+}
+
+.welcome-bar{
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .navbar-logo{
@@ -25,6 +32,34 @@ html, body{
     font-family: 'Inter', sans-serif;
     font-weight: 600;
     font-size: 20px;
+}
+
+.logout-button{
+    border-radius: 50px;
+    display: inline-block;
+    border: none;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 20px;
+}
+
+.logout-text {
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+}
+
+.logout-text{
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 20px;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    line-height: 1;
+    display: flex;
 }
 
 .popup-overlay {
@@ -68,9 +103,14 @@ html, body{
 }
 
 .pickup-line{
-    font-family: 'Bodoni Moda', serif;
-    font-weight: 700;
-    width: 100;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    min-width: 450px;
+    font-size: 35px;
+}
+
+.keyword-text{
+    color:#FD7474;
 }
 
 .fullscreen-section{
@@ -140,7 +180,8 @@ html, body{
 .text-column {
     flex: 1;
     min-width: 450px;
-    font-family: 'Bodoni Moda', serif;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
     font-size:35px;
 }
 
@@ -182,42 +223,70 @@ html, body{
     transform: translateX(-20px);
 }
 
-.trend-slide {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem;
-    box-sizing: border-box;
-}
-  
-.trend-slide > div {
-    border-radius: 16px;
+.glider{
+    scroll-behavior: smooth;
     overflow: hidden;
 }
 
-.trend-slide img {
-    border-top-left-radius: 16px;
-    border-top-right-radius: 16px;
-    height: 100%;
-    object-fit: cover;
+.glider-slide {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  box-sizing: border-box;
+  max-width: 20rem;
+  width: 100%;
+  margin: auto;
+}
+
+.glider-slide > div {
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.glider-slide img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
 }
 
 .trend-card {
-    width: auto;
-    height: 420px;
-    background-color: white;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
+  max-width: 250px;
+  width: 100%;
+  height: auto;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
-.swiper-slide img {
-
-    border-radius: 16px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-    object-fit: contain;
+.trend-section {
+  min-height: 100vh;
+  min-width: 100vw;
+  padding-top: 80px;
+  padding-bottom: 80px;
 }
-  
+
+.dots {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.dots button {
+  width: 10px;
+  height: 10px;
+  background: #999;
+  border-radius: 50%;
+  border: none;
+  margin: 0 5px;
+}
+
+.dots .glider-dot.active {
+  background: #facc15;
+}
+
 .search-carousel-column {
     flex: 2;
     min-width: 300px;
@@ -249,6 +318,9 @@ html, body{
     background-color: #fffaefe6;
     box-shadow: 0 2px 6px rgba(0,0,0,0.2);
     color: #272727;
+    pointer-events: none;
+    user-select: none;
+    cursor: default;
 }
 
 .search-bar input{
@@ -351,24 +423,157 @@ html, body{
     transform: scale(1.05);
 }
 
-@media (max-width: 768px) {
-  .movie-card.center {
-    transform: scale(1.1);
-  }
-
-  .movie-card.left,
-  .movie-card.right {
-    transform: scale(0.9);
-  }
-
-  .movie-carousel {
-    gap: 10px;
-  }
-}
-
 .error-message {
   display: block;
   margin-top: 0.2rem;
   font-size: 0.875rem;
   color: red;
+}
+
+#hp-navbar .container-fluid {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.form-feedback{
+    width:100%;
+    color: #F9BD24;
+    border-radius: 0.5rem;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+}
+
+#register-form-page{
+    display: none;
+}
+
+@media (max-width: 768px) {
+
+    .homepage-navbar .container-fluid {
+        flex-direction: column !important;
+        text-align: center;
+    }
+
+    .homepage-navbar .d-flex {
+        flex-direction: row !important;
+        gap: 10px;
+        padding-top: 10px;
+    }
+
+    .welcome-bar {
+      gap: 5px;
+    }
+
+    .logout-text,
+    .popup-button,
+    .logout-button {
+      font-size: 14px;
+      padding: 3px 8px;
+      white-space: nowrap;
+    }
+
+    .navbar-logo img {
+      height: 32px;
+    }
+
+    .popup-button {
+        font-size: 16px;
+        padding: 0px 5px !important;
+    }
+
+    .pickup-line {
+        min-width: auto;
+        font-size: 24px;
+        text-align: center;
+        padding: 0 10px;
+    }
+
+    .search-bar{
+        width: 350px !important;
+        transform: translateY(-250%) !important;
+    }
+
+    .fullscreen-section {
+        padding: 20px 10px;
+    }
+
+    .content-section {
+        flex-direction: column !important;
+        padding: 20px 10px;
+        text-align: center;
+    }
+
+    .carousel-column, .text-column, .search-carousel-column {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    .movie-card, .movie2-card {
+        width: 150px !important;
+        height: 225px !important;
+    }
+
+    .movie-card img, .movie2-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+
+    .carousel-text {
+        font-size: 24px !important;
+        text-align: center;
+        padding: 0 10px;
+    }
+
+    .inter-h1 {
+        font-size: 26px !important;
+    }
+
+    .register-title h3 {
+        font-size: 24px !important;
+    }
+
+    .auth-section {
+        flex-direction: column !important;
+        padding: 20px;
+    }
+
+    .register-title {
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .auth-box {
+        width: 100% !important;
+        padding: 10px;
+    }
+
+    .auth-tabs span {
+        font-size: 16px;
+    }
+
+    .glider-slide {
+        min-width: 150px !important;
+    }
+
+    .container-fluid.d-flex {
+        flex-direction: row !important;
+        text-align: center;
+        padding: 20px;
+        gap: 10px;
+    }
+
+    .footer-logo {
+        display:none;
+    }
+
+    .reverse-section{
+        flex-direction: column-reverse !important;
+    }
+
+    .footer{
+        justify-content: center !important;
+    }
 }

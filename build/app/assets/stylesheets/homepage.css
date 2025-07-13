@@ -1,21 +1,103 @@
-
 .contenitore{
-    border: 0.2em solid #FD7474;
+    position:relative;
+    flex: 0 0 auto;
+    z-index: 1;
     border-radius: 1.5em;
     display: flex;
     overflow: hidden;
     margin: 1em;
 }
 
+.contenitore_top10{
+  overflow: visible;
+  margin-top: 2em;
+  margin-left: 4em;
+  margin-right: 4em;
+  margin-bottom: 3em;
+}
+
+.contenitore_maps{
+  background-color: white;
+  display: flex;
+  height: 30rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.cinema_link{
+  text-align: left;
+  padding-left: 1em;
+  font-size: 1.5em;
+}
+
+.top10{
+  border-radius: 1.3em; 
+  height: 21em
+}
+
+.contenitore-cinema{
+  background-color:rgb(253,116,116, 0.1); 
+  width: 30em;
+}
+
+.locandina-cinema{
+  height: 11.5em; 
+  width: auto;
+}
+
+.maps{
+  height: 100%; 
+  width: 50%;
+}
+
 .locandina{
-    border-right: 2px solid #FD7474;
+  height: 21em;
+}
+
+.contenitore-film {
+  transition: transform 0.3s ease;
+}
+
+.contenitore-film:hover{
+  transform: scale(1.10);
+  z-index: 10;
+}
+
+.titolo{
+  font-size: 2em;
+}
+
+.icon{
+  width: 2em; 
+  height: 2em;
+}
+
+.slider_img{
+  width: 1.2em
 }
 
 .number{
     position: absolute; 
-    transform: translateY(0.69em) translateX(-0.3em); 
-    font-size: 12em; 
-    color:#FD7474
+    transform: translateY(0.55em) translateX(-0.35em); 
+    font-size: 11em;
+    margin: 0;
+    color:#FD7474;
+    -webkit-text-stroke: 3px #003344;
+    z-index: 1;
+}
+
+.virgolette{
+  position: absolute; 
+  left: 32%; 
+  width: 3em;
+}
+
+.reverse{
+  transform: rotate(180deg);
+  left: auto !important;
+  right: 32%;
 }
 
 .citazione {
@@ -25,51 +107,367 @@
     color: #004466;
 }
 
-.netflix-slider{
-    width: 100%;
-    position: relative;
-    overflow: hidden;
-    padding-left: 1.3em;
-}
-
-.netflix-slider .nav {
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-}
-
-.netflix-slider:hover .nav {
-  opacity: 1;
-  pointer-events: auto;
+.netflix-slider {
+  position: relative;
+  overflow: hidden;
 }
 
 .slider-track {
+  overflow-x: auto;
   display: flex;
-  transition: transform 0.5s ease;
-  scroll-behavior: smooth;
+  scrollbar-width: none;
+  overflow-y: hidden;
 }
 
-.nav {
+.slider-btn {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(0,0,0,0.6);
-  color: #FFFAEF;
+  z-index: 10;
+  background-color: rgba(0, 68, 102, 0.4);
   border: none;
-  padding: 1em 0.3em;
+  color: white;
+  font-size: 1.6em;
   cursor: pointer;
-  font-size: 1.4rem;
+  padding: 6em 0.1em;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
-.left {
-  left: 0;
-  border-top-right-radius: 0.5em;
-  border-bottom-right-radius: 0.5em;
+.btn-top{
+  transform: translateY(-52%)
 }
 
-.right {
+.netflix-slider:hover .slider-btn {
+  opacity: 1;
+}
+
+.slider-btn.left {
+  left: 0; 
+  z-index: 100;
+}
+
+.slider-btn.right { 
   right: 0;
-  border-top-left-radius: 0.5em;
-  border-bottom-left-radius: 0.5em;
+  z-index: 100; 
 }
 
+
+.cinema-list-container {
+  flex: 1;
+  display: block;
+  height: 100%;            
+  padding: 1em;
+  overflow-y: auto;
+  text-align: start;
+}
+
+#map, .cinema-list-container {
+  width: 50%;
+  height: 30rem;
+}
+
+#cinema-list {
+  list-style: none;
+  padding: 0;
+}
+
+.cinema-item-homepage {
+  border-bottom: 1px solid #ccc;
+  padding: 10px 0;
+}
+
+.cinema-item-homepage h3 {
+  margin-left: 1em;
+  font-size: 1.5em;
+}
+
+.cinema-item-homepage p {
+  margin: 5px 0 0;
+  margin-left: 1.5em;
+  color: #666;
+}
+
+.forum-item{
+  min-height: 5em;
+  padding: 1.5em;
+  width: 80%;
+  border: 0.2em solid #FD7474;
+  border-radius: 1.5em;
+  margin: 1.5em;
+}
+
+.forum-meta{
+  display: flex;
+  justify-content: space-between;
+}
+
+.forum-title-homepage {
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+.forum-button {
+  display: inline-block;
+  padding: 0.8em; 
+  background-color: #FD7474;
+  color :white;
+  border: none;
+  border-radius: 1.2em;
+  cursor: pointer;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+
+@media screen and (max-width: 992px){
+
+  .titolo{
+    font-size: 1.2em;
+  }
+
+  .icon{
+    width: 1.2em; 
+    height: 1.2em;
+  }
+
+  .container-fluid.d-flex{
+    flex-direction: unset !important;
+    gap: 0 !important;
+  }
+
+  .citazione {
+    font-size: 1.5em;
+    padding-left: 1em;
+    padding-right: 1em;
+    padding-top: 1em;
+    padding-bottom: none !important;
+  }
+
+  .virgolette{
+    width: 1.2em;
+    transform: none;
+    left: 10%;
+  }
+
+  .reverse{
+    transform: rotate(180deg);
+    left: auto !important;
+    right: 10%;
+  }
+
+  .contenitore-cinema{
+    background-color:rgb(253,116,116, 0.1); 
+    width: 14em;
+    height: auto;
+  }
+
+  .locandina-cinema{
+    height: 8em; 
+    width: auto;
+  }
+
+  .text-cinema{
+    font-size: small
+  }
+
+  .slider-btn, .slider-btn.left, .slider-btn.right{
+    display: none;
+  }
+
+  .top10{
+    border-radius: 1.3em; 
+    height: 12em;
+  }
+
+  .number{
+    position: absolute; 
+    font-size: 6em;
+   -webkit-text-stroke: 2px #003344;
+  }
+
+  .contenitore_top10{
+    overflow: visible;
+    margin-top: 1em;
+    margin-left: 2em;
+    margin-right: 2em;
+    margin-bottom: 1em;
+  }
+
+  .locandina{
+    height: 12em;
+  }
+
+
+  #map, .cinema-list-container {
+    width: 50%;
+    height: 30rem;
+    font-size: small;
+  }
+
+  .netflix-slider:hover .slider-btn, .slider-btn, .slider-btn.left, .slider-btn.right {
+    display: none !important;
+  }
+
+
+}
+
+
+@media screen and (max-width: 767px){
+
+  .virgolette{
+    left: 1%;
+  }
+
+  .reverse{
+    right: 1%;
+  }
+
+  .citazione {
+    font-size: 1em;
+  }
+
+  .contenitore_maps {
+    flex-direction: column;
+    height: 40em;
+  }
+
+  #map, .cinema-list-container {
+    width: 30em;
+    height: 20rem;
+    font-size: small;
+  }
+
+}
+
+@media screen and (max-width: 768px) {
+  body.homepage.homepage .posts-container,
+  body.homepage.homepage .filters-container,
+  body.homepage.homepage .new-post-form-container,
+  body.homepage.homepage .new-post-card,
+  body.homepage.homepage .post-card,
+  body.homepage.homepage .post-card2,
+  body.homepage.homepage .enhanced-post-card,
+  body.homepage.homepage .comment-card {
+    width: 100%;
+    margin: 1em auto;
+    flex-direction: column !important;
+    align-items: center;
+  }
+
+  body.homepage.homepage .post-title h2 {
+    font-size: 1.2em;
+  }
+
+  body.homepage.homepage .post-left,
+  body.homepage.homepage .post-right {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  body.homepage.homepage .post-poster {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+  }
+
+  body.homepage.homepage .post-avatar {
+    width: 4em;
+    height: 4em;
+    margin: 0.5em auto;
+  }
+
+  body.homepage.homepage .filters-container {
+    flex-direction: column;
+    padding: 1em;
+    gap: 1em;
+  }
+
+  body.homepage.homepage .filters {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5em;
+    align-items: center;
+    width: 20em;
+  }
+
+  body.homepage.homepage .forum-button2 {
+    font-size: 1em;
+    padding: 0.5em 1em;
+  }
+
+  body.homepage.homepage .new-post-form-container {
+    flex-direction: column;
+    width: 100%;
+    margin: 0 auto;
+    gap: 1em;
+  }
+
+  body.homepage.homepage .new-post-card {
+    width: 90%;
+  }
+
+  body.homepage.homepage .comment-body {
+    font-size: 1em;
+    padding: 0.5em;
+  }
+
+  body.homepage.homepage .post-title {
+    font-size: 1.2em;
+    text-align: center;
+    margin-right: 0em !important;
+  }
+
+  body.homepage.homepage .forum-title {
+    font-size: 2.2em;
+    text-align: center;
+  }
+
+  body.homepage.homepage .movie-suggestion {
+    max-width: 100%;
+  }
+
+  body.homepage.homepage .filter-form {
+    justify-content: center;
+    width: 100%;
+  }
+
+  body.homepage.homepage .forum-search-filters {
+    width: 80%;
+  }
+
+  body.homepage.homepage .forum-search-filters2 {
+    width: 9%;
+  }
+
+  body.homepage.homepage .post-content h4,
+  body.homepage.homepage .post-content p {
+    font-size: 1em;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    margin-left: 0 !important;
+    padding-right: 0 !important;
+    text-align: justify;
+  }
+
+  body.homepage.homepage .comment-avatar {
+    width: 40px;
+    height: 40px;
+  }
+
+  body.homepage.homepage .post-actions {
+    flex-direction: row;
+    position: static;
+    margin-top: 0em;
+    justify-content: center;
+  }
+
+  body.homepage.homepage .post-actions.forum-button2 {
+    background-color: #222;
+  }
+
+  body.homepage.homepage .delete-post-form {
+    display: flex;
+    justify-content: center;
+  }
+}

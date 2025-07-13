@@ -4,11 +4,30 @@ class RegistrationsController < ApplicationController
 
     if user.save
       session[:user_id] = user.id
-      render json: { success: true, redirect_url: "#{request.base_url}/home/" }
+      if params[:lat].present? && params[:lng].present?
+        session[:user_location] = { lat: params[:lat], lng: params[:lng] }
+        Rails.logger.info "Location salvata (registrazione): #{session[:user_location]}"
+      else
+        Rails.logger.warn "Nessuna location fornita durante registrazione"
+      end
+
+      respond_to do |format|
+        format.html { redirect_to home_path, notice: "Registrazione completata con successo" }
+        format.json { render json: { success: true, redirect_url: home_path } }
+      end
     else
-      render json: { success: false, errors: user.errors.full_messages, redirect_url: root_path }, status: :unprocessable_entity
+      respond_to do |format|
+        format.html do
+          flash[:alert] = user.errors.full_messages.join(", ")
+          redirect_to root_path
+        end
+        format.json do
+          render json: { success: false, errors: user.errors.full_messages }, status: :unprocessable_entity
+        end
+      end
     end
   end
+
 
   private
 

@@ -1,0 +1,1 @@
+$("#bookmark-button-<%= params[:tmdb_id] %>").html(`<%= j render partial: 'bookmark_button', locals: { tmdb_id: params[:tmdb_id], user: current_user, title: params[:title], poster_path: params[:poster_path] } %>`);

@@ -7,5 +7,3 @@ application.debug = true
 window.Stimulus   = application
 
 export { application }
-
-

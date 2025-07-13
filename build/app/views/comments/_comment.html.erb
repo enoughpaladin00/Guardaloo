@@ -1,0 +1,115 @@
+<div id="comment-<%= comment.id %>" class="comment-card">
+  <div class="comment-header">
+    <% if comment.user.avatar_filename? %>
+      <%= image_tag "/uploads/avatars/#{comment.user.avatar_filename}", class: "comment-avatar" %>
+    <% else %>
+      <%= image_tag "Profile_page/default_avatar.svg", alt: "Immagine di default", class: "comment-avatar" %>
+    <% end %>
+
+
+    <div class="comment-info">
+      <p class="comment-meta">
+        <% if current_user&.admin? %>
+          <span class="clickable-username"
+                data-user-id="<%= comment.user.id %>"
+                data-username="<%= comment.user.username %>"
+                data-role="<%= comment.user.role %>"
+                style="cursor: pointer; color: #FD7474; font-weight: bold;">
+            <%= comment.user.username %>
+            (<%= case comment.user.role
+                when "user" then "utente"
+                when "moderator" then "mod"
+                when "admin" then "admin"
+                end %>)
+          </span>
+        <% else %>
+          <%= comment.user.username %>
+          (<%= case comment.user.role
+              when "user" then "utente"
+              when "moderator" then "mod"
+              when "admin" then "admin"
+              end %>)
+        <% end %>
+
+        · <%= time_ago_in_words(comment.created_at) %> fa
+      </p>
+    </div>
+
+    <% if user_signed_in? && (current_user == comment.user || current_user == comment.post.user || current_user.admin? || current_user.moderator?) %>
+      <div class="comment-actions">
+        <button class="btn forum-button2 edit-comment-button"
+          data-comment-id="<%= comment.id %>"
+          data-comment-content="<%= j comment.content %>">
+          Modifica
+        </button>
+        <%= button_to 'Elimina', [comment.post, comment], method: :delete, data: { confirm: 'Sei sicuro?' }, class: "btn forum-button2 delete-comment-btn", style:"background-color: #004466;" %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="comment-body">
+    <p><%= comment.content %></p>
+  </div>
+
+  <div id="role-popup" class="popup-overlay-admin" style="display: none;">
+    <div class="popup-card-admin">
+      <p id="popup-username"></p>
+      <button id="promote-btn" class="btn forum-button2">Promuovi a Moderatore</button>
+      <button id="demote-btn" class="btn forum-button2">Retrocedi a Utente</button>
+      <button id="close-popup" class="btn">Chiudi</button>
+    </div>
+  </div>
+
+
+  <script>
+  document.addEventListener("turbo:load", function () {
+    if (window.innerWidth <= 768) {
+      document.querySelectorAll(".comment-meta").forEach(el => {
+        const regex = /meno di un minuto fa/;
+        if (regex.test(el.textContent)) {
+          el.innerHTML = el.innerHTML.replace(regex, "&lt; un minuto fa");
+        }
+      });
+    }
+  });
+
+  document.addEventListener("turbo:load", () => {
+    document.querySelectorAll(".clickable-username").forEach(el => {
+      el.addEventListener("click", () => {
+        const userId = el.dataset.userId;
+        const username = el.dataset.username;
+        const role = el.dataset.role;
+
+        document.getElementById("role-popup").style.display = "flex";
+        document.getElementById("popup-username").textContent = `Gestisci ruolo per ${username}`;
+
+        const promoteBtn = document.getElementById("promote-btn");
+        const demoteBtn = document.getElementById("demote-btn");
+
+        promoteBtn.style.display = role === "user" ? "inline-block" : "none";
+        demoteBtn.style.display = role === "moderator" ? "inline-block" : "none";
+
+        promoteBtn.onclick = () => toggleRole(userId);
+        demoteBtn.onclick = () => toggleRole(userId);
+      });
+    });
+
+    document.getElementById("close-popup").addEventListener("click", () => {
+      document.getElementById("role-popup").style.display = "none";
+    });
+
+    function toggleRole(userId) {
+      fetch(`/users/${userId}/toggle_role`, {
+        method: "PATCH",
+        headers: {
+          "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').content,
+          "Content-Type": "application/json"
+        }
+      }).then(() => window.location.reload());
+    }
+  });
+
+
+</script>
+
+</div>

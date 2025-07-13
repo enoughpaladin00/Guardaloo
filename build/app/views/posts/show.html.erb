@@ -1,0 +1,149 @@
+<!-- Navbar -->
+<%= render 'layouts/navbar' %>
+
+<div class="posts-container",  style="position: relative;">
+  <%= link_to 'Ritorna al Forum', posts_path, class:"btn forum-button2 mobile", style:"position:absolute; left:3em;" %>
+  <div class="new-post-form-container-show">
+    <%# immagine di sinistra %>
+    <%= image_tag "https://image.tmdb.org/t/p/w342#{@post.movie_poster_path}", style:"overflow: hidden; border-radius:0.5em; height:100%;", class:"immagine" %>
+     
+    <%# dettagli post e contenuto %>
+    <div class="post-card2"  style="height: 100%; min-height:24em">
+      <div class="foto-titolo-creatore" id="foto-titolo-creatore" style="" >
+        <div class="avatar-container">  <%# avatar %>
+          <% if @post.user.avatar_filename? %>
+            <%= image_tag "/uploads/avatars/#{@post.user.avatar_filename}", class: "post-avatar" %>
+          <% else %>
+            <%= image_tag "Profile_page/default_avatar.svg", alt: "Immagine di default", class: "post-avatar" %>
+          <% end %>
+          <p class="post-title" style="font-size: 1.2em;">
+            Creato <%= time_ago_in_words(@post.created_at) %> fa da 
+            <% if current_user&.admin? %>
+              <span class="clickable-username"
+                    data-user-id="<%= @post.user.id %>"
+                    data-username="<%= @post.user.username %>"
+                    data-role="<%= @post.user.role %>"
+                    style="cursor: pointer; color: #FD7474; font-weight: bold;">
+                <%= @post.user.username %>
+                (<%= case @post.user.role
+                    when "user" then "utente"
+                    when "moderator" then "mod"
+                    when "admin" then "admin"
+                    end %>)
+              </span>
+            <% else %>
+              <%= @post.user.username %>
+              (<%= case @post.user.role
+                  when "user" then "utente"
+                  when "moderator" then "mod"
+                  when "admin" then "admin"
+                  end %>)
+            <% end %>
+          </p>
+
+        </div>
+    
+        <%# titolo post e info %>
+        <div class="post-title" style="margin-top:1em; width:95%; margin-left:auto; margin-right:3em; border-radius:0.5em;">
+          <h1><%= @post.title %></h1>
+          <span><a href="/movies/<%= @post.movie_id %>" style="color: #FD7474;"><%= @post.movie_title %></a></span></p>
+        </div>
+      </div>
+      
+      <%# contenuto post %>
+      <div class="post-content" style="margin-top: 0.7em;">
+        <h4><%= @post.content %></h4>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div id="role-popup" class="popup-overlay-admin" style="display: none;">
+  <div class="popup-card-admin">
+    <p id="popup-username"></p>
+    <button id="promote-btn" class="btn forum-button2">Promuovi a Moderatore</button>
+    <button id="demote-btn" class="btn forum-button2">Retrocedi a Utente</button>
+    <button id="close-popup" class="btn">Chiudi</button>
+  </div>
+</div>
+
+<%# commenti %>
+<div class="posts-container">
+  <div class="filters-container">
+    <h2 class="comment-title">Commenti</h1> 
+
+    <%# modifica post %>
+    <div style="flex-shrink:0;" class="modifica-commenta">
+      <% if user_signed_in? && current_user == @post.user %>
+        <%= link_to 'Modifica il post', edit_post_path(@post), class: "btn forum-button2", style: "text-decoration:none;" %>
+      <% end %>
+
+      <% if user_signed_in? %>
+        <button id="show-new-comment-form" class="btn forum-button2" style="margin-left: 0.5em;">Commenta il Post</button>
+      <% end %>
+    </div>
+
+  </div>
+
+  <%# crea commento %>
+  <div id="new-comment-form" style="display:none;">
+      <div class="new-post-card new-comment">
+        <%= render 'comments/form', post: @post %> 
+      </div>
+  </div>
+  <%# commenti %>
+  <div id="comments" class="posts-container">
+  <% valid_comments = @post.comments.select { |c| c.content.present? } %>
+  <% if valid_comments.empty? %>
+    <div class="post-card2">
+      <p class="post-content" style="margin: 1em 3em;">Non ci sono ancora commenti sotto questo post</p>
+    </div>
+  <% else %>
+    <%= render valid_comments %>
+  <% end %>
+</div>
+
+</div> 
+
+<script>
+document.addEventListener("turbo:load", () => {
+  document.querySelectorAll(".clickable-username").forEach(el => {
+    el.addEventListener("click", () => {
+      const userId = el.dataset.userId;
+      const username = el.dataset.username;
+      const role = el.dataset.role;
+
+      document.getElementById("role-popup").style.display = "flex";
+      document.getElementById("popup-username").textContent = `Gestisci ruolo per ${username}`;
+
+      const promoteBtn = document.getElementById("promote-btn");
+      const demoteBtn = document.getElementById("demote-btn");
+
+      promoteBtn.style.display = role === "user" ? "inline-block" : "none";
+      demoteBtn.style.display = role === "moderator" ? "inline-block" : "none";
+
+      promoteBtn.onclick = () => toggleRole(userId);
+      demoteBtn.onclick = () => toggleRole(userId);
+    });
+  });
+
+  document.getElementById("close-popup").addEventListener("click", () => {
+    document.getElementById("role-popup").style.display = "none";
+  });
+
+  function toggleRole(userId) {
+    fetch(`/users/${userId}/toggle_role`, {
+      method: "PATCH",
+      headers: {
+        "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').content,
+        "Content-Type": "application/json"
+      }
+    }).then(() => window.location.reload());
+  }
+});
+</script>
+
+
+<!-- Footer -->
+<%= render 'layouts/footer' %>

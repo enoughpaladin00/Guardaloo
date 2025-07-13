@@ -12,10 +12,48 @@
 .vert_line{
     font-weight: bold; 
     font-size: large; 
-    color: #F9BD24
+    color: #F9BD24;
+    align-items: center;
 }
 
 .social{
     margin-right: 0.5em; 
-    margin-left: 0.5em
+    margin-left: 0.5em;
+    width: 2em; 
+    height: auto
+}
+
+.logo-footer{
+    width: 18em;
+    height: auto;
+}
+
+@media screen and (max-width: 992px){
+
+    .logo-footer{
+        width: 8em;
+    }
+
+
+    .footer_single_link{
+        font-size: 0.6em !important; 
+        margin-right: 0.5em; 
+        margin-left: 0.5em
+    }
+
+    .vert_line{
+        font-weight: bold; 
+        font-size: small; 
+        color: #F9BD24;
+        align-items: center;
+    }
+
+    .social{
+        width: 0.8em;
+    }
+
+    .text-muted{
+        font-size: 0.6em;
+    }
+
 }

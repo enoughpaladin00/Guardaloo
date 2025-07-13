@@ -1,0 +1,96 @@
+<%= render 'layouts/navbar' %>
+
+<!-- TITOLO -->
+<h1 class="forum-title">Guardaloo's Forum</h1>
+
+<!-- NUOVO POST + FILTRI -->
+<div class="filters-container" id="filters-container">
+  <div class="new-post-button">
+    <%= link_to 'Scrivi un nuovo Post', new_post_path, class: "btn forum-button2" %>
+  </div>
+
+  <%= form_with url: posts_path, method: :get, local: true, html: { class: "filter-form" } do %>
+    <div class="filters">
+      <%= text_field_tag :query, params[:query], placeholder: "Cerca i post", class:"forum-search-filters px-2 align-items-center", style:"border-radius:0.6em; height:2.1em; font-size:1.2em;", autocomplete: "off"%>
+
+      <%= select_tag :filter, options_for_select([
+          ['Tutti i post', 'all'],
+          ['Solo i miei post', 'my_posts']
+        ], selected: params[:filter]), include_blank: false, class:"forum-search-filters2" %>
+
+      <%= submit_tag "Filtra", class: "btn forum-button2" %>
+    </div>
+  <% end %>
+</div>
+
+<!-- POST -->
+<div class="posts-container">
+  <% if @posts.any? %>
+    <% @posts.each do |post| %>
+      <div class="enhanced-post-card post-card">
+        <div class="post-left">
+          <% if post.movie_poster_path.present? %>
+            <%= image_tag "https://image.tmdb.org/t/p/w342#{post.movie_poster_path}", class: "post-poster" %>
+          <% else %>
+            <%= image_tag "post/placeholder.jpg", class: "post-poster" %>
+          <% end %>
+        </div>
+
+        <div class="post-right">
+          <div class="post-title" style="margin-right:4em;">
+            <h2><%= link_to post.title, post %></h2>
+            Creato <%= time_ago_in_words(post.created_at) %> fa da 
+            <span style="color: #FD7474;"><%= post.user.username %></span>
+          </div>
+        
+          <div class="post-content">
+            <p style="padding: 0 1.5em; text-align: justify;">
+              <%= post.content %>
+            </p>
+          </div>
+
+          <p class="post-content">
+            <%= post.comments.count %> 
+            <%= post.comments.count == 1 ? 'commento' : 'commenti' %>
+          </p>
+        </div>
+        <div class="post-actions">
+          <% if user_signed_in? && (current_user.admin? || current_user.moderator? || current_user == post.user) %>
+            <%= link_to 'Modifica', edit_post_path(post), class: 'btn forum-button2' %>
+            <form action="<%= post_path(post) %>" method="post" class="delete-post-form" data-post-title="<%= post.title %>" data-turbo="false">
+              <input type="hidden" name="_method" value="delete">
+              <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+              <button type="submit" class="btn forum-button2" style="background-color: #004466">
+                Elimina
+              </button>
+            </form>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  <% else %>
+    <p class="post-title">Non ci sono risultati per la tua ricerca.</p>
+  <% end %>
+</div>
+
+
+
+<script>
+document.addEventListener("turbo:load", function () {
+  document.querySelectorAll(".delete-post-form").forEach(function (form) {
+    if (form.dataset.confirmAttached === "true") return;
+
+    form.addEventListener("submit", function (event) {
+      const confirmed = confirm(`Sei sicuro di voler eliminare il tuo post "${form.dataset.postTitle}"?`);
+      if (!confirmed) {
+        event.preventDefault();
+      }
+    });
+
+    form.dataset.confirmAttached = "true";
+  });
+});
+</script>
+
+
+<%= render 'layouts/footer' %>

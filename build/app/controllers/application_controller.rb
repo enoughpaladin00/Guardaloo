@@ -1,6 +1,4 @@
 class ApplicationController < ActionController::Base
-  # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
-  allow_browser versions: :modern
   helper_method :current_user, :user_signed_in?
 
   def current_user
@@ -12,6 +10,29 @@ class ApplicationController < ActionController::Base
   end
 
   def authenticate_user!
-    redirect_to login_path, alert: "Effettua il login" unless user_signed_in?
+    redirect_to root_path, alert: "Effettua il login" unless user_signed_in?
   end
+
+  # Metodo per limitare accesso ad amministratori
+  def authenticate_admin!
+    unless user_signed_in? && current_user.admin?
+      redirect_to root_path, alert: "Accesso riservato agli amministratori."
+    end
+  end
+
+  # Metodo per limitare accesso ad admin o moderatori
+  def authenticate_moderator_or_admin!
+    unless user_signed_in? && (current_user.admin? || current_user.moderator?)
+      redirect_to root_path, alert: "Accesso riservato ai moderatori o amministratori."
+    end
+  end
+
+private
+
+  def authorize_user!
+    unless current_user.admin? || current_user.moderator? || current_user == @post.user
+      redirect_to root_path, alert: "Non sei autorizzato a modificare questo post"
+    end
+  end
+
 end

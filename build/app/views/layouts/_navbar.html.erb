@@ -1,36 +1,73 @@
+<nav class="navbar navbar-expand-lg navbar-expand-sm navbar-expand-md row">
 
-<nav class="navbar navbar-expand-lg">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">
-            <a href="#"><%= image_tag "navbar/Logo.svg", alt: "logo", width: "200em", height: "auto" %></a>
-        </a>
-        <form class="container-fluid" role="search">
-            <div class="input-group rounded-3 search_container px-2 align-items-center">
-                <span>
-                    <%= image_tag "navbar/Lente.svg", alt: "lente", width: "20em", height: "20em" %>
-                </span>                        
-                <input class="form-control border-0 shadow-none search_bar" type="search" placeholder="Cerca film, serie TV, cinema, discussioni...">
-            </div>
-        </form>
-        <ul class="navbar-nav ms-auto align-items-center">
-            <li class="nav-items">
-                <%= link_to "Home", root_path, class: "nav-link fw-bold navbar_text", style: "font-size:large" %>
-            </li>
-            <li class="nav-items">
-                <%= link_to "Cinema", root_path, class: "nav-link fw-bold navbar_text", style: "font-size:large" %>
-            </li>
-            <li class="nav-items">
-                <%= link_to "Film", root_path, class: "nav-link fw-bold navbar_text", style: "font-size:large" %>
-            </li>
-            <li class="nav-items">
-                <%= link_to "Forum", root_path, class: "nav-link fw-bold navbar_text", style: "font-size:large" %>
-            </li>
-            <li class="nav-items">
-                <%= link_to "La Mia Lista", root_path, class: "nav-link fw-bold navbar_text", style: "font-size:large; border-right: 3px solid #F9BD24" %>
-            </li>
-        </ul>
-        <a class="px-2" href="#">
-            <%= image_tag "navbar/user.svg", alt: "user", width:"35", height: "35" %>
-        </a>
+    <!-- Logo -->
+    <div class="col logo_container">
+        <a href="../home"><%= image_tag "navbar/Logo.svg", alt: "logo", class: "logo" %></a>
     </div>
+
+    <!-- Search bar -->
+    <div class="col justify-items-center search_form">
+      <form role="search">
+          <div class="px-2 justify-items-start input-group search_container ">
+            <span class="margin-lente">
+              <%= image_tag "navbar/Lente.svg", alt: "lente", class: "lente_img" %>
+            </span>
+            <input class="form-control border-0 shadow-none search_bar" type="search" placeholder="Cerca film e serie TV" autocomplete="off">
+            <div class="position-absolute mt-1 search-results-dropdown" id="search-results" style="border-radius: 0 0 0.5em 0.5em;">
+              <div id="search-placeholder" class="ms-2 mb-1 text-muted text-size-search"><b>Nessun risultato</b></div>
+            </div>
+          </div>
+        </form>
+      <div id="search-overlay" class="position-fixed top-0 start-0 w-100 h-100" style="background: rgba(0, 0, 0, 0.6); display: none; z-index: 900;"></div>
+    </div>
+    
+    <!-- profile icon -->
+    <div class="col profile_container">
+        <% if @user.avatar_filename? %>
+            <%= image_tag "/uploads/avatars/#{@user.avatar_filename}", alt: "Avatar", class: "profile_logo", id: "hamburgerMenuTrigger", width: 200 %>
+        <% else %>
+            <%= image_tag "navbar/user.svg", class:"profile_logo", alt: "user", id: "hamburgerMenuTrigger", style: "border: 0" %>
+        <% end %>
+        
+        <div id="hamburgerMenu" style="display: none">
+            <div>
+                <%= image_tag "navbar/freccia.svg", class: "arrow_menu" %>
+            </div>
+            <div class="hamburger-popup">
+                <div class="hamburger-link">
+                    <a href="../home" class="link-underline link-underline-opacity-0">
+                        <div class="hamburger-button">
+                            <%= image_tag "navbar/home.svg", class: "icon-hamburger" %>
+                            <span class="hamburger-link">Home</span>
+                        </div>
+                    </a>
+                    <a href="/cinemas" class="link-underline link-underline-opacity-0">
+                        <div class="hamburger-button">
+                            <%= image_tag "navbar/cinema.svg", class: "icon-hamburger" %>
+                            <span class="hamburger-link">Cinema</span>
+                        </div>
+                    </a>
+                    <a href="/posts" class="link-underline link-underline-opacity-0">
+                        <div class="hamburger-button">
+                            <%= image_tag "navbar/forum.svg", class: "icon-hamburger" %>
+                            <span id="forum" class="hamburger-link">Forum</span>
+                        </div>
+                    </a>
+                    <a href="/profile" class="link-underline link-underline-opacity-0">
+                        <div class="hamburger-button">
+                            <%= image_tag "navbar/save.svg", class: "icon-hamburger" %>
+                            <span class="hamburger-link">Il Mio Profilo</span>
+                        </div>
+                    </a>
+                    <a href="/" class="link-underline link-underline-opacity-0">
+                        <div id="logout-button" class="hamburger-button">
+                            <%= image_tag "navbar/logout.svg", class: "icon-hamburger" %>
+                            <span class="hamburger-link">Logout</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </nav>

@@ -1,0 +1,71 @@
+<%= render 'layouts/navbar' %>
+
+<div class="posts-container" style="margin-bottom: 4em; margin-top: 2em;">
+  <div class="crea-post-header">
+    <div class="crea-nuovo-post"> <h1 class="post-title" style="font-size: 3em;">Crea un nuovo Post</h1><%= image_tag "homepage/forum.svg", class: "title-icon" %></div>
+    <%= link_to 'Ritorna al Forum', posts_path, class:"btn forum-button2 ritorna", style:"position:absolute; left:3em;" %>
+  </div>
+  <div id="new-post-form-container" class="new-post-form-container">
+
+      <!-- Colonna sinistra: immagine film -->
+      <div id="movie-poster-preview" style="overflow: hidden; flex-shrink:0; border-radius: 1.2em">
+          <img id="movie-poster-img" src="<%= asset_path('post/poster-preview2.png')%>" alt="Poster non disponibile" style="overflow: hidden; border-radius:0.5em;">
+      </div>
+
+      <!-- Colonna di destra -->
+      <div id="new-post-form" class="new-post-card" style="overflow: visible; border: 0; background-color:rgb(253,116,116, 0.1);">
+        <%= form_with model: Post.new, url: posts_path, local: true do |f| %>
+
+          <%# titolo %>
+          <div class="post-title field">
+            <%= f.label :title, "Titolo",style:"margin-top:0.5em; " %>
+            <%= f.text_field :title, class: "limited-width", style:"font-family: 'Inter', sans-serif; width:350px; border-radius:0.6em; border: 2px solid #FD7474", autocomplete:"off",required: true %>
+          </div>
+
+          <%# contenuto %>
+          <div class="post-title field">
+            <%= f.label :content, "Cosa ne pensi?" %>
+            <%= f.text_area :content, id: "Contenuto", class: "limited-width", style:"font-family: 'Inter', sans-serif; height:140px; resize:none; border-radius:0.6em; border: 2px solid #FD7474", autocomplete:"off", required: true %>
+          </div>
+
+          <!-- CAMPO FILM -->
+          <div class="post-title field", style="position: relative; margin-bottom: 3em">
+            <%= f.label :movie_title, "Titolo del film" %>
+            <%= f.text_field :movie_title, class: "limited-width", id: "movie_title_input", style:"font-family: 'Inter', sans-serif; width:350px;", autocomplete: "off", required: true %>
+            <%= f.hidden_field :movie_id, id: "movie_id_input" %>
+            <%= f.hidden_field :movie_poster_path, id: "movie_poster_path_input" %>
+            <div id="movie-suggestions" class="movie-suggestion"></div>
+          </div>
+
+          <div class="post-actions" >
+            <%= link_to 'Annulla', posts_path, class:"btn forum-button2"%>
+            <%= f.submit "Pubblica", class: "btn forum-button2" %>
+          </div>
+        <% end %>
+      </div>
+  </div>
+</div>
+
+<div class="container-fluid d-flex align-items-center">
+    <h1 class="px-2 pt-2 titolo"><b>Top 10 Film</b></h1>
+    <%= image_tag "homepage/trend.svg", class: "icon" %>
+</div>
+
+<div class="netflix-slider mb-3">
+    <button class="slider-btn btn-top left"><%= image_tag "homepage/freccia.svg", class: "slider_img", style: "transform: rotate(180deg)" %></button>
+    <div class="slider-track">
+        <% @top_movies.each_with_index do |movie, index| %>
+        
+            <div class="contenitore contenitore_top10 contenitore-film">
+                <a href="/movies/<%= movie['id'] %>"><img class="top10" src="https://image.tmdb.org/t/p/w500<%= movie['poster_path'] %>" alt="<%= movie['title'] %>" >
+                <span class="number"><b><%= index + 1 %></b></span></a>
+            </div>
+
+        <%end%>
+    </div>
+    <button class="slider-btn btn-top right"><%= image_tag "homepage/freccia.svg", class: "slider_img" %></button>
+</div>
+
+
+
+<%= render 'layouts/footer' %>
